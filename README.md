@@ -1,3 +1,4 @@
 # minishell
 
-42 project, recoding our own little bash. A program capable of parsing a prompt and launching executables with arguments, along with a few built-in functions.
+42 project, creating our own simple bash with C. A command line interpreter in a simple and complete way.
+It handles pipes, redirections, signals, command status, and includes seven built-in commands: pwd, cd, echo, export, env, unset, and exit.
