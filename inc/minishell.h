@@ -27,7 +27,7 @@
 # include <string.h>
 // perror
 # include <stdio.h>
-// lift 
+// libft 
 # include "../src/libft/inc/libft.h"
 
 // main
