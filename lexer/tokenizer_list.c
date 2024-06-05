@@ -9,7 +9,7 @@
 /*   Updated: 2024/06/05 13:28:39 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "../includes/lexer.h"
+#include "../inc/lexer.h"
 
 /** 
 * Just an utils function in case of errors since we are dealing
@@ -75,7 +75,7 @@ static t_lex *make_token(int length, char *input)
         new->literal[i] = input[i];
         i++;
     }
-    new->literal[i] = 0;
+    new->literal[i] = '\0';
     new->next = NULL;
     new->type = find_type(new->literal);
     return (new);
@@ -86,11 +86,11 @@ static t_lex *make_token(int length, char *input)
 * 1. calls the make_token with current length and input
 * 2. If the tokens list is empty, we set the new node as the first one.
 * 3. If not, we add it to the back of the list by first iterating through it and
-* then setting the new->prev to the head. 
+* then setting the new->prev to the last. 
 */
 t_lex *fill_tokens(t_lex *tokens, char *input, int length)
 {
-    t_lex *head;
+    t_lex *last;
     t_lex *new;
 
     new = make_token(length, input);
@@ -107,10 +107,10 @@ t_lex *fill_tokens(t_lex *tokens, char *input, int length)
     }
     else
     {
-        head = tokens;
-        while (head->next != NULL)
-            head = head->next;
-        new->prev = head;
+        last = tokens;
+        while (last->next != NULL)
+            last = last->next;
+        new->prev = last;
     }
     return (tokens);
 }

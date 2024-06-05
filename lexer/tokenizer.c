@@ -9,7 +9,7 @@
 /*   Updated: 2024/06/05 12:11:21 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "../lexer.h"
+#include "../inc/lexer.h"
 
 /**
 * Declares the token list, iterates through whitespace. 

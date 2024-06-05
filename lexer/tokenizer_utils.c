@@ -9,7 +9,7 @@
 /*   Updated: 2024/06/05 13:25:05 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "../includes/lexer.h"
+#include "../inc/lexer.h"
 
 /**
 * Will count the length of the characters between two 
