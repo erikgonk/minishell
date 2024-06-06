@@ -52,7 +52,7 @@ int     token_length(char *input)
     add = 1;
     if ((input[0] == '<' && input[1] == '<') || (input[0] == '>' && input[1] == '>'))
         length = 2;
-    else if (input[0] == '|' ||input[0] == '<' ||input[0] '>')
+    else if (input[0] == '|' ||input[0] == '<' ||input[0] == '>')
         length = 1;
     else
     {

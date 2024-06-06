@@ -20,20 +20,19 @@
 # define C_SQUOTE '\''
 # define C_DQUOTE '"'
 
-typedef enum s_token
+enum e_token
 {
 	T_PIPE = 1,
-	T_LESS,
-	T_LESSLESS,
-	T_GREAT,
-	T_GREATGREAT,
+	T_REDIR_OUT,
+	T_APPEND,
+	T_REDIR_IN,
+	T_HEREDOC,
 	T_WORD
-}	t_token;
-
+};
 
 typedef struct s_lex
 {
-	t_token			type;
+	enum e_token	type;
 	char			*literal;
 	int				i;
 	struct s_lex	*next;
