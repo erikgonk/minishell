@@ -11,6 +11,20 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
+/**
+ * Will delete node with specified index from linked list.
+*/
+void    delete_node(int index, t_lex **del)
+{
+    t_lex *next;
+    t_lex *prev;
+
+    i = 0;
+    while (del)
+    {
+    }
+}
+
 void    add_cmd_node(t_cmds **head, t_cmds *new)
 {
     t_cmds *tmp;

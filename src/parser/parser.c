@@ -68,7 +68,7 @@ int parser(t_data *data)
     }
     while (data->lexer)
     {
-        if (data->lexer && data->lexer->token == T_PIPE)
+        if (data->lexer && data->lexer->type == T_PIPE)
             delete_node(data->lexer->index, &data->lexer); // Delete pipe token
         if (error_check(data))
             return(EXIT_FAILURE); // Check for errors
