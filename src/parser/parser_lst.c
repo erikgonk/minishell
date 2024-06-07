@@ -11,6 +11,18 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-// add_cmd_node
-// delete_node
-// addback_lst
+void    add_cmd_node(t_cmds **head, t_cmds *new)
+{
+    t_cmds *tmp;
+
+    tmp = *head;
+    if (*head == NULL)
+    {
+        *head = new;
+        return ;
+    }
+    while (tmp)
+        tmp = tmp->next;
+    tmp->next = new;
+    new->prev = tmp;
+}
