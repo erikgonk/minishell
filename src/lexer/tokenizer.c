@@ -27,7 +27,7 @@ t_lex	*tokenizer(char *input)
 	tokens = NULL;
 	while (*input)
 	{
-		if (*input == ' ')
+		if (*input == ' ' || (*input >= 8 && *input <= 13))
 			input++;
 		else
 		{

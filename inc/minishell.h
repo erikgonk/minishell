@@ -13,6 +13,19 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# define PROMPT "mish> "
+
+typedef struct s_data
+{
+    t_cmds      *cmd; //list of the parsed line
+    t_lex       *lexer;
+    char        **paths;
+    int         heredoc;
+    int         pipes;
+    int         *pid;
+    int         err_status;
+}   t_data;
+
 // write, read, close, access, pipe, dup, dup2, execve, fork
 # include <unistd.h>
 # include <sys/types.h>

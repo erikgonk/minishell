@@ -38,15 +38,15 @@ void    free_tokens(t_lex *tokens)
 static int  find_type(char *literal)
 {
     if ((literal[0] == C_LESS && literal[1] == C_LESS))
-        return (T_LESSLESS);
+        return (T_HEREDOC);
     if ((literal[0] == C_GREAT && literal[1] == C_GREAT))
-        return (T_GREATGREAT);
+        return (T_APPEND);
     if (literal[0] == C_PIPE)
         return (T_PIPE);
     if (literal[0] == C_LESS)
-        return (T_LESS)
+        return (T_REDIR_IN);
     if (literal[0] == C_GREAT)
-        return (T_GREAT);
+        return (T_REDIR_OUT);
     return (T_WORD);
 }
 
