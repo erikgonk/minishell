@@ -14,27 +14,27 @@
 
 # include "minishell.h"
 
-# define C_LESS '>'
-# define C_GREAT '<'
+# define C_LESS '<'
+# define C_GREAT '>'
 # define C_PIPE '|'
 # define C_SQUOTE '\''
 # define C_DQUOTE '"'
 
-enum e_token
+typedef enum e_token
 {
 	T_PIPE = 1,
-	T_REDIR_OUT,
-	T_APPEND,
 	T_REDIR_IN,
 	T_HEREDOC,
-	T_WORD
+	T_REDIR_OUT,
+	T_APPEND,
+	T_WORD,
 };
 
 typedef struct s_lex
 {
-	enum e_token	type;
-	char			*literal;
-	int				i;
+	enum e_token	type; //type of token
+	char			*literal; //the string literal (eg. "cat -e")
+	int				index; //position in the linked list
 	struct s_lex	*next;
 	struct s_lex	*prev;
 }	t_lex;
