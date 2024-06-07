@@ -9,7 +9,7 @@
 /*   Updated: 2024/06/05 13:28:39 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "../inc/lexer.h"
+#include "minishell.h"
 
 /** 
 * Just an utils function in case of errors since we are dealing

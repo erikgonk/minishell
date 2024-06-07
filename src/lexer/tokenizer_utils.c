@@ -9,7 +9,20 @@
 /*   Updated: 2024/06/05 13:25:05 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "../inc/lexer.h"
+#include "minishell.h"
+
+void    add_index(t_lex *tokens)
+{
+    int i;
+
+    i = 0;
+    while (tokens)
+    {
+        tokens->index = i;
+        tokens = tokens->next;
+        i++;
+    }
+}
 
 /**
 * Will count the length of the characters between two 

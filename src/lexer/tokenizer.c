@@ -9,7 +9,7 @@
 /*   Updated: 2024/06/05 12:11:21 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "../inc/lexer.h"
+#include "minishell.h"
 
 /**
 * Declares the token list, iterates through whitespace. 
@@ -36,5 +36,6 @@ t_lex	*tokenizer(char *input)
 			input += length;
 		}
 	}
+	add_index(tokens);
 	return(tokens);
 }
