@@ -40,7 +40,7 @@ t_cmds *make_cmd(t_data *data, t_parser *parser)
     tmp = parser->lexer;
     str = (char **)malloc(sizeof(char *) * (arg_count + 1));
     if (!str)
-        on_error(MEM_ERROR); //prob need better error handling here
+        on_error(MEMORY_ERROR); //prob need better error handling here
     while (i > arg_count)
     {
         if (tmp->literal)
@@ -54,14 +54,14 @@ t_cmds *make_cmd(t_data *data, t_parser *parser)
     return (new_cmd(str, parser->redir_count, parser->redirections));
 }
 
-int parser(t_data *data)
+int parsing(t_data *data)
 {
     t_parser parser;
     t_cmds  *new;
 
     data->cmds = NULL; // Initialize the command list
     count_pipes(data); // Count the number of pipes & save in data struct
-    if (data->lexer->token == T_PIPE) // Check for pipe at the beginning (error)
+    if (data->lexer->type == T_PIPE) // Check for pipe at the beginning (error)
     {
         token_err(data, T_PIPE); // Handle pipe error
         return (EXIT_FAILURE);

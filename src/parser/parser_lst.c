@@ -13,15 +13,21 @@
 
 /**
  * Will delete node with specified index from linked list.
+ * Where t_lex **del is the node to delete.
+ * Checking whether the index is 0, indicating it is the head of the lis
 */
 void    delete_node(int index, t_lex **del)
 {
-    t_lex *next;
-    t_lex *prev;
-
-    i = 0;
-    while (del)
+    if (index == 0)
     {
+        (*del)->next->prev = NULL;
+        free(*del);
+    }
+    else
+    {
+        (*del)->next->prev = (*del)->prev;
+        (*del)->prev->next = (*del)->next;
+        free(*del);
     }
 }
 

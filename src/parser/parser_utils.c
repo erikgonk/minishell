@@ -52,5 +52,3 @@ int    count_args(t_lex *tokens)
     }
     return (count);
 }
-
-// check pipe error line (if pipe is first command)
