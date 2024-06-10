@@ -64,14 +64,12 @@ int parsing(t_data *data)
     if (data->lexer->type == T_PIPE) // Check for pipe at the beginning (error)
     {
         token_err(data, T_PIPE); // Handle pipe error
-        return (EXIT_FAILURE);
+        return (1);
     }
     while (data->lexer)
     {
         if (data->lexer && data->lexer->type == T_PIPE)
             delete_node(data->lexer->index, &data->lexer); // Delete pipe token
-        if (error_check(data))
-            return(EXIT_FAILURE); // Check for errors
         parser = init_parser(data->lexer, data); // Initialize the parser
         new = make_cmd(data, &parser); // Create a new command
         if (!new)
@@ -79,5 +77,5 @@ int parsing(t_data *data)
         add_cmd_node(&data->cmds, new); // Add the new command to the command list
         data->lexer = parser.lexer; // Move to the next token
     }
-    return (EXIT_SUCCESS);
+    return (0);
 }
