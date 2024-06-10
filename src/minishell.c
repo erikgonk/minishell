@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-static void main_loop(t_data *data, char **input)
+/*static void main_loop(t_data *data, char **input)
 {
     t_lex   tokens;
 
@@ -31,22 +31,64 @@ static void main_loop(t_data *data, char **input)
         parsing(&tokens, data); //will take the linked token list and convert to the parsing list
         execute(data); //idk how exactly this will work but yeah
     }
+}*/
+
+void    main_loop(t_data *data)
+{
+    while (1)
+    {
+        data->input = readline("mish> ");
+        clear_input(data);
+        if (data->input == NULL)
+        {
+            ft_putstr_fd("exit", STDOUT_FILENO);
+            exit(EXIT_SUCCESS);
+        }
+        if (data->input[0] == '\0')
+        {
+            data_reset(data);
+            continue ;
+        }
+        add_history(data->input);
+        if (!check_closed_quotes(data->input))
+        {
+            on_error(data, 1);
+            data_reset(data);
+            continue;
+        }
+        if (!tokenize(data))
+        {
+            on_error(data, 1);
+            data_reset(data);
+            continue;
+        }
+        parser(data);
+        execute(data);
+        data_reset(data);
+    }
+
 }
 
 static void init_data(t_data *data, char **envp)
 {
+    data->input = NULL;
+    data->cmds = NULL;
+    data->lexer = NULL;
+    data->paths = parse_envp(envp); //parse the environment variables and store in 2D with complete path for when using the execve function
+    data->heredoc = 0;
+    data->pipes = 0;
+    data->pid = NULL;
+    data->err_status = 0;
 }
 
 int main(int argc, char **argv, char **envp)
 {
     t_data  data;
-    char    *input;
 
     (void)argv;
-    input = NULL;
     if (argc != 1)
-        return(ARG_ERR);
+        return(ARG_ERROR);
     init_data(&data, envp);
-    main_loop(&data, *input);
+    main_loop(&data);
     return (0);
 }
