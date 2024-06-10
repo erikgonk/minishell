@@ -13,7 +13,7 @@
 
 void    lex_del_node(t_lex *lst, int index)
 {
-
+    
 }
 
 t_lex    *lex_add_node(char *str, enum e_token token)

@@ -50,7 +50,7 @@ void    main_loop(t_data *data)
             continue ;
         }
         add_history(data->input);
-        if (!check_closed_quotes(data->input))
+        if (!check_closed_quotes(data->input)) //check whether all quotes are closed
         {
             on_error(data, 1);
             data_reset(data);
@@ -66,7 +66,6 @@ void    main_loop(t_data *data)
         execute(data);
         data_reset(data);
     }
-
 }
 
 static void init_data(t_data *data, char **envp)
@@ -79,6 +78,15 @@ static void init_data(t_data *data, char **envp)
     data->pipes = 0;
     data->pid = NULL;
     data->err_status = 0;
+}
+
+void    data_reset(t_data *data)
+{
+    if (data->input)
+        free(data->input);
+    if (data->cmds)
+        free_cmds(data->cmds);
+    if (data->lexer)
 }
 
 int main(int argc, char **argv, char **envp)
