@@ -1,58 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_paths.c                                      :+:      :+:    :+:   */
+/*   path_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vaunevik <vaunevik@student.42barcel>       +#+  +:+       +#+        */
+/*   By: vaunevik <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/20 10:33:03 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/05/24 14:04:48 by vaunevik         ###   ########.fr       */
+/*   Created: 2024/06/11 15:02:15 by vaunevik          #+#    #+#             */
+/*   Updated: 2024/06/11 15:02:18 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "../includes/pipex.h"
-
-static void	check_paths(t_pipex *pipex);
-
-void	get_correct_path(t_pipex *pipex)
-{
-	if (ft_strchr(pipex->cmd, '/'))
-	{
-		if (access(pipex->cmd, F_OK) == 0)
-		{
-			if (access(pipex->cmd, X_OK) != 0)
-				exit(free_pip(pipex, err_msg(NO_PERM, 126, pipex->cmd)));
-			return ;
-		}
-		else
-			exit(free_pip(pipex, err_msg(NO_CMD, 127, pipex->full_cmd[0])));
-	}
-	else
-		check_paths(pipex);
-}
-
-static void	check_paths(t_pipex *pipex)
-{
-	char	*path;
-	int		i;
-
-	i = -1;
-	while (pipex->paths[++i])
-	{
-		path = ft_strjoin(pipex->paths[i], pipex->cmd);
-		if (!path)
-			exit(free_pip(pipex, err_msg(MEM_ERR, 1, NULL)));
-		if (access(path, F_OK) == 0)
-		{
-			my_free(&pipex->cmd, 2);
-			pipex->cmd = path;
-			if (access(path, X_OK))
-				exit(free_pip(pipex, err_msg(ERR_PERROR, 126, NULL)));
-			return ;
-		}
-		my_free(&path, 2);
-	}
-	exit(free_pip(pipex, err_msg(NO_CMD, 127, pipex->full_cmd[0])));
-}
+#include "minishell.h"
 
 static char	*get_path(char **envp)
 {
