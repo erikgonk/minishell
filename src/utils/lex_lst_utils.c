@@ -11,6 +11,24 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
+/**
+ * This function will add a newly created node to the linked list.
+*/
+void    lex_add_node(t_lex *new, t_lex **redir)
+{
+    t_lex   *last;
+
+    last = (*redir);
+    if ((*redir) == NULL)
+    {
+        (*redir) = new;
+        return ;
+    }
+    while (last->next != NULL)
+        last = last->next;
+    new->prev = last;
+    last->next = new;
+}
 
 /**
  * Will delete specified node based on its index
@@ -26,7 +44,7 @@ void    lex_del_node(t_lex *lst, int index)
  * function whenever we want to add a redir node. Hence
  * we need to keep track of the index.
 */
-t_lex    *lex_add_node(char *str, enum e_token token)
+t_lex    *lex_new_node(char *str, enum e_token token)
 {
     t_lex       *new;
     static int  i;

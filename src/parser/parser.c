@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-t_cmds  *new_cmd(char **str, int redir_count, t_lex *redirections)
+t_cmds  *new_cmd(char **str, int redir_count, t_lex *redir)
 {
     t_cmds  *new;
 
@@ -21,7 +21,7 @@ t_cmds  *new_cmd(char **str, int redir_count, t_lex *redirections)
     new->builtin = add_builtin(str[0]); //function to handle builtin (if present)
     new->cmd = str;
     new->redir_count = redir_count;
-    new->redirs = redirections;
+    new->redirs = redir;
     new->next = NULL;
     new->prev = NULL;
     return (new);
@@ -29,7 +29,7 @@ t_cmds  *new_cmd(char **str, int redir_count, t_lex *redirections)
 
 t_cmds *make_cmd(t_data *data, t_parser *parser)
 {
-    char    **str; //2d matrix to store command w. arguments
+    char    **str;
     int     i;
     int     arg_count;
     t_lex   *tmp;
@@ -46,7 +46,7 @@ t_cmds *make_cmd(t_data *data, t_parser *parser)
         if (tmp->literal)
         {
             str[i] = ft_strdup(tmp->literal);
-            delete_node(tmp->index, &parser->lexer);
+            lex_del_node(tmp->index, &parser->lexer);
             tmp = parser->lexer->next;
         }
         i++;
