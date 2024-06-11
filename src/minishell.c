@@ -37,7 +37,7 @@ void    main_loop(t_data *data)
 {
     while (1)
     {
-        data->input = readline("mish> ");
+        data->input = readline(PROMPT);
         clear_input(data);
         if (data->input == NULL)
         {
@@ -73,7 +73,7 @@ static void init_data(t_data *data, char **envp)
     data->input = NULL;
     data->cmds = NULL;
     data->lexer = NULL;
-    data->paths = parse_envp(envp); //parse the environment variables and store in 2D with complete path for when using the execve function
+    data->paths = split_envp(envp); //parse the environment variables and store in 2D with complete path for when using the execve function
     data->heredoc = 0;
     data->pipes = 0;
     data->pid = NULL;

@@ -83,7 +83,7 @@ typedef struct s_cmds
     char            **cmd; //the full command with its flags
     enum e_builtin  builtin; //builtin spesification 
     int             redir_count; //number of redirections
-    t_lex           *redirs; //structure with redirection information (type of redir and the corresponding file name)
+    t_lex           *redirections; //structure with redirection information (type of redir and the corresponding file name)
     t_lex           *lexer; // structure with all the tokens
     struct s_cmds   *next;
     struct s_cmds   *prev;
