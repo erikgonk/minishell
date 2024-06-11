@@ -52,3 +52,19 @@ int    count_args(t_lex *tokens)
     }
     return (count);
 }
+
+void    add_cmd_node(t_cmds **head, t_cmds *new)
+{
+    t_cmds *tmp;
+
+    tmp = *head;
+    if (*head == NULL)
+    {
+        *head = new;
+        return ;
+    }
+    while (tmp)
+        tmp = tmp->next;
+    tmp->next = new;
+    new->prev = tmp;
+}

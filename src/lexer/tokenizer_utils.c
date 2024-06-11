@@ -63,13 +63,13 @@ int     token_length(char *input)
 
     length = 0;
     add = 1;
-    if ((input[0] == '<' && input[1] == '<') || (input[0] == '>' && input[1] == '>'))
+    if ((input[0] == C_LESS && input[1] == C_LESS) || (input[0] == C_GREAT && input[1] == C_GREAT))
         length = 2;
-    else if (input[0] == '|' ||input[0] == '<' ||input[0] == '>')
+    else if (input[0] == C_PIPE ||input[0] == C_GREAT ||input[0] == C_LESS)
         length = 1;
     else
     {
-        while (*input && *input != '|' && *input != '<' && *input != '>' && *input != ' ')
+        while (*input && *input != C_PIPE && *input != C_LESS && *input != C_GREAT && *input != ' ')
         {
             if (*input == C_SQUOTE ||*input == C_DQUOTE)
                 add = quote_length(input);

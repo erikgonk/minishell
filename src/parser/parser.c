@@ -69,7 +69,7 @@ int parsing(t_data *data)
     while (data->lexer)
     {
         if (data->lexer && data->lexer->type == T_PIPE)
-            delete_node(data->lexer->index, &data->lexer); // Delete pipe token
+            lex_del_node(data->lexer->index, &data->lexer); // Delete pipe token
         parser = init_parser(data->lexer, data); // Initialize the parser
         new = make_cmd(data, &parser); // Create a new command
         if (!new)
