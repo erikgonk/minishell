@@ -97,20 +97,3 @@ t_lex    *lex_new_node(char *str, enum e_token token)
     new->next = NULL;
     return (new);
 }
-
-void    lex_clear_all(t_lex **lst)
-{
-    t_lex *tmp;
-
-    if (!*lst)
-        return;
-    while (*lst)
-    {
-        tmp = (*lst)->next;
-        if ((*lst)->literal)
-            free((*lst)->literal);
-        free(*lst);
-        *lst = tmp;
-    }
-    *lst = NULL;
-}
