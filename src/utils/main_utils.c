@@ -11,24 +11,36 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
+int check_inside_quotes(char *str, int index, int *counter, char *type)
+{
+    int i;
+
+    i = index + 1;
+    *counter += 1;
+    while (str[i] && str[i] != type)
+        i++;
+    if (str[i] == type)
+        *counter += 1;
+    return (index - i);
+}
+
 int check_closed_quotes(char *str)
 {
-    int squote;
-    int dquote;
+    int dble;
+    int sgle;
+    int i;
 
-    squote = 0;
-    dquote = 0;
-    while (*str)
+    i = 0;
+    dble = 0;
+    sgle = 0;
+    while (str[i++])
     {
-        if (*str == C_SQUOTE)
-            squote++;
-        if (*str == C_DQUOTE)
-            dquote++;
-        str++;
+        if (str[i] == C_SQUOTE)
+            i += check_inside_quotes(str, i, &sgle, C_SQUOTE);
+        if (str[i] == C_DQUOTE)
+            i += check_inside_quotes(str, i, &dble, C_DQUOTE);
     }
-    if (squote % 2 != 0)
-        return (0);
-    if (dquote % 2 != 0)
-        return (0);
-    return (1);
+    if ((dble > 0 && dble % 2 != 0) || (sgle > 0 && sgle % 2 != 0))
+        return (1);
+    return (0);
 }
