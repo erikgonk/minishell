@@ -26,16 +26,55 @@ void    lex_add_node(t_lex *new, t_lex **redir)
     }
     while (last->next != NULL)
         last = last->next;
-    new->prev = last;
     last->next = new;
 }
 
 /**
  * Will delete specified node based on its index
 */
-void    lex_del_node(t_lex *lst, int index)
+void    lex_del_node(t_lex **lst, int index)
 {
-    
+    t_lex   *node;
+    t_lex   *prev;
+
+    node = (*lst);
+    prev = NULL;
+    if (node && node->index == index)
+    {
+        lex_del_first(lst);
+        return ;
+    }
+    while (node && node->index != index)
+    {
+        prev = node;
+        node = node->next;
+    }
+    if (node)
+    {
+        if (prev)
+            prev->next;
+        lex_clear_one(&node);
+    }
+}
+
+void    lex_del_first(t_lex **del)
+{
+    t_lex *tmp;
+
+    tmp = *del;
+    *del = tmp->next;
+    lex_clear_one(&tmp);
+}
+
+void    lex_clear_one(t_lex **del)
+{
+    if ((*del)->literal)
+    {
+        free((*del)->literal);
+        (*del)->literal = NULL;
+    }
+    free(*del);
+    *del = NULL;
 }
 
 /**
@@ -47,7 +86,7 @@ void    lex_del_node(t_lex *lst, int index)
 t_lex    *lex_new_node(char *str, enum e_token token)
 {
     t_lex       *new;
-    static int  i;
+    static unsigned int  i = 0;
 
     new = (t_lex *)malloc(sizeof(t_lex));
     if (!new)
@@ -56,6 +95,22 @@ t_lex    *lex_new_node(char *str, enum e_token token)
     new->literal = str;
     new->type = token;
     new->next = NULL;
-    new->prev = NULL;
     return (new);
+}
+
+void    lex_clear_all(t_lex **lst)
+{
+    t_lex *tmp;
+
+    if (!*lst)
+        return;
+    while (*lst)
+    {
+        tmp = (*lst)->next;
+        if ((*lst)->literal)
+            free((*lst)->literal);
+        free(*lst);
+        *lst = tmp;
+    }
+    *lst = NULL;
 }

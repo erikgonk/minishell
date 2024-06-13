@@ -20,21 +20,19 @@
  * associated nodes from the lexer list
  * 4. Then increases the redirection count
 */
-void add_redir(t_parser *parser, t_lex *tmp)
+void    add_redir(t_parser *parser, t_lex *tmp)
 {
-    int     indx1;
-    int     indx2;
     t_lex   *new;
+    int     delete_index;
 
     new = lex_new_node(ft_strdup(tmp->next->literal), tmp->type);
     if (!new)
-        on_error();//error management
-    lex_add_node()
-    indx1 = tmp->index;
-    indx2 = tmp->next->index;
-    lex_del_node(&parser->lexer, indx1);
-    lex_del_node(&parser->lexer, indx2);
+        return ;
+    lex_add_node(&parser->redirections, new);
     parser->redir_count++;
+    lex_del_node(delete_index, &parser->lexer);
+    delete_index = delete_index + 1;
+    lex_del_node(delete_index, &parser->lexer);
 }
 
 /**
@@ -44,16 +42,20 @@ void add_redir(t_parser *parser, t_lex *tmp)
  * 4. Then we recursively call the function until no more redirection 
  * tokens are found
 */
-void handle_redirs(t_parser *parser)
+void    handle_redirs(t_data *data, t_parser *parser)
 {
-    t_lex *tmp;
- 
+    t_lex   *tmp;
+
     tmp = parser->lexer;
-    while (tmp->type == T_WORD && tmp->type)
+    while (tmp && tmp->type == T_WORD)
         tmp = tmp->next;
     if (!tmp || tmp->type == T_PIPE)
         return ;
+    if (!tmp->next)
+        on_error(data, SYNTAX_ERROR);
+    if (tmp->next->type != T_WORD)
+        token_error(data, tmp->next->type);
     if (tmp->type >= T_REDIR_IN && tmp->type <= T_APPEND)
         add_redir(parser, tmp);
-    handle_redirs(parser);
+    handle_redirs(data, parser);
 }

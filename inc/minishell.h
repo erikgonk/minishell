@@ -67,7 +67,6 @@ typedef struct s_lex
 	char			*literal; //the string literal (eg. "cat -e")
 	int				index; //position in the linked list
 	struct s_lex	*next;
-	struct s_lex	*prev;
 }	t_lex;
 
 typedef struct s_parser
@@ -84,7 +83,6 @@ typedef struct s_cmds
     enum e_builtin  builtin; //builtin spesification 
     int             redir_count; //number of redirections
     t_lex           *redirections; //structure with redirection information (type of redir and the corresponding file name)
-    t_lex           *lexer; // structure with all the tokens
     struct s_cmds   *next;
     struct s_cmds   *prev;
 }   t_cmds;
@@ -92,8 +90,9 @@ typedef struct s_cmds
 typedef struct s_data
 {
     char        *input;
-    t_cmds      *cmds; //list of the parsed line
     t_lex       *lexer;
+    t_cmds      *cmds;
+    char        **envp;
     char        **paths;
     int         heredoc;
     int         pipes;
