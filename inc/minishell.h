@@ -101,11 +101,33 @@ typedef struct s_data
 }   t_data;
 
 /*------------Main--------------*/
-
+void    data_reset(t_data *data, char **envp);
+void    main_loop(t_data *data, char **envp);
 
 /*-----------Lexer--------------*/
-
+t_lex	*tokenizer(char *input);
+int     token_length(char *input);
+void    add_index(t_lex *tokens);
+void    free_tokens(t_lex *tokens);
+t_lex   *fill_tokens(t_lex *tokens, char *input, int length);
 
 /*-----------Parser-------------*/
+void        handle_redirs(t_data *data, t_parser *parser);
+void        add_redir(t_parser *parser, t_lex *tmp);
+int         parsing(t_data *data);
+t_cmds      *make_cmd(t_data *data, t_parser *parser);
+t_cmds      *new_cmd(char **str, int redir_count, t_lex *redir);
+void        add_cmd_node(t_cmds **head, t_cmds *new);
+t_parser    init_parser(t_lex *lexer, t_data *data);
+void        count_pipes(t_data *data);
+int         count_args(t_lex *tokens);
+
+/*------------Utils--------------*/
+char    **split_envp(char **envp);
+t_lex   *lex_new_node(char *str, enum e_token token);
+void    lex_clear_one(t_lex **del);
+void    lex_del_first(t_lex **del);
+void    lex_del_node(t_lex **lst, int index);
+void    lex_add_node(t_lex *new, t_lex **redir);
 
 #endif

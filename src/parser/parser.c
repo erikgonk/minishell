@@ -37,7 +37,7 @@ t_cmds  *new_cmd(char **str, int redir_count, t_lex *redir)
     new->builtin = add_builtin(str[0]);
     new->cmd = str;
     new->redir_count = redir_count;
-    new->redirs = redir;
+    new->redirections = redir;
     new->next = NULL;
     new->prev = NULL;
     return (new);
