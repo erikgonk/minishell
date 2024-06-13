@@ -11,14 +11,30 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
+void    add_cmd_node(t_cmds **head, t_cmds *new)
+{
+    t_cmds *tmp;
+
+    tmp = *head;
+    if (*head == NULL)
+    {
+        *head = new;
+        return ;
+    }
+    while (tmp)
+        tmp = tmp->next;
+    tmp->next = new;
+    new->prev = tmp;
+}
+
 t_cmds  *new_cmd(char **str, int redir_count, t_lex *redir)
 {
     t_cmds  *new;
 
     new = (t_cmds *)malloc(sizeof(t_cmds));
     if (!new)
-        on_err(MEMORY_ERROR); //handle err
-    new->builtin = add_builtin(str[0]); //function to handle builtin (if present)
+        on_err(MEMORY_ERROR);
+    new->builtin = add_builtin(str[0]);
     new->cmd = str;
     new->redir_count = redir_count;
     new->redirs = redir;
@@ -40,7 +56,7 @@ t_cmds *make_cmd(t_data *data, t_parser *parser)
     tmp = parser->lexer;
     str = (char **)malloc(sizeof(char *) * (arg_count + 1));
     if (!str)
-        on_error(MEMORY_ERROR); //prob need better error handling here
+        on_error(MEMORY_ERROR);
     while (i > arg_count)
     {
         if (tmp->literal)
@@ -59,23 +75,23 @@ int parsing(t_data *data)
     t_parser parser;
     t_cmds  *new;
 
-    data->cmds = NULL; // Initialize the command list
-    count_pipes(data); // Count the number of pipes & save in data struct
-    if (data->lexer->type == T_PIPE) // Check for pipe at the beginning (error)
+    data->cmds = NULL;
+    count_pipes(data);
+    if (data->lexer->type == T_PIPE)
     {
-        token_err(data, T_PIPE); // Handle pipe error
+        token_err(data, T_PIPE);
         return (1);
     }
     while (data->lexer)
     {
         if (data->lexer && data->lexer->type == T_PIPE)
-            lex_del_node(data->lexer->index, &data->lexer); // Delete pipe token
-        parser = init_parser(data->lexer, data); // Initialize the parser
-        new = make_cmd(data, &parser); // Create a new command
+            lex_del_node(data->lexer->index, &data->lexer);
+        parser = init_parser(data->lexer, data);
+        new = make_cmd(data, &parser);
         if (!new)
-            print_err(data, 0); // Handle error
-        add_cmd_node(&data->cmds, new); // Add the new command to the command list
-        data->lexer = parser.lexer; // Move to the next token
+            print_err(data, 0);
+        add_cmd_node(&data->cmds, new);
+        data->lexer = parser.lexer;
     }
     return (0);
 }

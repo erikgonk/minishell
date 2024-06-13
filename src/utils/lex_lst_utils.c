@@ -52,7 +52,7 @@ void    lex_del_node(t_lex **lst, int index)
     if (node)
     {
         if (prev)
-            prev->next;
+            prev->next = node->next;
         lex_clear_one(&node);
     }
 }

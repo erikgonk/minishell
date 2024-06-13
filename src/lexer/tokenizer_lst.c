@@ -101,16 +101,13 @@ t_lex *fill_tokens(t_lex *tokens, char *input, int length)
         return (NULL);
     }
     if (tokens == NULL)
-    {
         tokens = new;
-        tokens->prev = NULL;
-    }
     else
     {
         last = tokens;
         while (last->next != NULL)
             last = last->next;
-        new->prev = last;
+        last->next = new;
     }
     return (tokens);
 }

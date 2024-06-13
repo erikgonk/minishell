@@ -38,7 +38,6 @@ void    main_loop(t_data *data, char **envp)
     while (1)
     {
         data->input = readline(PROMPT);
-        clear_input(data);
         if (data->input == NULL)
         {
             ft_putstr_fd("exit", STDOUT_FILENO);

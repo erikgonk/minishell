@@ -32,7 +32,7 @@ void    add_index(t_lex *tokens)
 static int  quote_length(char *str)
 {
     int length;
-    int quote;
+    char quote;
 
     quote = -1;
     length = 1;
