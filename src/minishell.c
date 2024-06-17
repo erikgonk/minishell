@@ -41,7 +41,7 @@ void    main_loop(t_data *data, char **envp)
         if (data->input == NULL)
         {
             ft_putstr_fd("exit", STDOUT_FILENO);
-            exit(EXIT_SUCCESS);
+            exit(0);
         }
         if (data->input[0] == '\0')
         {
@@ -51,13 +51,13 @@ void    main_loop(t_data *data, char **envp)
         add_history(data->input);
         if (!check_closed_quotes(data->input)) //check whether all quotes are closed
         {
-            on_error(data, 1);
+            on_error(data); //err handling
             data_reset(data, envp);
             continue;
         }
         if (!tokenize(data))
         {
-            on_error(data, 1);
+            on_error(data) // some better error handling here
             data_reset(data, envp);
             continue;
         }
@@ -73,7 +73,7 @@ static void init_data(t_data *data, char **envp)
     data->cmds = NULL;
     data->lexer = NULL;
     data->envp = envp;
-    data->paths = split_envp(envp); //parse the environment variables and store in 2D with complete path for when using the execve function
+    data->paths = split_envp(envp);
     data->heredoc = 0;
     data->pipes = 0;
     data->pid = NULL;
@@ -97,7 +97,10 @@ int main(int argc, char **argv, char **envp)
 
     (void)argv;
     if (argc != 1)
+    {
+        ft_putstr("This program does not take any arguments\n");
         return(ARG_ERROR);
+    }
     init_data(&data, envp);
     main_loop(&data, envp);
     return (0);
