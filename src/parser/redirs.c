@@ -42,7 +42,7 @@ void    add_redir(t_parser *parser, t_lex *tmp)
  * 4. Then we recursively call the function until no more redirection 
  * tokens are found
 */
-void    handle_redirs(t_data *data, t_parser *parser)
+void    handle_redirs(t_data *data, t_parser *parser, int *redir_count)
 {
     t_lex   *tmp;
 
@@ -56,6 +56,9 @@ void    handle_redirs(t_data *data, t_parser *parser)
     if (tmp->next->type != T_WORD)
         token_error(data, tmp->next->type);
     if (tmp->type >= T_REDIR_IN && tmp->type <= T_APPEND)
+    {
+        (*redir_count)++;
         add_redir(parser, tmp);
-    handle_redirs(data, parser);
+    }
+    handle_redirs(data, parser, redir_count);
 }

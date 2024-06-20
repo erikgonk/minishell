@@ -36,7 +36,7 @@ t_cmds  *new_cmd(char **str, int redir_count, t_lex *redir)
         on_err(MEMORY_ERROR);
     new->builtin = add_builtin(str[0]);
     new->cmd = str;
-    new->redir_count = redir_count;
+    new->redirs = redir_count;
     new->redirections = redir;
     new->next = NULL;
     new->prev = NULL;
@@ -49,9 +49,11 @@ t_cmds *make_cmd(t_data *data, t_parser *parser)
     int     i;
     int     arg_count;
     t_lex   *tmp;
+    int     redir_count;
 
     i = 0;
-    handle_redir(parser);
+    redir_count = 0;
+    handle_redir(data, parser, &redir_count);
     arg_count = count_args(parser->lexer);
     tmp = parser->lexer;
     str = (char **)malloc(sizeof(char *) * (arg_count + 1));
@@ -67,7 +69,7 @@ t_cmds *make_cmd(t_data *data, t_parser *parser)
         }
         i++;
     }
-    return (new_cmd(str, parser->redir_count, parser->redirections));
+    return (new_cmd(str, redir_count, parser->redirections));
 }
 
 int parsing(t_data *data)
