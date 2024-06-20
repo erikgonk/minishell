@@ -30,12 +30,16 @@
 // libft 
 # include "../src/libft/inc/libft.h"
 
+/*---------------defines------------------*/
 # define PROMPT "mish> "
 # define C_LESS '<'
 # define C_GREAT '>'
 # define C_PIPE '|'
 # define C_SQUOTE '\''
 # define C_DQUOTE '"'
+
+# define MEM_ERROR
+# define 
 
 /*-----------------Enums------------------*/
 typedef enum e_token

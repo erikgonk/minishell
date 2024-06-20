@@ -33,8 +33,8 @@ t_cmds  *new_cmd(char **str, int redir_count, t_lex *redir)
 
     new = (t_cmds *)malloc(sizeof(t_cmds));
     if (!new)
-        on_err(MEMORY_ERROR);
-    new->builtin = add_builtin(str[0]);
+        on_error(MEMORY_ERROR); //error handling ???
+    new->builtin = check_builtin(str[0]);
     new->cmd = str;
     new->redirs = redir_count;
     new->redirections = redir;
@@ -58,7 +58,7 @@ t_cmds *make_cmd(t_data *data, t_parser *parser)
     tmp = parser->lexer;
     str = (char **)malloc(sizeof(char *) * (arg_count + 1));
     if (!str)
-        on_error(MEMORY_ERROR);
+        on_error(MEMORY_ERROR); //error handling ??
     while (i > arg_count)
     {
         if (tmp->literal)
@@ -79,7 +79,7 @@ int parsing(t_data *data)
 
     data->cmds = NULL;
     count_pipes(data);
-    if (data->lexer->type == T_PIPE)
+    if (data->lexer->type == T_PIPE) //is it not better to check this before tokenizing the string? Checking whether it ends/starts w. pipe and whether there are two in a row etc. ?
     {
         token_err(data, T_PIPE);
         return (1);
@@ -91,7 +91,7 @@ int parsing(t_data *data)
         parser = init_parser(data->lexer, data);
         new = make_cmd(data, &parser);
         if (!new)
-            print_err(data, 0);
+            on_error(data); //error handling??
         add_cmd_node(&data->cmds, new);
         data->lexer = parser.lexer;
     }

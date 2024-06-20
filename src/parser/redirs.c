@@ -52,7 +52,7 @@ void    handle_redirs(t_data *data, t_parser *parser, int *redir_count)
     if (!tmp || tmp->type == T_PIPE)
         return ;
     if (!tmp->next)
-        on_error(data, SYNTAX_ERROR);
+        on_error(data, SYNTAX_ERROR); //idk about error handling here
     if (tmp->next->type != T_WORD)
         token_error(data, tmp->next->type);
     if (tmp->type >= T_REDIR_IN && tmp->type <= T_APPEND)
