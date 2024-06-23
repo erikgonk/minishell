@@ -30,16 +30,12 @@
 // libft 
 # include "../src/libft/inc/libft.h"
 
-/*---------------defines------------------*/
 # define PROMPT "mish> "
 # define C_LESS '<'
 # define C_GREAT '>'
 # define C_PIPE '|'
 # define C_SQUOTE '\''
 # define C_DQUOTE '"'
-
-# define MEM_ERROR
-# define 
 
 /*-----------------Enums------------------*/
 typedef enum e_token
@@ -78,14 +74,14 @@ typedef struct s_parser
     t_lex   *lexer;
     t_lex   *redirections;
     t_data  *data;
-    int     redir_count
+    int     redir_count;
 }   t_parser;
 
 typedef struct s_cmds
 {
     char            **cmd; //the full command with its flags
     enum e_builtin  builtin; //builtin spesification 
-    int             redir_count; //number of redirections
+    int             redirs; //number of redirections for this current command
     t_lex           *redirections; //structure with redirection information (type of redir and the corresponding file name)
     struct s_cmds   *next;
     struct s_cmds   *prev;
@@ -97,11 +93,13 @@ typedef struct s_data
     t_lex       *lexer;
     t_cmds      *cmds;
     char        **envp;
+    char        **exp_env;
     char        **paths;
     int         heredoc;
-    int         pipes;
+    int         redir_counter;
     int         *pid;
-    int         err_status;
+    int         g_exit;
+    bool        reset;
 }   t_data;
 
 /*------------Main--------------*/
