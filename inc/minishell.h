@@ -6,7 +6,7 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 16:47:55 by erigonza          #+#    #+#             */
-/*   Updated: 2024/05/26 16:47:58 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/06/26 12:43:05 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,12 @@
 // lift 
 # include "../src/libft/inc/libft.h"
 
+typedef struct s_exec
+{
+
+}	t_exec;
+
+//hoal me llamo erik
 // main
 
 #endif
