@@ -46,7 +46,7 @@ typedef enum e_token
 	T_REDIR_OUT,
 	T_APPEND,
 	T_WORD,
-};
+}   t_token;
 
 typedef enum e_builtin
 {
@@ -81,25 +81,41 @@ typedef struct s_cmds
 {
     char            **cmd; //the full command with its flags
     enum e_builtin  builtin; //builtin spesification 
-    int             redirs; //number of redirections for this current command
+    int             hdoc; //file descriptor for current command if hdoc
+    int             infile;
+    int             outfile;
     t_lex           *redirections; //structure with redirection information (type of redir and the corresponding file name)
     struct s_cmds   *next;
     struct s_cmds   *prev;
 }   t_cmds;
 
+typedef struct s_node
+{
+    char    *name;
+    char    *value;
+    struct s_node   *next;
+}   t_node;
+
+typedef struct s_envlst
+{
+    t_node      *start;
+    t_node      *end;
+    int         last_exit;
+    char        *pwd;
+    char        *old_pwd;
+}   t_envlst
+
 typedef struct s_data
 {
-    char        *input;
-    t_lex       *lexer;
-    t_cmds      *cmds;
-    char        **envp;
-    char        **exp_env;
-    char        **paths;
-    int         heredoc;
-    int         redir_counter;
-    int         *pid;
-    int         g_exit;
-    bool        reset;
+    char        *input; // users input string
+    t_lex       *lexer; // pointer to the linked list of tokens
+    t_cmds      *cmds; //pointer to the command linked list
+    t_parser    *parser; // pointer to the parser util structure
+    t_envlst    *env; //pointer to the environment list
+    int         hdoc_count; // How many heredocs are present in the input
+    int         *pid; // Pointer to array of the pids
+    int         g_exit; // "global" return error number
+    int         pipes; // NUmber of pipes present to know for how many child processes needed
 }   t_data;
 
 /*------------Main--------------*/
