@@ -6,7 +6,7 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 16:47:55 by erigonza          #+#    #+#             */
-/*   Updated: 2024/06/26 12:46:18 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/12 10:44:43 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@
 # include <stdio.h>
 // lift 
 # include "../src/libft/inc/libft.h"
+// execv
+# include "exec.h"
 
 typedef struct s_exec
 {
