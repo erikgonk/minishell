@@ -6,6 +6,8 @@ void    reset_data(t_data *data, char **envp)
         free_lex(data->lexer);
     if (data->parser)
         free_parser(data->parser);
+    if (data->env)
+        free_env(data->env);
     if (data->pipes > 0)
         free(data->pid);
     if (init_data(&data, envp) == -1)
@@ -17,15 +19,15 @@ void    reset_data(t_data *data, char **envp)
 
 int	init_data(t_data *data, char **envp)
 {
-	if (init_env(&(data->env), envp) == -1)
-		return (-1);
-	if (init_env(&(data->exp), envp) == -1)
-		return (-1);
+    if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
+		exit(EXIT_FAILURE);
 	data->g_exit = 0;
     data->cmds = NULL;
     data->lexer = NULL;
     data->pipes = 0;
     data->hdoc_count = 0;
+    if (create_env(env, envp))
+		exit(EXIT_FAILURE);
 	return (0);
 }
 
@@ -50,37 +52,4 @@ char    *get_input(int g_exit)
         }
     }
     return (input);
-}
-
-static int	init_env(char ***env, char **envp)
-{
-	int			i;
-	int         size;
-    
-    size = array_len(envp);
-	*env = ft_calloc(size + 1, sizeof(char *));
-	if (!*env)
-		return (-1);
-	i = 0;
-	while (i < size)
-	{
-		(*env)[i] = ft_strdup(envp[i]);
-		if (!(*env)[i])
-			return (array_free(env));
-		i++;
-	}
-	(*env)[i] = NULL;
-	return (0);
-}
-
-int array_len(char **arr)
-{
-    int len;
-
-    len = 0;
-    if (!arr || !*arr)
-        return (0);
-    while (arr[len])
-        len++;
-    return (len);
 }

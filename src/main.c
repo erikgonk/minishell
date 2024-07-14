@@ -2,6 +2,7 @@
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	data;
+    t_env   env;
 
     if (argc != 1 || argv[1])
     {
@@ -9,7 +10,7 @@ int	main(int argc, char **argv, char **envp)
         exit(0);
     }
     handle_signals();
-	if (init_data(&data, envp) == -1)
+	if (init_data(&env, &data, envp) == -1)
     {
         printf("Failed allocating data structure");
         exit(1);
@@ -19,23 +20,32 @@ int	main(int argc, char **argv, char **envp)
 	return (0);
 }
 
-void    mini_loop(t_data *data, char **envp)
+void    main_loop(t_data *data)
 {
-    while(1)
+    char    *input;
+    t_lex   *first_token;
+    t_cmds  *first_cmd;
+
+    lexer = NULL;
+    cmds = NULL;
+    input = NULL;
+    while (1)
     {
-        data->input = get_input(data->g_exit);
-        if (!data->input || !*(data->input))
+        reset_data(data);
+        modify_termios();
+        handle_signals();
+        input = get_input(data->g_exit);
+        parent_signals();
+        if (input[0] == '\0')
             continue ;
-        if (!tokenize(data->input))
+        first_token = tokenizer(input);
+        if (!first_token)
             continue ;
-        if (!check_tokens(data, &data->lexer))
-            continue ;
-        if (!parsing(data))
-            continue ;
-        if (!prep_exec(data))
-            continue ;
-        reset_data(data, envp);
+        first_cmd = parser(data);
+        if (first_cmd)
+            data->g_exit = execute(data);
     }
+    rl_clear_history();
 }
 
 static void	handle_sigint(int sig)
