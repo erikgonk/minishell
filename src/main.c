@@ -44,10 +44,8 @@ void    main_loop(t_data *data)
     while (1)
     {
         reset_data(data);
-        modify_termios();
-        handle_signals();
-        input = get_input(data->g_exit);
-        parent_signals();
+        handle_signals(); //handle the main signals
+        input = get_input(data);
         if (input[0] == '\0')
             continue ;
         first_token = tokenizer(input);
