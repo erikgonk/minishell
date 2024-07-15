@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vaunevik <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/07/15 10:59:03 by vaunevik          #+#    #+#             */
+/*   Updated: 2024/07/15 10:59:08 by vaunevik         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+#include "minishell.h"
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -9,7 +21,7 @@ int	main(int argc, char **argv, char **envp)
         printf("This program does not take arguments\n");
         exit(0);
     }
-    handle_signals();
+    handle_signals(); //check whether you actually need this here or if enough to just add in main loop
 	if (init_data(&env, &data, envp) == -1)
     {
         printf("Failed allocating data structure");
@@ -43,24 +55,7 @@ void    main_loop(t_data *data)
             continue ;
         first_cmd = parser(data);
         if (first_cmd)
-            data->g_exit = execute(data);
+            data->g_exit = execute(data); // this needs revision
     }
     rl_clear_history();
-}
-
-static void	handle_sigint(int sig)
-{
-	if (sig == SIGINT)
-	{
-		fd_printf(1, "\n");
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
-	}
-}
-
-void    handle_signals(void)
-{
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, handle_sigint);
 }
