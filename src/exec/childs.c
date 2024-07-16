@@ -6,11 +6,11 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/19 17:54:07 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/12 11:21:48 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/16 16:35:40 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/exec.h"
+#include "../../inc/exec.h"
 
 char	*check_cmd(char **paths, char *argv)
 {

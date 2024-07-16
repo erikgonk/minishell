@@ -6,7 +6,7 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 16:47:55 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/16 12:28:04 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/16 17:26:30 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,12 @@
 # include <string.h>
 // perror
 # include <stdio.h>
-// lift 
+// libft 
 # include "../src/libft/inc/libft.h"
 // execv
 # include "exec.h"
+// builtins
+# include "builtins.h"
 
 // main
 

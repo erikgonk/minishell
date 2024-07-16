@@ -1,39 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.h                                             :+:      :+:    :+:   */
+/*   utils_err.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/12 10:47:58 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/16 12:41:16 by erigonza         ###   ########.fr       */
+/*   Created: 2024/07/16 16:59:14 by erigonza          #+#    #+#             */
+/*   Updated: 2024/07/16 17:00:17 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXEC_H
-# define EXEC_H
-
-# include "minishell.h"
-
-typedef struct s_childs
+void	ft_err(char *err)
 {
-	pid_t		pid1;
-	int			fd;
-	int			tube[2];
-}	t_childs;
-
-typedef struct s_exec
-{
-	char		*cmd;
-	char		**path;
-	s_childs	*childs;
-}	t_exec;
-
-// global variable
-extern int		err;
-// main
-int		exec(t_pipex pipex);
-char	*check_cmd(char **paths, char *argv);
-void	child(t_exec exec, char **argv, char **env);
-
-#endif
+	ft_printf("%s\n", err)
+}
