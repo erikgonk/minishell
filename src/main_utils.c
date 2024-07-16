@@ -30,7 +30,7 @@ void    reset_data(t_data *data, char **envp)
     }
 }
 
-int	init_data(t_data *data, char **envp)
+int	init_data(t_data *data, char **envp, t_env *env)
 {
     if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
 		exit(EXIT_FAILURE);
@@ -39,7 +39,7 @@ int	init_data(t_data *data, char **envp)
     data->lexer = NULL;
     data->pipes = 0;
     data->hdoc_count = 0;
-    if (create_env(env, envp))
+    if (transform_env(env, envp))
 		exit(EXIT_FAILURE);
 	return (0);
 }
@@ -74,17 +74,17 @@ int input_check(char *input)
 {
     if (quote_checker(input))
     {
-        ft_putstr_fd("minishell: open quotes\n", 2);
+        ft_putstr_fd("minish: open quotes\n", 2);
         return (258);
     }
     if (arg_count(input, ' ') > MAXARGS) //idk how many arguments should be limit here 
     {
-        ft_putstr_fd("minishell: don't be crazy: too many arguments\n", 2);
+        ft_putstr_fd("minish: don't be crazy: too many arguments\n", 2);
         return (1);
     }
     if (ft_strlen(input) > 4096)
     {
-        ft_putstr_fd("minishell: don't be annoying: the prompt is too long\n", 2);
+        ft_putstr_fd("minish: don't be annoying: the prompt is too long\n", 2);
         return (1);
     }
     return (0);

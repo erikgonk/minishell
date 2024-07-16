@@ -14,6 +14,7 @@
 void    add_shlvl(t_env *env)
 {
     t_node  *tmp;
+    int     value;
 
     tmp = env->start;
     while (tmp->next)

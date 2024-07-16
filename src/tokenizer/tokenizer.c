@@ -1,25 +1,5 @@
 #include "tokenizer.h"
 
-int pre_parser_checks(t_data *data)
-{
-    if (quote_checker(data->input))
-    {
-        ft_putstr_fd("minishell: open quotes\n", 2);
-        return (258);
-    }
-    if (arg_count(data->input, 32) > MAXARGS)
-    {
-        ft_putstr_fd("minishell: don't be crazy: too many arguments\n", 2);
-        return (1);
-    }
-    if (ft_strlen(data->input) > 4096)
-    {
-        ft_putstr_fd("minishell: don't be annoying: the prompt is too long\n", 2);
-        return (1);
-    }
-    return (0);
-}
-
 int  find_type(char *literal)
 {
     if ((literal[0] == C_LESS && literal[1] == C_LESS))
