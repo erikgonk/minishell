@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 10:47:58 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/12 11:47:14 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/16 12:27:14 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,22 @@
 
 # include "minishell.h"
 
-typedef struct s_exec
+typedef struct s_childs
 {
 	pid_t		pid1;
 	int			fd;
 	int			tube[2];
+}	t_childs;
+
+typedef struct s_exec
+{
 	char		*cmd;
 	char		**path;
+	s_childs	*childs;
 }	t_exec;
 
 // global variable
-int		err;
+extern int		err;
 // main
 void	child(t_exec exec, char **argv, char **env);
 
