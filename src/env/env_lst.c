@@ -86,7 +86,7 @@ void    add_to_env(t_node *node, t_env *env)
     tmp->next = node; //set the last nodes next pointer to the current node (new last)
 }
 
-void    transform_env(t_env *env, char **envp)
+int    transform_env(t_env *env, char **envp)
 {
     t_node  *node;
     int     i;
@@ -101,4 +101,7 @@ void    transform_env(t_env *env, char **envp)
         add_to_env(node, env);
         i++;
     }
+    if (set_env(env, get_env("SHLVL", *env)))
+		return (1);
+	return (0);
 }
