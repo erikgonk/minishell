@@ -1,6 +1,6 @@
 #include "env.h"
-i
-nt set_standard_env(t_env *env, char *shlvl)
+
+int set_standard_env(t_env *env, char *shlvl)
 {
     int i;
 
@@ -9,7 +9,7 @@ nt set_standard_env(t_env *env, char *shlvl)
     if (in_env("PWD", *env) && get_env("PWD", *env))
         env->pwd = ft_strdup(get_env("PWD", *env));
     if (in_env("OLDPWD", *env) && get_env("OLDPWD", *env))
-        env->oldpwd = ft_strdup(get_env("OLDPWD", *env));
+        env->oldpwd = ft_strdup(get_env("OLDPWD", *env)); //setting the oldpwd and pwd in env struct for easy access
     if (!shlvl || shlvl[0] == '-')
         i = set_env(env, "SHLVL", "0", 1);
     else if (ft_atoi(shlvl) >= 1000)

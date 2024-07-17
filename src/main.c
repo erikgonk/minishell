@@ -22,13 +22,9 @@ int	main(int argc, char **argv, char **envp)
         exit(0);
     }
     handle_signals(); //check whether you actually need this here or if enough to just add in main loop
-	if (init_data(&env, &data, envp) == -1)
-    {
-        printf("Failed allocating data structure");
-        exit(1);
-    }
+	init_minishell(&env, &data, envp);
 	mini_loop(&data, envp);
-	clean_shell(data);
+	clean_shell(&env, &data);
 	return (0);
 }
 
@@ -51,6 +47,9 @@ void    main_loop(t_data *data)
         first_token = tokenizer(input);
         if (!first_token)
             continue ;
+        if (!check_token(data, &first_token))
+            continue ;
+        data->lexer = first_token;
         first_cmd = parser(data);
         if (first_cmd)
             data->g_exit = execute(data); // this needs revision

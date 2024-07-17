@@ -101,7 +101,7 @@ int    transform_env(t_env *env, char **envp)
         add_to_env(node, env);
         i++;
     }
-    if (set_env(env, get_env("SHLVL", *env)))
+    if (set_standard_env(env, get_env("SHLVL", *env)))
 		return (1);
 	return (0);
 }

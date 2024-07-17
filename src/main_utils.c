@@ -11,26 +11,20 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-void    reset_data(t_data *data, char **envp)
+void    reset_data(t_env *env, t_data *data, char **envp)
 {
     if (data->input)
         free(data->input);
     if (data->lexer)
-        free_lex(data->lexer);
+        reset_lex(data->lexer);
     if (data->parser)
-        free_parser(data->parser);
-    if (data->env)
-        free_env(data->env);
+        reset_parser(data->parser);
     if (data->pipes > 0)
         free(data->pid);
-    if (init_data(&data, envp) == -1)
-    {
-        printf("Failed allocating data structure");
-        exit(1);
-    }
+    init_minishell(env, data, envp);
 }
 
-int	init_data(t_data *data, char **envp, t_env *env)
+int	init_minishell(t_data *data, char **envp, t_env *env)
 {
     if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
 		exit(EXIT_FAILURE);
@@ -39,9 +33,11 @@ int	init_data(t_data *data, char **envp, t_env *env)
     data->lexer = NULL;
     data->pipes = 0;
     data->hdoc_count = 0;
+    env->start = NULL;
+    env->end = NULL;
+    env->pwd = NULL;
     if (transform_env(env, envp))
-		exit(EXIT_FAILURE);
-	return (0);
+		exit(1);
 }
 
 char    *get_input(t_data *data)
