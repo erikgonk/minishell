@@ -30,10 +30,10 @@ int  ow_str(t_node *tmp, char *str, t_env *env)
     return (0);
 }
 
-int  ow_nostr(t_node *tmp, char *value, t_env *env)
+int  ow_nostr(t_node *tmp, char *str, t_env *env)
 {
     tmp->str = str;
-    update_pwd(env, tmp->var, value);
+    update_pwd(env, tmp->var, str);
     return (0);
 }
 
