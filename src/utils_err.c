@@ -6,9 +6,12 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:59:14 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/16 17:00:17 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/17 14:46:11 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "../inc/builtins.h"
+#include "../inc/minishell.h"
 
 void	ft_err(char *err)
 {
