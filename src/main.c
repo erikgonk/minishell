@@ -21,7 +21,6 @@ int	main(int argc, char **argv, char **envp)
         printf("This program does not take arguments\n");
         exit(0);
     }
-    handle_signals(); //check whether you actually need this here or if enough to just add in main loop
 	init_minishell(&env, &data, envp);
 	mini_loop(&data);
 	clean_shell(&env, &data);

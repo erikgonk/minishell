@@ -12,7 +12,7 @@
 
 int check_redirs(t_lex **lst, t_data *data)
 {
-    if (((*lst)->type >= T_REDIR_IN && (*lst)->type <= T_APPEND) && (!(*lst)->next || (*lst)->next->type != T_WORD)
+    if (((*lst)->type >= T_REDIR_IN && (*lst)->type <= T_APPEND) && (!(*lst)->next || (*lst)->next->type != T_WORD))
     {
         data->g_exit = 2;
         on_error("Minish: syntax error near unexpected token 'newline'", data);

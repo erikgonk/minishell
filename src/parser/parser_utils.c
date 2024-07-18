@@ -1,29 +1,9 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parser_utils.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vaunevik <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/18 11:59:55 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/07/18 12:00:00 by vaunevik         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 #include "parser.h"
 
-void    check_token(t_data *data, t_lex *lexer)
+void    on_error(char *str, int fd, t_data *data)
 {
-    data->g_exit = 258;
-    if (lexer->type == T_REDIR_IN)
-        on_error("Syntax error near unexpected token '<'\n", STDERR_FILENO, data);
-    else if (lexer->type == T_REDIR_OUT)
-        on_error("Syntax error near unexpected token '>'\n", STDERR_FILENO, data);
-    else if (lexer->type == T_APPEND)
-        on_error("Syntax error near unexpected token '>>'\n", STDERR_FILENO, data);
-    else if (lexer->type == T_HEREDOC)
-        on_error("Syntax error near unexpected token '<<'\n", STDERR_FILENO, data);
-    else if (lexer->type == T_PIPE)
-        on_error("Syntax error near unexpected token '|'\n", STDERR_FILENO, data);
+    fd_putstr_fd(str, fd);
+    mini_loop(data);
 }
 
 void    count_pipes(t_lex *lexer, t_data *data)

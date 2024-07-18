@@ -96,14 +96,13 @@ typedef struct s_node
     struct s_node   *next;
 }   t_node;
 
-typedef struct s_envlst
+typedef struct s_env
 {
     t_node      *start;
     t_node      *end;
-    int         last_exit;
     char        *pwd;
     char        *old_pwd;
-}   t_envlst
+}   t_env
 
 typedef struct s_data
 {
@@ -111,7 +110,7 @@ typedef struct s_data
     t_lex       *lexer; // pointer to the linked list of tokens
     t_cmds      *cmds; //pointer to the command linked list
     t_parser    *parser; // pointer to the parser util structure
-    t_envlst    *env; //pointer to the environment list
+    t_env       *env; //pointer to the environment list
     int         hdoc_count; // How many heredocs are present in the input
     int         *pid; // Pointer to array of the pids
     int         g_exit; // "global" return error number

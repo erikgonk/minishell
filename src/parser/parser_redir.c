@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parser_redir.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: vaunevik <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/18 11:59:42 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/07/18 11:59:46 by vaunevik         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 #include "parser.h"
 
 t_lex   *lex_new(char *str, int token)
@@ -16,7 +5,7 @@ t_lex   *lex_new(char *str, int token)
     t_lex   *new;
     static int  i = 0;
 
-    new = (t_lex *)malloc(sizeof(t_lex));
+    new = (t_lex *)ft_calloc(1, sizeof(t_lex));
     if (!new)
         return (NULL);
     new->literal = ft_strdup(str);
