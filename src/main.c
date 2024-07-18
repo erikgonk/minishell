@@ -23,36 +23,37 @@ int	main(int argc, char **argv, char **envp)
     }
     handle_signals(); //check whether you actually need this here or if enough to just add in main loop
 	init_minishell(&env, &data, envp);
-	mini_loop(&data, envp);
+	mini_loop(&data);
 	clean_shell(&env, &data);
 	return (0);
 }
 
-void    main_loop(t_data *data)
+void    mini_loop(t_data *data)
 {
     char    *input;
-    t_lex   *first_token;
-    t_cmds  *first_cmd;
 
-    lexer = NULL;
-    cmds = NULL;
     input = NULL;
     while (1)
     {
-        reset_data(data);
+        clean_lex(data->lexer);
+        clean_cmds(data->cmds);
+        input = clean_input(input);
         handle_signals(); //handle the main signals
         input = get_input(data);
         if (input[0] == '\0')
             continue ;
-        first_token = tokenizer(input);
-        if (!first_token)
+        data->lexer = tokenizer(input);
+        if (!data->lexer)
             continue ;
-        if (!check_token(data, &first_token))
-            continue ;
-        data->lexer = first_token;
-        first_cmd = parser(data);
-        if (first_cmd)
-            data->g_exit = execute(data); // this needs revision
+        if (parser(data))
+            data->g_exit = execute(data); // updating the exit status w. the result from execute
     }
     rl_clear_history();
+}
+
+char    *clean_input(char *input)
+{
+    if (input)
+        free(input);
+    return (NULL);
 }

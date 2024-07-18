@@ -11,23 +11,10 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-void    reset_data(t_env *env, t_data *data, char **envp)
-{
-    if (data->input)
-        free(data->input);
-    if (data->lexer)
-        reset_lex(data->lexer);
-    if (data->parser)
-        reset_parser(data->parser);
-    if (data->pipes > 0)
-        free(data->pid);
-    init_minishell(env, data, envp);
-}
-
-int	init_minishell(t_data *data, char **envp, t_env *env)
+int	init_minishell(t_env *env, t_data *data, char **envp)
 {
     if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
-		exit(EXIT_FAILURE);
+		exit(1);
 	data->g_exit = 0;
     data->cmds = NULL;
     data->lexer = NULL;
@@ -35,9 +22,11 @@ int	init_minishell(t_data *data, char **envp, t_env *env)
     data->hdoc_count = 0;
     env->start = NULL;
     env->end = NULL;
+    env->old_pwd = NULL;
     env->pwd = NULL;
-    if (transform_env(env, envp))
+    if (transform_env(env, envp)) //should not exit if environment is not found, shell should still be working (?)
 		exit(1);
+	return (0);
 }
 
 char    *get_input(t_data *data)
