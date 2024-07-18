@@ -91,8 +91,8 @@ typedef struct s_cmds
 
 typedef struct s_node
 {
-    char    *name;
-    char    *value;
+    char    *var;
+    char    *str;
     struct s_node   *next;
 }   t_node;
 
