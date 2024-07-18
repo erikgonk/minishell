@@ -38,3 +38,28 @@ void    cmds_lstaddback(t_cmds **lst, t_cmds *add)
     }
     return ;
 }
+
+void    clean_cmds(t_cmds *cmds)
+{
+    int     i;
+    t_cmds  *tmp;
+
+    while (cmds)
+    {
+        tmp = cmds->next;
+        if (cmds->cmd)
+        {
+            while (cmds->cmd[++i])
+                free(cmds->cmd[i]);
+            free(cmds->cmd);
+        }
+        if (cmds->infile != STDIN_FILENO)
+            close(cmds->infile);
+        if (cmds->outfile != STDOUT_FILENO)
+            close(cmds->outfile);
+        if (cmds->redirections)
+            free_lex(cmds->redirections);
+        free(cmds);
+        cmds = tmp;
+    }
+}
