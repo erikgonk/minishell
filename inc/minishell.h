@@ -102,6 +102,7 @@ typedef struct s_env
     t_node      *end;
     char        *pwd;
     char        *old_pwd;
+    char        *homedir; //for cd ~
 }   t_env
 
 typedef struct s_data

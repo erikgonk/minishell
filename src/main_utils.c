@@ -31,7 +31,7 @@ int	init_minishell(t_env *env, t_data *data, char **envp)
 
 char    *get_input(t_data *data)
 {
-    data->input = readline(PROMPT);
+    data->input = readline("Mish> ");
     if (data->input == NULL)
     {
         if (isatty(STDIN_FILENO))
@@ -43,9 +43,7 @@ char    *get_input(t_data *data)
         add_history(data->input);
         data->g_exit = input_check(data->input);
         if (data->g_exit == 1 || data->g_exit == 258)
-        {
             data->input[0] = '\0';
-        }
     }
     return (data->input);
 }
