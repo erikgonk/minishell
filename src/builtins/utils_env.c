@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 14:43:16 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/18 12:25:20 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/20 12:42:58 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ void	ft_print_env(t_node env)
 {
 	while (env)
 	{
-		ft_printf("%s=%s", env.var, env.str, 1);
+		if (env.var && env.str)
+			ft_printf("%s=%s", env.var, env.str, 1);
 		env = env.next;
 	}
 }
