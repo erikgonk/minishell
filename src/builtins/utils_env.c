@@ -6,14 +6,14 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 14:43:16 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/20 12:42:58 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/20 19:37:47 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/builtins.h"
 #include "../inc/minishell.h"
 
-t_node	*get_env_lst(char *to_find, t_envlst *aux)
+t_node	*get_env_lst(char *to_find, t_env *aux)
 {
 	while (aux)
 	{

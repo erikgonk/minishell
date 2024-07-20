@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 15:20:13 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/20 18:44:14 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/20 19:45:15 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,56 +19,42 @@ static int	ft_parsing(char *str)
 	while (str[++i])
 	{
 		else if (!ft_isalpha(*str) && *str != '_' && *str != '=')
-			return (2);
-		else
-			return (0);
-		return (1);
+		{
+			ft_printf("bash: export: `%s': not a valid identifier\n", str)
+			return (1);
+		}
 	}
+	return (0);
 }
 
-static void	ft_env_exists(t_env *env, char *str, int i, int flag)
+static void	ft_add_to_env(char **cmd, t_env env)
 {
+	t_node	*node = NULL;
+	if (get_env_lst(cmd[i], env) != NULL)
+	{
+		node = get_env_lst(cmd[i], env);
+		while (node->)
+	}
+}
+static int	ft_create_env(t_env env, char *str, int flag)
+{
+	char	**cmd = NULL;
 	char	*tmp = NULL;
 
-	while (env)
-	{
-		while (env.var[++i] && str[i] && env.str[i])
-		{
-			*tmp = ft_strchr
-			if (env.var[i] != str[i])
-			{
-				return ;
-			}
-			if (env.str[i + 1] != str[i])
-			{
-				ft_create_env(env, str, flag);
-				return ;
-			}
-		}
-		if (flag2 == 2)
-			ft_create_env(env, str, flag);
-	}
-}
-
-static void	ft_create_env(t_env env, char *str, int flag)
-{
-	int			i;
-	char	**cmd = NULL;
-
-	i = -1;
 	if (flag == F_ADD)
 		cmd = ft_split(str, "+");
 	else if (flag == F_CREATE)
 		cmd = ft_split(str, "=");
-	while (cmd[++i])
+	if (ft_parsing(cmd[0]) == 1)
+		return (1);
+	if (ft_strlen(cmd[0]) == )
+		// meter aqui prueba si el env y la variable son del mismo tamano y si son iguales
+	if (flag == F_ADD)
+		ft_add_to_env(cmd, env);
+	else if (flag == F_CREATE)
 	{
-		
 	}
-
-
-
-	if (ft_parsing(cmd->cmd[i]) != 0)
-			return (1);
+	return (0);
 }
 
 int	ft_export(t_data *cmd, int i)
