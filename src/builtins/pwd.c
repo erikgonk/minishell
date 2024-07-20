@@ -6,29 +6,29 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:48:51 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/17 14:44:58 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/18 13:09:48 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/builtins.h"
 #include "../../inc/minishell.h"
 
-void	ft_pwd(t_data data)
+int	ft_pwd(t_data data)
 {
 	char		*pwd;
-	char		*aux;
+	t_envlst	*aux;
 
-	aux = NULL;
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 	{
-		aux = get_env("PWD", data);
+		aux = get_env_lst("PWD", aux);
 		if (aux)
-			printf("%s\n", aux);
+		{
+			printf("%s\n", aux->str);
+			return (0);
+		}
+		return (1);
 	}
-	else
-	{
-		printf("%s\n", pwd);
-		free(pwd);
-	}	
+	printf("%s\n", pwd);
+	return (free(pwd, 0);
 }
