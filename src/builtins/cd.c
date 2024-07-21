@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 15:20:58 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/20 15:22:35 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/21 15:18:20 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	ft_cd(t_data *data, int i)
 	t_node		*tmp;
 
 	ft_change_env_path(data->cmds, OLDPWD);
-	if (!data->cmds.cmd[i + 1] || (data->cmds.cmd[i + 1] == '~' && !data->cmds.cmd[i + 2]))
+	if (!data->cmds.cmd[i + 1] || (data->cmds.cmd[i + 1] == '~' && ft_strlen(data->cmds.cmd[i + 1]) == 1))
 	{
 		tmp = get_env_lst("HOME", data);
 		path = tmp.str;

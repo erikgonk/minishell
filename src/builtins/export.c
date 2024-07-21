@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 15:20:13 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/21 14:53:58 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/21 16:05:50 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,11 @@ static void	ft_add_replace_str_env(t_env *env, char **cmd, char *str, int flag)/
 
 static void	ft_create_env(t_env *env, char **cmd, char *str, int flag)// (var=str && var+=str && var && var=) Not exist
 {
+	t_node		*node;
+	
+	node = malloc(sizeof(struct node));
+	env->end.next = node;
+	env->end = node;
 	if (cmd)// var=str && var+=str
 	{
 		node->var = cmd[0];
@@ -91,8 +96,6 @@ int	ft_export(t_data *cmd, int i)
 	int		err;
 
 	err = 0;
-	if (!cmd->cmds.cmd[i + 1])
-		ft_print_export(cmd);
 	while (cmd->cmds.cmd[++i])
 	{
 		*tmp = ft_strchr(cmd->cmds.cmd[i], '+');
