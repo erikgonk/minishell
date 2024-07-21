@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 15:20:13 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/20 19:45:15 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/21 14:53:58 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,58 +27,88 @@ static int	ft_parsing(char *str)
 	return (0);
 }
 
-static void	ft_add_to_env(char **cmd, t_env env)
+static void	ft_add_replace_str_env(t_env *env, char **cmd, char *str, int flag)// (var=str && var+=str && var=) exist
 {
 	t_node	*node = NULL;
-	if (get_env_lst(cmd[i], env) != NULL)
-	{
-		node = get_env_lst(cmd[i], env);
-		while (node->)
-	}
-}
-static int	ft_create_env(t_env env, char *str, int flag)
-{
-	char	**cmd = NULL;
 	char	*tmp = NULL;
 
-	if (flag == F_ADD)
-		cmd = ft_split(str, "+");
-	else if (flag == F_CREATE)
-		cmd = ft_split(str, "=");
-	if (ft_parsing(cmd[0]) == 1)
-		return (1);
-	if (ft_strlen(cmd[0]) == )
-		// meter aqui prueba si el env y la variable son del mismo tamano y si son iguales
-	if (flag == F_ADD)
-		ft_add_to_env(cmd, env);
-	else if (flag == F_CREATE)
+	*tmp = ft_strchr(cmd->cmds.cmd[i], '=');
+	if (!*tmp + 1)// var=
+		node->str = "";
+	else if (flag == F_CREATE)// var=str
+		node->str = cmd[1];
+	else if (flag == F_ADD)// var+=str
+		ft_strlcat(node->str, cmd[1], ft_strlen(cmdp1[1]));
+	free(tmp);
+}
+
+static void	ft_create_env(t_env *env, char **cmd, char *str, int flag)// (var=str && var+=str && var && var=) Not exist
+{
+	if (cmd)// var=str && var+=str
 	{
+		node->var = cmd[0];
+		node->str = cmd[1]; 
+		return ;
 	}
-	return (0);
+	char	*tmp;
+
+	*tmp = ft_strchr(cmd->cmds.cmd[i], '=');
+	// var
+	if (!*tmp + 1 && tmp)
+	{
+		node->var = str;
+		node->str = NULL; 
+		return ;
+	}
+	// var=
+	node->var = str;
+	node->str = ""; 	
+	free(tmp);
+}
+
+static int	ft_separate_export(t_env *env, char **cmd, char *str, int flag)
+{
+	int		err;
+
+	err = 0;
+	if (flag == F_NONE && !get_env_lst(str, env))// var NOT exist
+		err = ft_create_env(env, NULL, str, flag);
+	else if (flag == F_NONE)// var exist
+		return (0);
+	else if (flag != F_NONE && !get_env_lst(cmd[0], env))// (var=str && var+=str && var=) Not exist
+		err = ft_create_env(env, cmd, str, flag);
+	else// (var=str && var+=str && var=) exist
+		err = ft_add_replace_str_env(env, cmd, str, flag);
+	if (cmd)
+		ft_free_willy(cmd);
+	return (err);
 }
 
 int	ft_export(t_data *cmd, int i)
 {
+	char	**cmd = NULL;
 	char	*tmp = NULL;
+	int		err;
 
-	if (!cmd->cmd[i + 1])
+	err = 0;
+	if (!cmd->cmds.cmd[i + 1])
 		ft_print_export(cmd);
-	while (cmd->cmd[++i])
+	while (cmd->cmds.cmd[++i])
 	{
-		*tmp = ft_strchr(cmd->cmd[i], '+');
-		if (cmd->cmd[i] == '=')
+		*tmp = ft_strchr(cmd->cmds.cmd[i], '+');
+		if (cmd->cmds.cmd[i][0] == '=')
 		{
-			ft_pritf("mish: export: `%s': not a valid identifier\n", str, 0);
+			ft_pritf("mish: export: `%s': not a valid identifier\n", cmd->cmds.cmd[i], 0);
 			return (1);
 		}
-		if (*tmp + 1 == '=')
-			ft_create_env(cmd->env, cmd->cmd[i], F_ADD)
-		else if (!ft_strchr(cmd->cmd[i], '='))
-			ft_create_env(cmd->env, cmd->cmd[i], F_NONE);
+		if (*tmp + 1 == '=')// var+=str & var+=
+			err = ft_separate_export(cmd->env, ft_split(str, "+"), cmd->cmds.cmd[i], F_ADD)
+		else if (!ft_strchr(cmd->cmds.cmd[i], '='))// var
+			err = ft_separate_export(cmd->env, NULL, cmd->cmds.cmd[i], F_NONE);
 		else
-			ft_create_env(cmd->env, cmd->cmd[i], F_CREATE)
+			err = ft_separate_export(cmd->env, ft_split(str, "+"), cmd->cmds.cmd[i], F_CREATE)// var=str & var=
 	}
-	return (free(tmp), 0);
+	return (free(tmp), err);
 }
 // DONE export --> show env
 // export Hola --> save hola in env but with no str
