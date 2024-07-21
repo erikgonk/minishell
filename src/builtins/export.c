@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 15:20:13 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/21 16:05:50 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/21 17:36:53 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,13 @@ static int	ft_parsing(char *str)
 	i = -1;
 	while (str[++i])
 	{
-		else if (!ft_isalpha(*str) && *str != '_' && *str != '=')
+		else if (!ft_isalpha(str[i]) && str[i] != '_' && str[i] != '=')
 		{
+			if (str[i] == '+' && str[i + 1] == '=')
+			{
+				i++;
+				continue ;
+			}
 			ft_printf("bash: export: `%s': not a valid identifier\n", str)
 			return (1);
 		}
@@ -98,11 +103,13 @@ int	ft_export(t_data *cmd, int i)
 	err = 0;
 	while (cmd->cmds.cmd[++i])
 	{
+		if (ft_parsing(cmd->cmds.cmd[i]) == 1)
+			return (1);
 		*tmp = ft_strchr(cmd->cmds.cmd[i], '+');
 		if (cmd->cmds.cmd[i][0] == '=')
 		{
 			ft_pritf("mish: export: `%s': not a valid identifier\n", cmd->cmds.cmd[i], 0);
-			return (1);
+			return (free(tmp), 1);
 		}
 		if (*tmp + 1 == '=')// var+=str & var+=
 			err = ft_separate_export(cmd->env, ft_split(str, "+"), cmd->cmds.cmd[i], F_ADD)
@@ -110,6 +117,7 @@ int	ft_export(t_data *cmd, int i)
 			err = ft_separate_export(cmd->env, NULL, cmd->cmds.cmd[i], F_NONE);
 		else
 			err = ft_separate_export(cmd->env, ft_split(str, "+"), cmd->cmds.cmd[i], F_CREATE)// var=str & var=
+		free(tmp);
 	}
 	return (free(tmp), err);
 }
