@@ -22,6 +22,7 @@ int	init_minishell(t_env *env, t_data *data, char **envp)
     data->hdoc_count = 0;
     env->start = NULL;
     env->end = NULL;
+    env->homedir = NULL;
     env->old_pwd = NULL;
     env->pwd = NULL;
     if (transform_env(env, envp)) //should not exit if environment is not found, shell should still be working (?)
