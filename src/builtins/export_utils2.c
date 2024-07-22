@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils2_export.c                                    :+:      :+:    :+:   */
+/*   export_utils2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 16:08:45 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/20 16:11:38 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/22 12:35:49 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,17 @@ char **ft_sort_lst_exp(char **list, int i, int j, int pos)
 			break ;
 	}
 	return (list);
+}
+
+int	ft_count_list_elems(t_node lst)
+{
+	int		i;
+
+	i = 0;
+	while (lst)
+	{
+		i++;
+		lst = lst->next;
+	}
+	return (i);
 }

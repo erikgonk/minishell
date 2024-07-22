@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 15:20:13 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/21 17:36:53 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/22 13:28:10 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void	ft_create_env(t_env *env, char **cmd, char *str, int flag)// (var=st
 	
 	node = malloc(sizeof(struct node));
 	env->end->next = node;
-	env->end = node;
+	node->next = NULL;
 	if (cmd)// var=str && var+=str
 	{
 		node->var = cmd[0];
@@ -81,11 +81,11 @@ static int	ft_separate_export(t_env *env, char **cmd, char *str, int flag)
 	int		err;
 
 	err = 0;
-	if (flag == F_NONE && !get_env_lst(str, env))// var NOT exist
+	if (flag == F_NONE && !get_env_lst(str, env->start))// var NOT exist
 		err = ft_create_env(env, NULL, str, flag);
 	else if (flag == F_NONE)// var exist
 		return (0);
-	else if (flag != F_NONE && !get_env_lst(cmd[0], env))// (var=str && var+=str && var=) Not exist
+	else if (flag != F_NONE && !get_env_lst(cmd[0], env->start))// (var=str && var+=str && var=) Not exist
 		err = ft_create_env(env, cmd, str, flag);
 	else// (var=str && var+=str && var=) exist
 		err = ft_add_replace_str_env(env, cmd, str, flag);

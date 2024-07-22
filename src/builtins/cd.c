@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 15:20:58 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/21 15:18:20 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/22 13:30:22 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*ft_change_env_path(t_cmds *cmd, char *get)
 	path = getcwd(NULL, 0);
 	if (!path)
 	{
-		env = get_env_lst("PWD", data);
+		env = get_env_lst("PWD", cmd->env->start);
 		path = end->str;
 	}
 	aux = get_env_lst(get, cmd->env->start);
@@ -42,7 +42,7 @@ int	ft_cd(t_data *data, int i)
 	ft_change_env_path(data->cmds, OLDPWD);
 	if (!data->cmds->cmd[i + 1] || (data->cmds->cmd[i + 1] == '~' && ft_strlen(data->cmds->cmd[i + 1]) == 1))
 	{
-		tmp = get_env_lst("HOME", data);
+		tmp = get_env_lst("HOME", data->env->start);
 		path = tmp->str;
 	}
 	else

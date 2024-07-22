@@ -6,30 +6,34 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 17:46:30 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/21 18:13:39 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/22 16:31:25 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/builtins.h"
 #include "../../inc/minishell.h"
 
-static t_node	*ft_get_env_before_lst(char *to_find, t_env *aux)
+static t_node	*ft_get_env_before_lst(char *to_find, t_node *lst, t_node env)
 {
 	int		i;
-	int		j;
 
-	i = ft_strlen(to_find);
-	j = ft_strlen(aux->start->next->var);
-	if (i != j)
-		return (NULL);
-	else if (aux->start && ft_strncmp(to_find, aux->start->var, i) == 0)
+	i = 0;
+	if (lst && ft_strncmp(to_find, lst->var) == 0)
 		return (aux->start);
-	else if (aux && ft_strncmp(to_find, aux->end->var, i) == 0)
+	else if (lst && ft_strncmp(to_find, aux->end->var, i) == 0)
 		return (aux->end);
-	while (aux->start->next)
+	while (lst->next)
 	{
-		if (ft_strncmp(to_find, aux->start->next->var, i) == 0)
-			return (aux->start);
+		while (to_find)
+		{
+			if ((!to_find[i] && lst->next->var[i]) || (to_find[i] && !lst->next->var[i]))
+				break ;
+			else if ()
+				break ;
+			else if ()
+				return ()
+			i++;
+		}
 		aux = aux->start->next;
 	}
 	return (NULL);
@@ -42,11 +46,11 @@ int	ft_unset(t_data *cmd, int i)
 	t_node		*node_bef = NULL;
 
 	err = 0;
-	node_bef = ft_get_env_before_lst(cmd->cmds->cmd[i + 1], cmd->env);
-	node = get_env_lst(cmd->cmds->cmd[i + 1], cmd->env);
+	node_bef = ft_get_env_before_lst(cmd->cmds->cmd[i + 1], cmd->env->start, cmd->env->end);
+	node = get_env_lst(cmd->cmds->cmd[i + 1], cmd->env->start);
 	if (!node_bef || !node)	
 		return (0);
-	if (ft_get_env_before_lst(node->var, node_bef->var))// edge case being the first variable START
+	else if (ft_get_env_before_lst(node->var, node_bef->var))// edge case being the first variable START
 	{
 		t_data->env->start = node->next;
 		if (node->str)

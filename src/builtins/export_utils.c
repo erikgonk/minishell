@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_export.c                                     :+:      :+:    :+:   */
+/*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 12:44:20 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/20 16:11:08 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/22 12:36:27 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,16 @@ static char	**ft_save_lst(t_node *env, char **list, int i)
 		list[++i] = ft_strdup(env->var);
 		if (env.str)
 		{
-			ft_strjoin(list[0], "\"");
-			ft_strjoin(list[0], env->str);
+			ft_strjoin(list[i], "=");
+			ft_strjoin(list[i], "\"");
+			ft_strjoin(list[i], env->str);
+			ft_strjoin(list[i], "\"");
 		}
 		else
-			ft_strjoin(list[0], "\"");
+		{
+			ft_strjoin(list[i], "=");
+			ft_strjoin(list[i], "\"\"");
+		}
 	}
 	list = ft_sort_lst_exp(list, -1, 0, 0);
 	return (list);
@@ -68,7 +73,7 @@ void	ft_print_export(t_data *cmd)
 	char		**list = NULL;
 	int			i;
 
-	list = malloc(sizeof (char *) * ft_strlen(cmd->env) + 1);
+	list = malloc(sizeof (char *) * ft_count_ist_elems(cmd->env->start) + 1);
 	i = -1;
 	list = ft_save_lst(cmd->env->start, list, -1);
 	ft_printing(list);

@@ -6,27 +6,27 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 14:43:16 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/21 16:20:52 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/22 13:25:06 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/builtins.h"
 #include "../inc/minishell.h"
 
-t_node	*get_env_lst(char *to_find, t_env *aux)
+t_node	*get_env_lst(char *to_find, t_node *lst)
 {
 	int		i;
 	int		j;
 
 	i = ft_strlen(to_find);
-	j = ft_strlen(aux->start->var);
+	j = ft_strlen(lst->var);
 	if (i != j)
 		return (NULL);
-	while (aux)
+	while (lst)
 	{
-		if (ft_strncmp(to_find, aux->start->var, i) == 0)
-			return (aux);
-		aux = aux->next;
+		if (ft_strncmp(to_find, lst->var, i) == 0)
+			return (lst);
+		lst = lst->next;
 	}
 	return (NULL);
 }
