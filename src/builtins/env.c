@@ -13,7 +13,7 @@
 #include "../../inc/builtins.h"
 #include "../../inc/minishell.h"
 
-int	ft_env(t_envlst env)
+int	ft_env(t_env env)
 {
 	if (!env->start || !env->start->var || !env->start->str)
 	{
