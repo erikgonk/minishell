@@ -24,9 +24,9 @@ char	*ft_change_env_path(t_cmds *cmd, char *get)
 	if (!path)
 	{
 		env = get_env_lst("PWD", data);
-		path = end.str;
+		path = end->str;
 	}
-	aux = get_env_lst(get, cmd->env.start);
+	aux = get_env_lst(get, cmd->env->start);
 	if (!aux)
 		return ;
 	tmp = aux->str;
@@ -40,19 +40,19 @@ int	ft_cd(t_data *data, int i)
 	t_node		*tmp;
 
 	ft_change_env_path(data->cmds, OLDPWD);
-	if (!data->cmds.cmd[i + 1] || (data->cmds.cmd[i + 1] == '~' && ft_strlen(data->cmds.cmd[i + 1]) == 1))
+	if (!data->cmds->cmd[i + 1] || (data->cmds->cmd[i + 1] == '~' && ft_strlen(data->cmds->cmd[i + 1]) == 1))
 	{
 		tmp = get_env_lst("HOME", data);
-		path = tmp.str;
+		path = tmp->str;
 	}
 	else
-		path = data->cmds.cmd[i + 1];
+		path = data->cmds->cmd[i + 1];
 	if (!path)
 	{
 		ft_printf("mish: cd: HOME not set")
 		return (1);
 	}
-	if (data->cmds.cmd[i + 1] == '-')
+	if (data->cmds->cmd[i + 1] == '-')
 	{
 		chdir(path);
 		return (0);

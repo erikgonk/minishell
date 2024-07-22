@@ -19,18 +19,18 @@ static t_node	*ft_get_env_before_lst(char *to_find, t_env *aux)
 	int		j;
 
 	i = ft_strlen(to_find);
-	j = ft_strlen(aux->start.next.var);
+	j = ft_strlen(aux->start->next->var);
 	if (i != j)
 		return (NULL);
-	else if (aux->start && ft_strncmp(to_find, aux->start.var, i) == 0)
+	else if (aux->start && ft_strncmp(to_find, aux->start->var, i) == 0)
 		return (aux->start);
-	else if (aux && ft_strncmp(to_find, aux->end.var, i) == 0)
-		return (aux.end);
-	while (aux->start.next)
+	else if (aux && ft_strncmp(to_find, aux->end->var, i) == 0)
+		return (aux->end);
+	while (aux->start->next)
 	{
-		if (ft_strncmp(to_find, aux->start.next.var, i) == 0)
+		if (ft_strncmp(to_find, aux->start->next->var, i) == 0)
 			return (aux->start);
-		aux = aux->start.next;
+		aux = aux->start->next;
 	}
 	return (NULL);
 }
@@ -42,8 +42,8 @@ int	ft_unset(t_data *cmd, int i)
 	t_node		*node_bef = NULL;
 
 	err = 0;
-	node_bef = ft_get_env_before_lst(cmd->cmds.cmd[i + 1], cmd->env);
-	node = get_env_lst(cmd->cmds.cmd[i + 1], cmd->env);
+	node_bef = ft_get_env_before_lst(cmd->cmds->cmd[i + 1], cmd->env);
+	node = get_env_lst(cmd->cmds->cmd[i + 1], cmd->env);
 	if (!node_bef || !node)	
 		return (0);
 	if (ft_get_env_before_lst(node->var, node_bef->var))// edge case being the first variable START
@@ -55,7 +55,7 @@ int	ft_unset(t_data *cmd, int i)
 	}
 	else if (!node->next)// edge case being the last variable END
 	{
-		t_data->env.end = node_bef;
+		t_data->env->end = node_bef;
 		node_bef->next = NULL;
 		if (node->str)
 			free(node->str);

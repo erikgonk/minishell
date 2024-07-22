@@ -37,7 +37,7 @@ static void	ft_add_replace_str_env(t_env *env, char **cmd, char *str, int flag)/
 	t_node	*node = NULL;
 	char	*tmp = NULL;
 
-	*tmp = ft_strchr(cmd->cmds.cmd[i], '=');
+	*tmp = ft_strchr(cmd->cmds->cmd[i], '=');
 	if (!*tmp + 1)// var=
 		node->str = "";
 	else if (flag == F_CREATE)// var=str
@@ -52,7 +52,7 @@ static void	ft_create_env(t_env *env, char **cmd, char *str, int flag)// (var=st
 	t_node		*node;
 	
 	node = malloc(sizeof(struct node));
-	env->end.next = node;
+	env->end->next = node;
 	env->end = node;
 	if (cmd)// var=str && var+=str
 	{
@@ -101,22 +101,24 @@ int	ft_export(t_data *cmd, int i)
 	int		err;
 
 	err = 0;
-	while (cmd->cmds.cmd[++i])
+	if (ft_parsing(cmd->cmds->cmd[i]) != 1 && !cmd->cmds->cmd[i + 1])
+		ft_print_export(cmd);
+	while (cmd->cmds->cmd[++i])
 	{
-		if (ft_parsing(cmd->cmds.cmd[i]) == 1)
+		if (ft_parsing(cmd->cmds->cmd[i]) == 1)
 			return (1);
-		*tmp = ft_strchr(cmd->cmds.cmd[i], '+');
-		if (cmd->cmds.cmd[i][0] == '=')
+		*tmp = ft_strchr(cmd->cmds->cmd[i], '+');
+		if (cmd->cmds->cmd[i][0] == '=')
 		{
-			ft_pritf("mish: export: `%s': not a valid identifier\n", cmd->cmds.cmd[i], 0);
+			ft_pritf("mish: export: `%s': not a valid identifier\n", cmd->cmds->cmd[i], 0);
 			return (free(tmp), 1);
 		}
 		if (*tmp + 1 == '=')// var+=str & var+=
-			err = ft_separate_export(cmd->env, ft_split(str, "+"), cmd->cmds.cmd[i], F_ADD)
-		else if (!ft_strchr(cmd->cmds.cmd[i], '='))// var
-			err = ft_separate_export(cmd->env, NULL, cmd->cmds.cmd[i], F_NONE);
+			err = ft_separate_export(cmd->env, ft_split(str, "+"), cmd->cmds->cmd[i], F_ADD)
+		else if (!ft_strchr(cmd->cmds->cmd[i], '='))// var
+			err = ft_separate_export(cmd->env, NULL, cmd->cmds->cmd[i], F_NONE);
 		else
-			err = ft_separate_export(cmd->env, ft_split(str, "+"), cmd->cmds.cmd[i], F_CREATE)// var=str & var=
+			err = ft_separate_export(cmd->env, ft_split(str, "+"), cmd->cmds->cmd[i], F_CREATE)// var=str & var=
 		free(tmp);
 	}
 	return (free(tmp), err);

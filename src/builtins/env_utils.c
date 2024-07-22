@@ -19,12 +19,12 @@ t_node	*get_env_lst(char *to_find, t_env *aux)
 	int		j;
 
 	i = ft_strlen(to_find);
-	j = ft_strlen(aux->start.var);
+	j = ft_strlen(aux->start->var);
 	if (i != j)
 		return (NULL);
 	while (aux)
 	{
-		if (ft_strncmp(to_find, aux->start.var, i) == 0)
+		if (ft_strncmp(to_find, aux->start->var, i) == 0)
 			return (aux);
 		aux = aux->next;
 	}
@@ -35,8 +35,8 @@ void	ft_print_env(t_node env)
 {
 	while (env)
 	{
-		if (env.var && env.str)
-			ft_printf("%s=%s", env.var, env.str, 1);
-		env = env.next;
+		if (env->var && env->str)
+			ft_printf("%s=%s", env->var, env->str, 1);
+		env = env->next;
 	}
 }

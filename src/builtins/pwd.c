@@ -13,7 +13,7 @@
 #include "../../inc/builtins.h"
 #include "../../inc/minishell.h"
 
-int	ft_pwd(t_data data)
+int	ft_pwd(t_data *data)
 {
 	char		*pwd;
 	t_env		*aux;

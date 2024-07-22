@@ -15,11 +15,11 @@
 
 int	ft_env(t_envlst env)
 {
-	if (!env.start || !env.start.var || !env.start.str)
+	if (!env->start || !env->start->var || !env->start->str)
 	{
 		ft_printf("env: not found", 1);
 		return (1);
 	}
-	ft_print_env(env.start);
+	ft_print_env(env->start);
 	return (0);
 }
