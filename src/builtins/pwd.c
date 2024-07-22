@@ -21,7 +21,7 @@ int	ft_pwd(t_data *data)
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 	{
-		aux = get_env_lst("PWD", aux);
+		aux = get_env_lst("PWD", aux->env->start);
 		if (aux)
 		{
 			ft_printf("%s\n", aux->str, 1);

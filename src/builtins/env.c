@@ -13,6 +13,16 @@
 #include "../../inc/builtins.h"
 #include "../../inc/minishell.h"
 
+void    ft_print_env(t_node env)
+{
+	while (env)
+	{
+		if (env->var && env->str)
+			ft_printf("%s=%s", env->var, env->str, 1);
+		env = env->next;
+	}
+}
+
 int	ft_env(t_env env)
 {
 	if (!env->start || !env->start->var || !env->start->str)

@@ -13,14 +13,25 @@
 #include "../../inc/builtins.h"
 #include "../../inc/minishell.h"
 
+t_node  *get_env_lst(char *to_find, t_node *lst)
+{
+        while (lst)
+        {
+                if (ft_strcmp(to_find, lst->var) == 0)
+                        return (lst);
+                lst = lst->next;
+        }
+        return (NULL);
+}
+
 static t_node	*ft_get_env_before_lst(char *to_find, t_node *lst, t_node env)
 {
 	int		i;
 
 	i = 0;
-	if (lst && ft_strncmp(to_find, lst->var) == 0)
+	if (lst && ft_strcmp(to_find, lst->var) == 0)
 		return (aux->start);
-	else if (lst && ft_strncmp(to_find, aux->end->var, i) == 0)
+	else if (lst && ft_strcmp(to_find, aux->end->var) == 0)
 		return (aux->end);
 	while (lst->next)
 	{
@@ -46,11 +57,11 @@ int	ft_unset(t_data *cmd, int i)
 	t_node		*node_bef = NULL;
 
 	err = 0;
-	node_bef = ft_get_env_before_lst(cmd->cmds->cmd[i + 1], cmd->env->start, cmd->env->end);
+	node_bef = ft_get_env_before_lst(cmd->cmds->cmd[i + 1], cmd->env->start, cmd->env);
 	node = get_env_lst(cmd->cmds->cmd[i + 1], cmd->env->start);
 	if (!node_bef || !node)	
 		return (0);
-	else if (ft_get_env_before_lst(node->var, node_bef->var))// edge case being the first variable START
+	else if (ft_get_env_before_lst(node->var, node_bef->var, cmd->env))// edge case being the first variable START
 	{
 		t_data->env->start = node->next;
 		if (node->str)

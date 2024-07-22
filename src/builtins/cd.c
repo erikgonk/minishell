@@ -16,9 +16,9 @@
 char	*ft_change_env_path(t_cmds *cmd, char *get)
 {
 	char		*path;
-	t_node		aux;
+	t_node		*aux;
 	char		*tmp;
-	t_env		env;
+	t_env		*env;
 
 	path = getcwd(NULL, 0);
 	if (!path)
