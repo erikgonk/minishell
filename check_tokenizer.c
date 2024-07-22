@@ -130,8 +130,17 @@ int is_hdoc_present(t_lex *tokens)
 void    print_error(int type)
 {
     if (type == 1)
-        printf("Syntax error near unexpected token '>'");
-    printf("Syntax error near unexpected token '>'\n");
+        printf("Syntax error near unexpected token '|'\n");
+    if (type == 2)
+        printf("Syntax error near unexpected token '<'\n");
+    if (type == 3)
+        printf("Syntax error near unexpected token '<<'\n");
+    if (type == 4)
+        printf("Syntax error near unexpected token '>'\n");
+    if (type == 5)
+        printf("Syntax error near unexpected token '>>'\n");
+    if (type == 10)
+        printf("Syntax error near unexpected newline\n");
     return ;
 }
 
@@ -324,7 +333,7 @@ int main()
     t_data data;
 
     data.g_exit = 0;
-    tokens = tokenizer("<< here > > << hey>", &data);
+    tokens = tokenizer("<< ''here'' > hey>", &data);
     while (tokens)
     {
         printf("%i ", tokens->index);
