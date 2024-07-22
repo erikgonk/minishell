@@ -67,7 +67,6 @@ void    free_tokens(t_lex *tokens);
 t_lex   *fill_tokens(t_lex *tokens, char *input, int length, t_data *data);
 int  find_type(char *literal);
 
-
 void    add_index(t_lex *tokens)
 {
     int i;
