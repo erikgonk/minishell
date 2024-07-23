@@ -144,21 +144,33 @@ void    print_error(int type)
     return ;
 }
 
-int check_syntax_and_hdoc(t_data *data, t_lex *tokens, char *input, t_lex *new)
+int  find_next(char *literal, int i)
 {
-    int i;
+    if ((literal[i] == C_LESS && literal[i + 1] == C_LESS))
+        return (T_HEREDOC);
+    if ((literal[i] == C_GREAT && literal[i + 1] == C_GREAT))
+        return (T_APPEND);
+    if (literal[i] == C_PIPE)
+        return (T_PIPE);
+    if (literal[i] == C_LESS)
+        return (T_REDIR_IN);
+    if (literal[i] == C_GREAT)
+        return (T_REDIR_OUT);
+    return(10);
+}
 
-    i = 0;
+int check_syntax_and_hdoc(t_data *data, t_lex *tokens, char *input, t_lex *new, int i)
+{
 	if (input[i] == ' ' || (input[i] >= 8 && input[i] <= 13))
         i++;
 	if (input[i] == '>' || input[i] == '<' || input[i] == '|' || !input[i])
 	{
 		if (is_hdoc_present(tokens))
-		{
-			data->g_exit = 2;
-			print_error(new->type);
-			new->index = -1; //raising flag to check whether we encountered this spesific error
-		}
+        {
+			new->index = -1; //raising flag for spesific error
+            print_error(find_next(input, i));
+        }
+        data->g_exit = 2;
 	}
     return (0);
 }
@@ -187,7 +199,7 @@ static t_lex *make_token(int length, char *input, t_lex *tokens, t_data *data)
     new->next = NULL;
     new->type = find_type(new->literal);
     if (new->type == T_APPEND || new->type == T_REDIR_IN || new->type == T_HEREDOC || new->type == T_REDIR_OUT || new->type == T_PIPE)
-        check_syntax_and_hdoc(data, tokens, input, new);
+        check_syntax_and_hdoc(data, tokens, input, new, i);
     return (new);
 }
 
@@ -318,6 +330,9 @@ t_lex	*tokenizer(char *input, t_data *data)
             if (last->index == -1)
             {
                 lex_delone(&tokens, -1);
+                /*last = lex_lstlast(tokens);
+                if (last->type == T_HEREDOC);
+                lex_delone(&tokens, last->index);*/
                 break ;
             }
 			input += length;
@@ -333,7 +348,7 @@ int main()
     t_data data;
 
     data.g_exit = 0;
-    tokens = tokenizer("<< ''here'' > hey>", &data);
+    tokens = tokenizer("<< check <<", &data);
     while (tokens)
     {
         printf("%i ", tokens->index);
