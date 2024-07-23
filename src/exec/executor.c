@@ -1,19 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.h                                             :+:      :+:    :+:   */
+/*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/12 10:47:58 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/23 12:42:11 by erigonza         ###   ########.fr       */
+/*   Created: 2024/07/23 12:13:37 by erigonza          #+#    #+#             */
+/*   Updated: 2024/07/23 12:43:58 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXEC_H
-# define EXEC_H
-
-# include "minishell.h"
+#include "../../inc/minishell.h"
+#include "../../inc/exec.h"
 
 typedef struct s_childs
 {
@@ -32,11 +30,10 @@ typedef struct s_exec
 	int			err_status;
 }	t_exec;
 
-// global variable
-extern int		err;
-// main
-int		exec(t_pipex pipex);
-char	*check_cmd(char **paths, char *argv);
-void	child(t_exec exec, char **argv, char **env);
-
-#endif
+int	ft_executor(t_data	*data, t_exec *exec)
+{
+	exec->i = 0;
+	if (!data->cmds->cmd || !data->cmds->cmd[exec->i])	
+		return (0);
+		
+}

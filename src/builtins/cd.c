@@ -6,14 +6,14 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 15:20:58 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/22 13:30:22 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/23 12:15:47 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/builtins.h"
 #include "../../inc/minishell.h"
 
-char	*ft_change_env_path(t_cmds *cmd, char *get)
+static char	*ft_change_env_path(t_cmds *cmd, char *get)
 {
 	char		*path;
 	t_node		*aux;

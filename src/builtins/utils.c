@@ -6,14 +6,14 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 12:19:54 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/21 12:23:05 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/23 12:31:48 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/builtins.h"
 #include "../../inc/minishell.h"
 
-static char	**ft_free_willy(char **split)
+char	**ft_free_willy(char **split)
 {
 	int		i;
 

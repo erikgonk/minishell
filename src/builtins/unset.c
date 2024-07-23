@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 17:46:30 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/22 16:31:25 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/23 12:35:20 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,19 @@ static t_node	*ft_get_env_before_lst(char *to_find, t_node *lst, t_node env)
 		lst = lst->next;
 	}
 	return (NULL);
+}
+
+static char	**ft_free_willy(char **split)
+{
+	int		i;
+
+	i = -1;
+	if (!split)
+		return (NULL);
+	while (split[++i])
+		free(split[i]);
+	free(split);
+	return (0);
 }
 
 static int	ft_extra_unset(t_data *data, t_node *node, t_node node_bef)
