@@ -30,9 +30,21 @@ typedef struct s_exec
 	int			err_status;
 }	t_exec;
 
+int	ft_builtins(t_data *data, t_exec *exec);
+int	ft_cmds(t_data *data, t_exec *exec);
 int	ft_no_pipe_redir(t_data *data, t_exec *exec)
 {
-	if (data->)
+	int		i;
+	int		err;
+
+	i = 0;
+	err = 0;
+	if (data->)// builtin?
+		err = ft_builtins;
+	else// not builtin
+		err = ft_cmds;
+	return (err);
+// should I put together cmd and the other?
 }
 
 int	ft_executor(t_data	*data, t_exec *exec)
