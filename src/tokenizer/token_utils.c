@@ -25,49 +25,54 @@ void    add_index(t_lex *tokens)
     }
 }
 
-static int quote_length(char *str, char quote_char)
+int is_hdoc_present(t_lex *tokens)
 {
-    int length = 1;
-    str++;
-    while (*str)
+    while (tokens)
     {
-        length++;
-        if (*str == quote_char)
-            return (length);
-        str++;
+        if (tokens->type == T_HEREDOC)
+            return (1);
+        tokens = tokens->next;
     }
-    return (length);
+    return (0);
 }
 
-int token_length(char *input)
+int  find_next_redir(char *literal, int i)
 {
-    int length = 0;
-    int add = 1;
-
-    if ((input[0] == C_LESS && input[1] == C_LESS) || (input[0] == C_GREAT && input[1] == C_GREAT))
-        return 2;
-    else if (input[0] == C_PIPE || input[0] == C_GREAT || input[0] == C_LESS)
-        return 1;
-
-    while (input[length] && input[length] != C_PIPE && input[length] != C_LESS && input[length] != C_GREAT && input[length] != ' ')
-    {
-        if (input[length] == C_SQUOTE || input[length] == C_DQUOTE)
-            add = quote_length(input + length, input[length]);
-        else
-            add = 1;
-        length += add;
-    }
-
-    return length;
+    if ((literal[i] == C_LESS && literal[i + 1] == C_LESS))
+        return (T_HEREDOC);
+    if ((literal[i] == C_GREAT && literal[i + 1] == C_GREAT))
+        return (T_APPEND);
+    if (literal[i] == C_PIPE)
+        return (T_PIPE);
+    if (literal[i] == C_LESS)
+        return (T_REDIR_IN);
+    if (literal[i] == C_GREAT)
+        return (T_REDIR_OUT);
+    return(10);
 }
 
-static t_lex *make_token(int length, char *input)
+int     check_syntax_and_hdoc(t_data *data, t_lex *tokens, char *input, t_lex *new, int i)
+{
+    if (input[i] == ' ' || (input[i] >= 8 && input[i] <= 13))
+        i++;
+    if (input[i] == '>' || input[i] == '<' || input[i] == '|' || !input[i])
+    {
+		if (is_hdoc_present(tokens))
+			new->index = -1; //raising flag for spesific error
+        data->g_exit = 2;
+        print_error(find_next_redir(input, i));
+	}
+    return (0);
+}
+}
+
+static t_lex *make_token(int length, char *input, t_lex *tokens, t_data *data)
 {
     int i;
     t_lex *new;
 
     i = 0;
-    new = malloc(sizeof(t_lex));
+    new = malloc(1, sizeof(t_lex));
     if (!new)
         return (NULL);
     new->literal = (char *)malloc(sizeof(char) * (length + 1));
@@ -84,32 +89,7 @@ static t_lex *make_token(int length, char *input)
     new->literal[i] = '\0';
     new->next = NULL;
     new->type = find_type(new->literal);
+    if (new->type <= T_APPEND && new->type >= T_PIPE)
+        check_syntax_and_hdoc(data, tokens, input, new, i);
     return (new);
 }
-
-t_lex *fill_tokens(t_lex *tokens, char *input, int length)
-{
-    t_lex *last;
-    t_lex *new;
-
-    new = make_token(length, input);
-    if (!new)
-    {
-        if (tokens)
-            lex_free(tokens);
-        return (NULL);
-    }
-    if (tokens == NULL)
-        tokens = new;
-    else
-    {
-        last = tokens;
-        while (last->next != NULL)
-            last = last->next;
-        last->next = new;
-    }
-    return (tokens);
-}
-
-
-

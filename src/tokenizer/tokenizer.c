@@ -27,25 +27,69 @@ int  find_type(char *literal)
     return (T_WORD);
 }
 
-void    lex_free(t_lex *lst)
+static int quote_length(char *str, char quote_char)
 {
-    t_lex *tmp;
-
-    if (!lst)
-        return ;
-    while (lst)
+    int length = 1;
+    str++;
+    while (*str)
     {
-        free(lst->literal);
-        tmp = lst;
-        lst = lst->next;
-        free(tmp);
+        length++;
+        if (*str == quote_char)
+            return (length);
+        str++;
     }
-    return ;
+    return (length);
 }
 
-t_lex	*tokenizer(char *input)
+int token_length(char *input)
+{
+    int length = 0;
+    int add = 1;
+
+    if ((input[0] == C_LESS && input[1] == C_LESS) || (input[0] == C_GREAT && input[1] == C_GREAT))
+        return 2;
+    else if (input[0] == C_PIPE || input[0] == C_GREAT || input[0] == C_LESS)
+        return 1;
+    while (input[length] && input[length] != C_PIPE && input[length] != C_LESS && input[length] != C_GREAT && input[length] != ' ')
+    {
+        if (input[length] == C_SQUOTE || input[length] == C_DQUOTE)
+            add = quote_length(input + length, input[length]);
+        else
+            add = 1;
+        length += add;
+    }
+
+    return (length);
+}
+
+t_lex *fill_tokens(t_lex *tokens, char *input, int length)
+{
+    t_lex *last;
+    t_lex *new;
+
+    new = make_token(length, input, tokens, data);
+    if (!new)
+    {
+        if (tokens)
+            lex_clear(tokens);
+        return (NULL);
+    }
+    if (tokens == NULL)
+        tokens = new;
+    else
+    {
+        last = tokens;
+        while (last->next != NULL)
+            last = last->next;
+        last->next = new;
+    }
+    return (tokens);
+}
+
+t_lex	*tokenizer(char *input, t_data *data)
 {
 	t_lex	*tokens;
+	t_lex	*last;
 	int		length;
 
 	length = 0;
@@ -58,6 +102,12 @@ t_lex	*tokenizer(char *input)
 		{
 			length = token_length(input);
 			tokens = fill_tokens(tokens, input, length);
+			last = lex_lstlast(tokens);
+			if (last->index = -1)
+			{
+				lex_delone(&tokens, -1);
+				break ;
+			}
 			input += length;
 		}
 	}
