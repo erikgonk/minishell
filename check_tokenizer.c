@@ -11,6 +11,8 @@
 # include <string.h>
 // perror
 # include <stdio.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 # define PROMPT "mish> "
 # define C_LESS '<'
 # define C_GREAT '>'
@@ -57,6 +59,7 @@ typedef struct s_data
     int         hdoc_count; // How many heredocs are present in the input
     int         *pid; // Pointer to array of the pids
     int         g_exit; // "global" return error number
+    int         printed_error;
     int         pipes; // NUmber of pipes present to know for how many child processes needed
 }   t_data;
 
@@ -66,6 +69,7 @@ void    add_index(t_lex *tokens);
 void    free_tokens(t_lex *tokens);
 t_lex   *fill_tokens(t_lex *tokens, char *input, int length, t_data *data);
 int  find_type(char *literal);
+void    mini_loop(t_data *data);
 
 
 void    add_index(t_lex *tokens)
@@ -116,31 +120,49 @@ int token_length(char *input)
     return length;
 }
 
-int is_hdoc_present(t_lex *tokens)
+int lex_lstlen(t_lex *tokens)
 {
+    int i = 0;
     while (tokens)
     {
-        if (tokens->type == T_HEREDOC)
-            return (1);
+        i++;
         tokens = tokens->next;
+    }
+    return (i);
+}
+
+int is_hdoc_present(t_lex *tokens)
+{
+    if (lex_lstlen(tokens) > 1)
+    {
+        while (tokens)
+        {
+            if (tokens->type == T_HEREDOC)
+                return (1);
+            tokens = tokens->next;
+        }
     }
     return (0);
 }
 
-void    print_error(int type)
+void    print_error(int type, t_data *data)
 {
-    if (type == 1)
-        printf("Syntax error near unexpected token '|'\n");
-    if (type == 2)
-        printf("Syntax error near unexpected token '<'\n");
-    if (type == 3)
-        printf("Syntax error near unexpected token '<<'\n");
-    if (type == 4)
-        printf("Syntax error near unexpected token '>'\n");
-    if (type == 5)
-        printf("Syntax error near unexpected token '>>'\n");
-    if (type == 10)
-        printf("Syntax error near unexpected newline\n");
+    if (!data->printed_error)
+    {
+        if (type == 1)
+            printf("Syntax error near unexpected token '|'\n");
+        if (type == 2)
+            printf("Syntax error near unexpected token '<'\n");
+        if (type == 3)
+            printf("Syntax error near unexpected token '<<'\n");
+        if (type == 4)
+            printf("Syntax error near unexpected token '>'\n");
+        if (type == 5)
+            printf("Syntax error near unexpected token '>>'\n");
+        if (type == 10)
+            printf("Syntax error near unexpected token 'newline'\n");
+        data->printed_error = 1;
+    }
     return ;
 }
 
@@ -166,10 +188,8 @@ int check_syntax_and_hdoc(t_data *data, t_lex *tokens, char *input, t_lex *new, 
 	if (input[i] == '>' || input[i] == '<' || input[i] == '|' || !input[i])
 	{
 		if (is_hdoc_present(tokens))
-        {
 			new->index = -1; //raising flag for spesific error
-            print_error(find_next(input, i));
-        }
+        print_error(find_next(input, i), data);
         data->g_exit = 2;
 	}
     return (0);
@@ -330,9 +350,6 @@ t_lex	*tokenizer(char *input, t_data *data)
             if (last->index == -1)
             {
                 lex_delone(&tokens, -1);
-                /*last = lex_lstlast(tokens);
-                if (last->type == T_HEREDOC);
-                lex_delone(&tokens, last->index);*/
                 break ;
             }
 			input += length;
@@ -342,13 +359,242 @@ t_lex	*tokenizer(char *input, t_data *data)
 	return(tokens);
 }
 
+int check_redirs(t_lex **lst, t_data *data)
+{
+    if (((*lst)->type >= T_REDIR_IN && (*lst)->type <= T_APPEND) && (!(*lst)->next ||(*lst)->next->type != T_WORD))
+    {
+        data->g_exit = 2;
+        mini_loop(data);
+        return (0);
+    }
+    return (1);
+}
+
+int check_pipes(t_lex **lst, t_data *data)
+{
+    if ((*lst)->type == T_PIPE && ((!(*lst)->next) ||((*lst)->next->type != T_WORD && !((*lst)->next->type >= T_REDIR_IN && (*lst)->next->type <= T_APPEND))))
+    {
+        data->g_exit = 2;
+        mini_loop(data);
+        return (0);
+    }
+    return (1);
+}
+
+int    check_tokens(t_data *data, t_lex **lst)
+{
+    if (!(*lst))
+        return (0);
+    if ((*lst)->type == T_PIPE)
+    {
+        data->g_exit = 2;
+        /*printf("mish: syntax error near unexpected token '|'\n");*/
+        mini_loop(data);
+        return (0);
+    }
+    while (*lst)
+    {
+        if (!check_redirs(lst, data) ||!check_pipes(lst, data))
+            return (0);
+        lst = &(*lst)->next;
+    }
+    return (1);
+}
+
+int ft_strlen(char *str)
+{
+    int i;
+
+    i = 0;
+    while (str[i])
+        i++;
+    return (i);
+}
+
+int	change_flag(int flag)
+{
+	if (flag == 0)
+		return (1);
+	else
+		return (0);
+}
+
+int	quotes(char *input, int *i, int flag, char c)
+{
+	if (input[*i] == c)
+	{
+		flag = change_flag(flag);
+		(*i)++;
+		while (input[*i] && input[*i] != c)
+			(*i)++;
+		if (input[*i] == c)
+		{
+			flag = change_flag(flag);
+			(*i)++;
+		}
+	}
+	return (flag);
+}
+
+int	quote_checker(char *str)
+{
+	int	single_flag;
+	int	double_flag;
+	int	i;
+	int	j;
+
+	double_flag = 0;
+	single_flag = 0;
+	i = 0;
+	while (str[i] && i < (int)ft_strlen(str))
+	{
+		j = i;
+		double_flag = quotes(str, &i, double_flag, '\"');
+		single_flag = quotes(str, &i, single_flag, '\'');
+		if (i == j)
+			i++;
+	}
+	if (double_flag || single_flag)
+		return(1);
+    return (0);
+}
+
+int	arg_count(char *str, char c)
+{
+	int	i;
+	int	trigger;
+
+	i = 0;
+	trigger = 0;
+	while (*str)
+	{
+		if (*str != c && trigger == 0)
+		{
+			trigger = 1;
+			i++;
+		}
+		else if (*str == c)
+			trigger = 0;
+		str++;
+	}
+	return (i);
+}
+
+/**
+ * Just some checks to make sure the program does not crash
+ * if the user decides to be annoying and input too many 
+ * arguments or use open quotes.
+*/
+int input_check(char *input)
+{
+    if (quote_checker(input))
+    {
+        printf("minish: syntax error: open quotes\n");
+        return (2);
+    }
+    if (arg_count(input, ' ') > 100) //idk how many arguments should be limit here 
+    {
+        printf("mish: don't be crazy: too many arguments\n");
+        return (1);
+    }
+    if (ft_strlen(input) > 4096)
+    {
+        printf("mish: don't be annoying: the prompt is too long\n");
+        return (1);
+    }
+    return (0);
+}
+
+int	init_minishell(t_data *data, char **envp)
+{
+    /*if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
+		exit(1);*/
+	data->g_exit = 0;
+    data->lexer = NULL;
+    data->pipes = 0;
+    data->hdoc_count = 0;
+    data->printed_error = 0;
+    /*env->start = NULL;
+    env->end = NULL;
+    env->homedir = NULL;
+    env->old_pwd = NULL;
+    env->pwd = NULL;
+    if (transform_env(env, envp)) //should not exit if environment is not found, shell should still be working (?)
+		exit(1);*/
+	return (0);
+}
+
+char    *clean_input(char *input)
+{
+    if (input)
+        free(input);
+    return (NULL);
+}
+
+char    *get_input(t_data *data)
+{
+    data->input = readline("Mish> ");
+    if (data->input == NULL)
+    {
+        if (isatty(STDIN_FILENO))
+            printf("exit\n");
+        exit(data->g_exit);
+    }
+    else if (data->input)
+    {
+        add_history(data->input);
+        data->g_exit = input_check(data->input);
+        if (data->g_exit == 1 || data->g_exit == 2)
+            data->input[0] = '\0';
+    }
+    return (data->input);
+}
+
+void    mini_loop(t_data *data)
+{
+    char    *input;
+
+    input = NULL;
+    while (1)
+    {
+        lex_free(data->lexer);
+        /*clean_cmds(data->cmds);*/
+        input = clean_input(input);
+        input = get_input(data);
+        data->printed_error = 0;
+        if (input[0] == '\0')
+            continue ;
+        data->lexer = tokenizer(input, data);
+        if (!data->lexer)
+            continue ;
+        check_tokens(data, &data->lexer);
+    }
+    rl_clear_history();
+}
+
+int	main(int argc, char **argv, char **envp)
+{
+	t_data	data;
+
+    if (argc != 1 ||argv[1])
+    {
+        printf("This program does not take arguments\n");
+        exit(0);
+    }
+	init_minishell(&data, envp);
+	mini_loop(&data);
+	/*clean_shell(&env, &data);*/
+	return (0);
+}
+/*
 int main()
 {
     t_lex *tokens;
     t_data data;
 
     data.g_exit = 0;
-    tokens = tokenizer("<< check <<", &data);
+    tokens = tokenizer("<< ls | cat -e file > outfile |", &data);
+    check_tokens(&data, &tokens);
     while (tokens)
     {
         printf("%i ", tokens->index);
@@ -359,5 +605,5 @@ int main()
         tokens = tokens->next;
     }
     return (0);
-}
+}*/
 
