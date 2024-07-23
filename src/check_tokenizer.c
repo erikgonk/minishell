@@ -24,7 +24,7 @@
 typedef enum e_token
 {
 	T_PIPE = 1,
-	T_REDIR_IN,
+	T_REDIR_IN = 7,
 	T_HEREDOC,
 	T_REDIR_OUT,
 	T_APPEND,
@@ -572,6 +572,7 @@ void    mini_loop(t_data *data)
     rl_clear_history();
 }
 
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	data;
@@ -583,7 +584,7 @@ int	main(int argc, char **argv, char **envp)
     }
 	init_minishell(&data, envp);
 	mini_loop(&data);
-	/*clean_shell(&env, &data);*/
+	//clean_shell(&env, &data);
 	return (0);
 }
 /*

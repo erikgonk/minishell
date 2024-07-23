@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 12:13:37 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/23 12:43:58 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/23 19:22:13 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,24 @@ typedef struct s_exec
 	int			err_status;
 }	t_exec;
 
+int	ft_no_pipe_redir(t_data *data, t_exec *exec)
+{
+	if (data->)
+}
+
 int	ft_executor(t_data	*data, t_exec *exec)
 {
-	exec->i = 0;
+	static int	err;
+
+	err = 0;
+// have a static varibale that she is passing me
 	if (!data->cmds->cmd || !data->cmds->cmd[exec->i])	
 		return (0);
-		
+	else if (!data->cmds->next)
+		err = ft_no_pipe_redir(data, exec);
+	else if (!no_pipe)
+		err = ft_no_pipe(data, exec);
+	else
+		err = ft_pipe(data, exec);
+	return (err);
 }
