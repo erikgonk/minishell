@@ -247,11 +247,7 @@ t_lex *fill_tokens(t_lex *tokens, char *input, int length, t_data *data)
 
     new = make_token(length, input, tokens, data);
     if (!new)
-    {
-        if (tokens)
-            lex_free(tokens);
         return (NULL);
-    }
     if (tokens == NULL)
         tokens = new;
     else
@@ -365,7 +361,6 @@ int check_redirs(t_lex **lst, t_data *data)
     if (((*lst)->type >= T_REDIR_IN && (*lst)->type <= T_APPEND) && (!(*lst)->next ||(*lst)->next->type != T_WORD))
     {
         data->g_exit = 2;
-        mini_loop(data);
         return (0);
     }
     return (1);
@@ -376,7 +371,6 @@ int check_pipes(t_lex **lst, t_data *data)
     if ((*lst)->type == T_PIPE && ((!(*lst)->next) ||((*lst)->next->type != T_WORD && !((*lst)->next->type >= T_REDIR_IN && (*lst)->next->type <= T_APPEND))))
     {
         data->g_exit = 2;
-        mini_loop(data);
         return (0);
     }
     return (1);
@@ -389,8 +383,6 @@ int    check_tokens(t_data *data, t_lex **lst)
     if ((*lst)->type == T_PIPE)
     {
         data->g_exit = 2;
-        /*printf("mish: syntax error near unexpected token '|'\n");*/
-        mini_loop(data);
         return (0);
     }
     while (*lst)
@@ -569,6 +561,7 @@ void    mini_loop(t_data *data)
         if (!data->lexer)
             continue ;
         check_tokens(data, &data->lexer);
+        printf("%i", data->g_exit);
     }
     rl_clear_history();
 }
