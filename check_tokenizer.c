@@ -149,15 +149,15 @@ void    print_error(int type, t_data *data)
 {
     if (!data->printed_error)
     {
-        if (type == 1)
+        if (type == T_PIPE)
             printf("Syntax error near unexpected token '|'\n");
-        if (type == 2)
+        if (type == T_REDIR_IN)
             printf("Syntax error near unexpected token '<'\n");
-        if (type == 3)
+        if (type == T_HEREDOC)
             printf("Syntax error near unexpected token '<<'\n");
-        if (type == 4)
+        if (type == T_REDIR_OUT)
             printf("Syntax error near unexpected token '>'\n");
-        if (type == 5)
+        if (type == T_APPEND)
             printf("Syntax error near unexpected token '>>'\n");
         if (type == 10)
             printf("Syntax error near unexpected token 'newline'\n");
@@ -479,21 +479,24 @@ int	arg_count(char *str, char c)
  * if the user decides to be annoying and input too many 
  * arguments or use open quotes.
 */
-int input_check(char *input)
+int input_check(char *input, t_data *data)
 {
     if (quote_checker(input))
     {
         printf("minish: syntax error: open quotes\n");
-        return (2);
+        data->g_exit = 2;
+        return (1);
     }
     if (arg_count(input, ' ') > 100) //idk how many arguments should be limit here 
     {
         printf("mish: don't be crazy: too many arguments\n");
+        data->g_exit = 1;
         return (1);
     }
     if (ft_strlen(input) > 4096)
     {
         printf("mish: don't be annoying: the prompt is too long\n");
+        data->g_exit = 1;
         return (1);
     }
     return (0);
@@ -537,8 +540,7 @@ char    *get_input(t_data *data)
     else if (data->input)
     {
         add_history(data->input);
-        data->g_exit = input_check(data->input);
-        if (data->g_exit == 1 || data->g_exit == 2)
+        if (input_check(data->input, data))
             data->input[0] = '\0';
     }
     return (data->input);
@@ -551,15 +553,18 @@ void    mini_loop(t_data *data)
     input = NULL;
     while (1)
     {
+        data->printed_error = 0;
         lex_free(&data->lexer);
         /*clean_cmds(data->cmds);*/
         input = clean_input(input);
         input = get_input(data);
-        data->printed_error = 0;
         if (input[0] == '\0')
+        {
+            printf("%i\n", data->g_exit);
             continue ;
+        }
         data->lexer = tokenizer(input, data);
-        if (!data->lexer)
+                if (!data->lexer)
             continue ;
         check_tokens(data, &data->lexer);
         printf("%i\n", data->g_exit);
