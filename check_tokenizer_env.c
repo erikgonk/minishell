@@ -7,6 +7,7 @@
 # include <fcntl.h>
 // waitpid, wait
 # include <sys/wait.h>
+# include "./src/libft/inc/libft.h"
 // strerror 
 # include <string.h>
 // perror
@@ -63,6 +64,22 @@ typedef struct s_data
     int         pipes; // NUmber of pipes present to know for how many child processes needed
 }   t_data;
 
+typedef struct s_node
+{
+    char    *var;
+    char    *str;
+    struct s_node   *next;
+}   t_node;
+
+typedef struct s_env
+{
+    t_node      *start;
+    t_node      *end;
+    char        *pwd;
+    char        *oldpwd;
+    char        *homedir; //for cd ~
+}   t_env;
+
 t_lex	*tokenizer(char *input, t_data *data);
 int     token_length(char *input);
 void    add_index(t_lex *tokens);
@@ -70,7 +87,231 @@ void    free_tokens(t_lex *tokens);
 t_lex   *fill_tokens(t_lex *tokens, char *input, int length, t_data *data);
 int  find_type(char *literal);
 void    mini_loop(t_data *data);
+int set_env(t_env *env, char *var, char *str, int ow);
+char    *get_env(char *var, t_env env);
 
+
+
+char    *extract_str(char *envstr)
+{
+    int     i;
+    int     start;
+    int     end;
+    char    *str;
+
+    i = 0;
+    while (envstr[i])
+    {
+        if (envstr[i] == '=' && envstr[i + 1] != ' ') //and other whitespace?
+        {
+            start = i + 1;
+            end = ft_strlen(envstr);
+            str = ft_substr(envstr, start, end);
+            if (!str)
+                return (NULL);
+            return (str);
+        }
+        i++;
+    }
+    return (NULL);
+}
+
+char    *extract_var(char *envstr)
+{
+    int     i;
+    int     start;
+    int     end;
+    char    *var;
+
+    i = 0;
+    while (envstr[i])
+    {
+        if (envstr[i + 1] == '=')
+        {
+            end = i;
+            var = ft_substr(envstr, start, end);
+            if (!var)
+                return (NULL);
+            return (envstr);
+        }
+        i++;
+    }
+    end = i;
+    var = ft_substr(envstr, start, end);
+    return (var);
+}
+
+t_node  *init_node(char *var, char *str)
+{
+    t_node  *new;
+
+    new = ft_calloc(1, sizeof(t_node));
+    if (!new)
+        return (NULL);
+    new->var = var;
+    new->str = str;
+    new->next = NULL;
+    return (new);
+}
+
+void    add_to_env(t_node *node, t_env *env)
+{
+    t_node  *tmp;
+
+    if (!(env->start)) //check whether this is the first node in t_node
+        env->start = node; // if yes, set it as the start node in env
+    env->end = node; // set the new node as the end node (since we add to the back)
+    tmp = env->start;  // iterate through the t_node list in order to find the last node
+    while (tmp->next)
+        tmp = tmp->next;
+    tmp->next = node; //set the last nodes next pointer to the current node (new last)
+}
+
+int    transform_env(t_env *env, char **envp)
+{
+    t_node  *node;
+    int     i;
+    char    *var;
+    char    *str;
+
+    while (envp[i])
+    {
+        var = extract_var(envp[i]);
+        str = extract_str(envp[i]);
+        node = init_node(var, str);
+        add_to_env(node, env);
+        i++;
+    }
+    if (set_standard_env(env, get_env("SHLVL", *env)))
+		return (1);
+	return (0);
+}
+
+static void update_pwd(t_env *env, char *var, char *str)
+{
+    if (!ft_strcmp(var, "PWD"))
+    {
+        if (env->pwd)
+            free(env->pwd);
+        if (str)
+            env->pwd = ft_strdup(str);
+        else
+            env->pwd = NULL;
+    }
+    if (!ft_strcmp(var, "OLDPWD"))
+    {
+        if (env->oldpwd)
+            free(env->oldpwd);
+        if (str)
+            env->oldpwd = ft_strdup(str);
+        else
+            env->oldpwd = NULL;
+    }
+}
+
+int  ow_str(t_node *tmp, char *str, t_env *env)
+{
+    free(tmp->str);
+    tmp->str = str;
+    update_pwd(env, tmp->var, str);
+    return (0);
+}
+
+int  ow_nostr(t_node *tmp, char *str, t_env *env)
+{
+    tmp->str = str;
+    update_pwd(env, tmp->var, str);
+    return (0);
+}
+
+int  no_ow(t_node *tmp, char *str, t_env *env)
+{
+    char    *cur_env;
+
+    cur_env = ft_strdup(tmp->str);
+    if (!cur_env)
+        return (1);
+    if (tmp->str)
+        free(tmp->str);
+    tmp->str = ft_strjoin(cur_env, str);
+    update_pwd(env, tmp->var, tmp->str);
+    free(cur_env);
+    free(str);
+    return (0);
+}
+
+int set_standard_env(t_env *env, char *shlvl)
+{
+    int i;
+
+    if (set_env(env, "OLDPWD", NULL, 1))
+        return (1);
+    if (in_env("PWD", *env) && get_env("PWD", *env))
+        env->pwd = ft_strdup(get_env("PWD", *env));
+    if (in_env("OLDPWD", *env) && get_env("OLDPWD", *env))
+        env->oldpwd = ft_strdup(get_env("OLDPWD", *env));
+    if (in_env("HOME", *env) && get_env("HOME", *env))
+        env->homedir = ft_strdup(get_env("HOME", *env));
+    if (!shlvl ||shlvl[0] == '-')
+        i = set_env(env, "SHLVL", "0", 1);
+    else if (ft_atoi(shlvl) >= 1000)
+    {
+        ft_putstr_fd("mish: warning: shell level (");
+        shlvl = ft_itoa(ft_atoi(shlvl) + 1);
+        ft_putstr_fd(shlvl);
+        ft_putstr_fd(") too high, resetting to 1\n");
+        i = set_env(env, "SHLVL", "1", 1);
+    }
+    else
+        i = set_env(env, "SHLVL", ft_itoa(ft_atoi(get_env("SHLVL", *env)) + 1), 1); //increase current shelvl with one
+    return (i);
+}
+
+int set_env(t_env *env, char *var, char *str, int ow)
+{
+    t_node *tmp;
+
+    tmp = env->start;
+    while (tmp)
+    {
+        if (!ft_strcmp(tmp->var, var))
+        {
+            if (ow && tmp->str)
+                return (ow_and_str(tmp, str, env));
+            else if (ow)
+                return (ow_and_nostr(tmp, str, env));
+            else
+                return (no_ow(tmp, str, env));
+        }
+        tmp = tmp->next;
+    }
+    tmp = make_node(ft_strdup(var), str);
+    if (add_node_to_env(env, tmp))
+        return (-1);
+    return (0);
+}
+
+int     in_env(char *var, t_env env)
+{
+    while (env.start)
+    {
+        if (!ft_strcmp(var, env.start->var))
+            return (1);
+        env.start = env.start->next;
+    }
+    return (0);
+}
+
+char    *get_env(char *var, t_env env)
+{
+    while (env.start)
+    {
+        if (ft_strcmp(var, env.start->var) == 0)
+            return (env.start->str);
+        env.start = env.start->next;
+    }
+    return (NULL);
+}
 
 void    add_index(t_lex *tokens)
 {
@@ -502,7 +743,7 @@ int input_check(char *input, t_data *data)
     return (0);
 }
 
-int	init_minishell(t_data *data, char **envp)
+int	init_minishell(t_env *env, t_data *data, char **envp)
 {
     /*if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
 		exit(1);*/
@@ -511,13 +752,13 @@ int	init_minishell(t_data *data, char **envp)
     data->pipes = 0;
     data->hdoc_count = 0;
     data->printed_error = 0;
-    /*env->start = NULL;
+    env->start = NULL;
     env->end = NULL;
     env->homedir = NULL;
     env->old_pwd = NULL;
     env->pwd = NULL;
     if (transform_env(env, envp)) //should not exit if environment is not found, shell should still be working (?)
-		exit(1);*/
+		exit(1);
 	return (0);
 }
 
@@ -583,13 +824,14 @@ void    clean_shell(t_data *data)
 int	main(int argc, char **argv, char **envp)
 {
 	t_data	data;
+    t_env   env;
 
     if (argc != 1 ||argv[1])
     {
         printf("This program does not take arguments\n");
         exit(0);
     }
-	init_minishell(&data, envp);
+	init_minishell(&env, &data, envp);
 	mini_loop(&data);
 	/*clean_shell(&env, &data);*/
 	return (0);
