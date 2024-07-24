@@ -204,6 +204,7 @@ static t_lex *make_token(int length, char *input, t_lex *tokens, t_data *data)
     new = malloc(sizeof(t_lex));
     if (!new)
         return (NULL);
+    new->index = 0;
     new->literal = (char *)malloc(sizeof(char) * (length + 1));
     if (!new->literal)
     {
@@ -583,7 +584,7 @@ int	main(int argc, char **argv, char **envp)
     }
 	init_minishell(&data, envp);
 	mini_loop(&data);
-	/*clean_shell(&env, &data);*/
+	/*clean_shell(&env, &data); -> one of the reasons there are many leaks at exit bc I still have not made this function */
 	return (0);
 }
 /*
