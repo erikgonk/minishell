@@ -8,12 +8,14 @@
 // waitpid, wait
 # include <sys/wait.h>
 # include "./src/libft/inc/libft.h"
-// strerror 
 # include <string.h>
+// strerror 
 // perror
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+
+# include "libft.h"
 # define PROMPT "mish> "
 # define C_LESS '<'
 # define C_GREAT '>'
@@ -91,7 +93,48 @@ int set_env(t_env *env, char *var, char *str, int ow);
 char    *get_env(char *var, t_env env);
 
 
+void    ft_print_env(t_node *env)
+{
+	while (env)
+	{
+		if (env->var && env->str)
+			printf("%s=%s", env->var, env->str);
+		env = env->next;
+	}
+}
 
+int	ft_env(t_env *env)
+{
+	if (!env->start || !env->start->var || !env->start->str)
+	{
+		printf("env: not found", 1);
+		return (1);
+	}
+	ft_print_env(env->start);
+	return (0);
+}
+
+
+
+/*
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
 char    *extract_str(char *envstr)
 {
     int     i;
@@ -256,10 +299,10 @@ int set_standard_env(t_env *env, char *shlvl)
         i = set_env(env, "SHLVL", "0", 1);
     else if (ft_atoi(shlvl) >= 1000)
     {
-        ft_putstr_fd("mish: warning: shell level (");
+        printf("mish: warning: shell level (");
         shlvl = ft_itoa(ft_atoi(shlvl) + 1);
-        ft_putstr_fd(shlvl);
-        ft_putstr_fd(") too high, resetting to 1\n");
+        printf(shlvl);
+        printf(") too high, resetting to 1\n");
         i = set_env(env, "SHLVL", "1", 1);
     }
     else
@@ -636,16 +679,6 @@ int    check_tokens(t_data *data, t_lex **lst)
     return (1);
 }
 
-int ft_strlen(char *str)
-{
-    int i;
-
-    i = 0;
-    while (str[i])
-        i++;
-    return (i);
-}
-
 int	change_flag(int flag)
 {
 	if (flag == 0)
@@ -755,7 +788,7 @@ int	init_minishell(t_env *env, t_data *data, char **envp)
     env->start = NULL;
     env->end = NULL;
     env->homedir = NULL;
-    env->old_pwd = NULL;
+    env->oldpwd = NULL;
     env->pwd = NULL;
     if (transform_env(env, envp)) //should not exit if environment is not found, shell should still be working (?)
 		exit(1);
