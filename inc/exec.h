@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 10:47:58 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/23 12:42:11 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/24 17:49:59 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,10 @@
 # define EXEC_H
 
 # include "minishell.h"
+
+# define ONE_CMD 0
+# define ONE_REDIR 1
+# define MORE_REDIR 2
 
 typedef struct s_childs
 {
@@ -29,11 +33,8 @@ typedef struct s_exec
 	char		**path;
 	s_childs	*childs;
 	int			i;
-	int			err_status;
 }	t_exec;
 
-// global variable
-extern int		err;
 // main
 int		exec(t_pipex pipex);
 char	*check_cmd(char **paths, char *argv);
