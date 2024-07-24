@@ -224,20 +224,21 @@ static t_lex *make_token(int length, char *input, t_lex *tokens, t_data *data)
     return (new);
 }
 
-void    lex_free(t_lex *lst)
+void    lex_free(t_lex **lst)
 {
     t_lex *tmp;
 
-    if (!lst)
+    if (!*lst)
         return ;
-    while (lst)
+    while (*lst)
     {
-        free(lst->literal);
-        tmp = lst;
-        lst = lst->next;
-        free(tmp);
+        tmp = (*lst)->next;
+        if ((*lst)->literal)
+            free((*lst)->literal);
+        free(*lst);
+        (*lst) = tmp;
     }
-    return ;
+    *lst = NULL;
 }
 
 t_lex *fill_tokens(t_lex *tokens, char *input, int length, t_data *data)
@@ -550,7 +551,7 @@ void    mini_loop(t_data *data)
     input = NULL;
     while (1)
     {
-        lex_free(data->lexer);
+        lex_free(&data->lexer);
         /*clean_cmds(data->cmds);*/
         input = clean_input(input);
         input = get_input(data);
@@ -561,9 +562,17 @@ void    mini_loop(t_data *data)
         if (!data->lexer)
             continue ;
         check_tokens(data, &data->lexer);
-        printf("%i", data->g_exit);
+        printf("%i\n", data->g_exit);
     }
     rl_clear_history();
+}
+
+void    clean_shell(t_data *data)
+{
+    if (data->lexer)
+        lex_free(&data->lexer);
+    if (data->input)
+        clean_input(data->input);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -577,7 +586,7 @@ int	main(int argc, char **argv, char **envp)
     }
 	init_minishell(&data, envp);
 	mini_loop(&data);
-	/*clean_shell(&env, &data); -> one of the reasons there are many leaks at exit bc I still have not made this function */
+	/*clean_shell(&env, &data); -> not including may cause some leaks*/
 	return (0);
 }
 /*
