@@ -27,11 +27,14 @@ void    add_index(t_lex *tokens)
 
 int is_hdoc_present(t_lex *tokens)
 {
-    while (tokens)
+    if (lex_lstlen(tokens) > 1)
     {
-        if (tokens->type == T_HEREDOC)
-            return (1);
-        tokens = tokens->next;
+        while (tokens)
+        {
+            if (tokens->type == T_HEREDOC)
+                return (1);
+            tokens = tokens->next;
+        }
     }
     return (0);
 }
@@ -59,11 +62,10 @@ int     check_syntax_and_hdoc(t_data *data, t_lex *tokens, char *input, t_lex *n
     {
 		if (is_hdoc_present(tokens))
 			new->index = -1; //raising flag for spesific error
+        print_error(find_next_redir(input, i), data);
         data->g_exit = 2;
-        print_error(find_next_redir(input, i));
 	}
     return (0);
-}
 }
 
 static t_lex *make_token(int length, char *input, t_lex *tokens, t_data *data)
@@ -75,6 +77,7 @@ static t_lex *make_token(int length, char *input, t_lex *tokens, t_data *data)
     new = malloc(1, sizeof(t_lex));
     if (!new)
         return (NULL);
+    new->index = 0;
     new->literal = (char *)malloc(sizeof(char) * (length + 1));
     if (!new->literal)
     {
