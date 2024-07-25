@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 17:47:31 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/20 12:43:06 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/25 12:03:03 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ void    ft_print_env(t_node env)
 	}
 }
 
-int	ft_env(t_env env)
+int	ft_env(t_data data)
 {
-	if (!env->start || !env->start->var || !env->start->str)
+	if (!data->env->start || !data->env->start->var || !data->env->start->str)
 	{
 		ft_printf("env: not found", 1);
 		return (1);
 	}
-	ft_print_env(env->start);
+	ft_print_env(data->env->start);
 	return (0);
 }

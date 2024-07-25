@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 15:20:13 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/22 13:28:10 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/25 11:59:40 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,13 +94,15 @@ static int	ft_separate_export(t_env *env, char **cmd, char *str, int flag)
 	return (err);
 }
 
-int	ft_export(t_data *cmd, int i)
+int	ft_export(t_data *cmd)
 {
 	char	**cmd = NULL;
 	char	*tmp = NULL;
 	int		err;
+	int		i;
 
 	err = 0;
+	i = 0;
 	if (ft_parsing(cmd->cmds->cmd[i]) != 1 && !cmd->cmds->cmd[i + 1])
 		ft_print_export(cmd);
 	while (cmd->cmds->cmd[++i])

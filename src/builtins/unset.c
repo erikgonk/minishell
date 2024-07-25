@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 17:46:30 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/23 12:35:20 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/25 12:02:13 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ t_node  *get_env_lst(char *to_find, t_node *lst)
 
 static t_node	*ft_get_env_before_lst(char *to_find, t_node *lst, t_node env)
 {
+	if (!to_find)
+		return (NUL);
 	if (lst && ft_strcmp(to_find, lst->var) == 0)
 		return (aux->start);
 	else if (lst && ft_strcmp(to_find, aux->end->var) == 0)
@@ -72,18 +74,18 @@ static int	ft_extra_unset(t_data *data, t_node *node, t_node node_bef)
 	return (1);
 }
 
-int	ft_unset(t_data *cmd, int i)
+int	ft_unset(t_data *data)
 {
 	int			err;
 	t_node		*node = NULL;
 	t_node		*node_bef = NULL;
 
 	err = 0;
-	node_bef = ft_get_env_before_lst(cmd->cmds->cmd[i + 1], cmd->env->start, cmd->env);
-	node = get_env_lst(cmd->cmds->cmd[i + 1], cmd->env->start);
+	node_bef = ft_get_env_before_lst(data->cmds->cmd[1], data->env->start, data->env);
+	node = get_env_lst(data->cmds->cmd[1], data->env->start);
 	if (!node_bef || !node)	
 		return (0);
-	else if (ft_extra_unset(data, node, node_bef) == 0)	{
+	else if (ft_extra_unset(data, node, node_bef) == 0)
 		return (0);
 	node_bef->next = node->next;
 	if (node->str)

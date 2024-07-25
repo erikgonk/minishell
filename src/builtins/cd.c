@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 15:20:58 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/23 12:15:47 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/25 11:57:40 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,25 +34,25 @@ static char	*ft_change_env_path(t_cmds *cmd, char *get)
 	return (free(tmp), path);
 }
 
-int	ft_cd(t_data *data, int i)
+int	ft_cd(t_data *data)
 {
 	char		*path;
 	t_node		*tmp;
 
 	ft_change_env_path(data->cmds, OLDPWD);
-	if (!data->cmds->cmd[i + 1] || (data->cmds->cmd[i + 1] == '~' && ft_strlen(data->cmds->cmd[i + 1]) == 1))
+	if (!data->cmds->cmd[1] || (data->cmds->cmd[1] == '~' && ft_strlen(data->cmds->cmd[1]) == 1))
 	{
 		tmp = get_env_lst("HOME", data->env->start);
 		path = tmp->str;
 	}
 	else
-		path = data->cmds->cmd[i + 1];
+		path = data->cmds->cmd[1];
 	if (!path)
 	{
 		ft_printf("mish: cd: HOME not set")
 		return (1);
 	}
-	if (data->cmds->cmd[i + 1] == '-')
+	if (data->cmds->cmd[1] == '-')
 	{
 		chdir(path);
 		return (0);

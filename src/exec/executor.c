@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 12:13:37 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/24 17:52:09 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/25 12:42:15 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,23 +30,28 @@ typedef struct s_exec
 	int			err_status;
 }	t_exec;
 
-static int	ft_cmds(t_data *data, t_exec *exec);
-static int	ft_builtins(t_data *data, t_exec *exec, int i);// flag is for just the builtin & 1 redir & +1 redir
+static int	ft_cmds(t_data *data, t_exec *exec)
 {
-	if (ft_strcmp("pwd", data->cmds->cmd[i]) == 0)
+	
+}
+
+static int	ft_builtins(t_data *data);
+{
+//	static char		**builtins = {"pwd", "echo", "cd", "export", "unset", "env", "exit"};
+	if (ft_strcmp("pwd", data->cmds->cmd[0]) == 0)
 		data->g_exit = ft_pwd(data);
-	else if (ft_strcmp("echo", data->cmds->cmd[i]) == 0)
-		data->g_exit = ft_echo(data, i);
-	else if (ft_strcmp("cd", data->cmds->cmd[i]) == 0)
-		data->g_exit = ft_cd()
-	else if (ft_strcmp("export", data->cmds->cmd[i]) == 0)
-		data->g_exit = ft_export(data, i);
-	else if ("unset", data->cmds->cmd[i]) == 0)
-		data->g_exit = ft_unset(data, i);
-	else if ("env", data->cmds->cmd[i]) == 0)
-		data->g_exit = ft_env(data->env);
-	else if ("exit", data->cmds->cmd[i]) == 0)
-		data->g_exit(data, i);
+	else if (ft_strcmp("echo", data->cmds->cmd[0]) == 0)// not done yet
+		data->g_exit = ft_echo(data);
+	else if (ft_strcmp("cd", data->cmds->cmd[0]) == 0)
+		data->g_exit = ft_cd(data);
+	else if (ft_strcmp("export", data->cmds->cmd[0]) == 0)
+		data->g_exit = ft_export(data);
+	else if ("unset", data->cmds->cmd[0] == 0)
+		data->g_exit = ft_unset(data);
+	else if ("env", data->cmds->cmd[0] == 0)
+		data->g_exit = ft_env(data);
+	else if ("exit", data->cmds->cmd[0] == 0)// not done yet
+		data->g_exit(data);
 	else
 		return (127);
 	return (data->g_exit);
@@ -54,17 +59,11 @@ static int	ft_builtins(t_data *data, t_exec *exec, int i);// flag is for just th
 
 int	ft_no_pipe_redir(t_data *data, t_exec *exec)
 {
-	int		i;
-
-	i = -1;
-	while (data->cmds->cmd[++i])
-	{
-		if (data->cmds->builtin)// builtin
-			data->g_exit = ft_builtins(data, exec, i);
-		else// not builtin -- if I can't exec it return 127
-			data->g_exit = ft_cmds;
-	}
-	return (err);
+	if (data->cmds->builtin)// builtin
+		data->g_exit = ft_builtins(data, exec, i);
+	else// cmd
+		data->g_exit = ft_cmds(data, exec);
+	return (data->g_exit);
 // should I put together cmd and the other?
 }
 
