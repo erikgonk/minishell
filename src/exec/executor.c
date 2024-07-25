@@ -61,7 +61,7 @@ int	ft_no_pipe_redir(t_data *data, t_exec *exec)
 	{
 		if (data->cmds->builtin)// builtin
 			data->g_exit = ft_builtins(data, exec, i);
-		else// not builtin
+		else// not builtin -- if I can't exec it return 127
 			data->g_exit = ft_cmds;
 	}
 	return (err);

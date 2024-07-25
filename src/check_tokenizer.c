@@ -568,6 +568,7 @@ void    mini_loop(t_data *data)
         if (!data->lexer)
             continue ;
         check_tokens(data, &data->lexer);
+		printf("%d\n", data->g_exit);
     }
     rl_clear_history();
 }
