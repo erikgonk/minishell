@@ -634,12 +634,22 @@ int syntax_check(char *input)
     {
         if (input[i] == ';')
         {
-            printf("mish: illegal symbol ';': not in eval sheet\n");
+            printf("mish: we don't do the ';' around here\n");
             return(1);
         }
         else if (input[i] == '\\')
         {
-            printf("mish: illegal symbol '\\': not in eval sheet\n");
+            printf("mish: we don't to the '\\' around here\n");
+            return(1);
+        }
+        else if (input[i] == '|' && input[i + 1] == '|')
+        {
+            printf("mish: we don't do the '||' around here\n");
+            return(1);
+        }
+        else if (input[i] == '&' && input[i + 1] == '&')
+        {
+            printf("mish: we don't do the '&&' around here\n");
             return(1);
         }
         else
