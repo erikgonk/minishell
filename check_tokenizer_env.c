@@ -625,6 +625,29 @@ int token_length(char *input)
     return length;
 }
 
+int syntax_check(char *input)
+{
+    int i;
+
+    i = 0;
+    while (input[i])
+    {
+        if (input[i] == ';')
+        {
+            printf("mish: illegal symbol ';': not in eval sheet\n");
+            return(1);
+        }
+        else if (input[i] == '\\')
+        {
+            printf("mish: illegal symbol '\\': not in eval sheet\n");
+            return(1);
+        }
+        else
+            i++;
+    }
+    return (0);
+}
+
 int lex_lstlen(t_lex *tokens)
 {
     int i = 0;
@@ -980,6 +1003,11 @@ int input_check(char *input, t_data *data)
     {
         printf("minish: syntax error: open quotes\n");
         data->g_exit = 2;
+        return (1);
+    }
+    if (syntax_check(input))
+    {
+        data->g_exit = 1;
         return (1);
     }
     if (arg_count(input, ' ') > 100) //idk how many arguments should be limit here 
