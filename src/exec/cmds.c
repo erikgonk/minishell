@@ -23,6 +23,14 @@ static int	ft_lst_size(t_cmds *cmd)
 	return (i);
 }
 
+int	ft_childs(t_data *data, int	fd, int pipe, char *kids)
+{
+	while (data->cmds)
+	{
+
+	}
+}
+
 int	cmds(t_data *data)
 {
 	int		fd;
@@ -37,6 +45,8 @@ int	cmds(t_data *data)
 	if (!kids)
 		return (1);
 	// here doc
+	// builtin already executed, now there is at least a cmd, redir or pipe
+	data->g_exit = ft_childs(data, fd, pipe, kids);
 }
 
 
