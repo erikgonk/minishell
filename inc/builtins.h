@@ -36,7 +36,7 @@ int					ft_export(t_data *cmd, int i);
 void				ft_print_export(t_data *cmd);
 // static char		**ft_save_lst(t_node *env, char **list, int i);
 // static int		ft_small_char(char **list, int i, int j, int k);
-// static int		ft_lstlen(t_node *env);
+//static int		ft_lstlen(t_node *env);
 int					ft_count_list_elems(t_node lst);
 char				**ft_sort_lst_exp(char **list, int i, int j, int pos);
 // static char		**ft_swap(char **list, int pos, int i);

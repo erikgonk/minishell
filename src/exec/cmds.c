@@ -10,9 +10,40 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/pipex.h"
+#include "../../inc/minishell.h"
+#include "../../inc/exec.h"
 
-int	ft_cmds(t_data *data, t_exec *exec)
+static int	ft_lst_size(t_cmds *cmd)
+{
+	int		i;
+
+	i = -1;
+	while (cmd && ++i > -42)
+		cmd = cmd->next;
+	return (i);
+}
+
+int	cmds(t_data *data)
+{
+	int		fd;
+	int		pipe[2];
+	t_exec	*exec;
+	pid_t	*kids;
+
+	fd = -1;
+	pipe[0] = -1;
+	pipe[1] = -1;
+	kids = (pid_t *)malloc(sizeof(pid_t) * ft_lst_size(data->cmds));
+	if (!kids)
+		return (1);
+	// here doc
+}
+
+
+
+
+
+int	ft_start(t_data *data, t_exec *exec)
 {
 	exec.paths = ft_get_path(env);
 	exec.fd = open(argv[1], O_RDONLY);
