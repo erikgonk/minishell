@@ -57,8 +57,7 @@ typedef enum e_builtin
     UNSET,
     ENV,
     EXIT,
-    NO_BUILTIN,
-};
+}   e_builtin;
 
 /*--------------Structures----------------*/
 typedef struct s_lex
@@ -115,6 +114,7 @@ typedef struct s_data
     int         hdoc_count; // How many heredocs are present in the input
     int         *pid; // Pointer to array of the pids
     int         g_exit; // "global" return error number
+    int         printed_error; //to check whether an error message has already been printed (syntax errors)
     int         pipes; // NUmber of pipes present to know for how many child processes needed
 }   t_data;
 

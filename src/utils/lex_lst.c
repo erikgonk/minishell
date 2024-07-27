@@ -94,3 +94,18 @@ void    lex_delone(t_lex **lst, int del)
         lex_clearone(&node);
     }
 }
+
+t_lex   *lex_new(char *str, int token)
+{
+    t_lex   *new;
+    static int  i = 0;
+
+    new = (t_lex *)malloc(sizeof(t_lex));
+    if (!new)
+        return (NULL);
+    new->literal = ft_strdup(str);
+    new->type = token;
+    new->index = i++;
+    new->next = NULL;
+    return (new);
+}

@@ -21,45 +21,46 @@ t_cmds  *cmds_lstlast(t_cmds *lst)
     return (lst);
 }
 
-void    cmds_lstaddback(t_cmds **lst, t_cmds *add)
+void    cmds_addback(t_cmds **lst, t_cmds *node)
 {
-    t_cmds  *tmp;
+    t_cmds	*tmp;
 
-    if (!lst || !add)
-        return ;
-    if (*lst == NULL)
-        *lst = add;
-    else
-    {
-        tmp = *lst;
-        while (tmp->next)
-            tmp = tmp->next;
-        tmp = tmp->next;
-    }
-    return ;
+	tmp = *lst;
+	if (*lst == NULL)
+	{
+		*lst = node;
+		return ;
+	}
+	while (tmp->next != NULL)
+		tmp = tmp->next;
+	tmp->next = node;
+	node->prev = tmp;
 }
 
-void    clean_cmds(t_cmds *cmds)
+void clean_cmds(t_cmds **cmds)
 {
-    int     i;
-    t_cmds  *tmp;
+    int i;
+    t_cmds *tmp;
 
-    while (cmds)
+    if (!cmds || !*cmds)
+        return ;
+    while (*cmds)
     {
-        tmp = cmds->next;
-        if (cmds->cmd)
+        i = 0;
+        tmp = (*cmds)->next;
+        if ((*cmds)->cmd)
         {
-            while (cmds->cmd[++i])
-                free(cmds->cmd[i]);
-            free(cmds->cmd);
+            while ((*cmds)->cmd[i])
+            {
+                free((*cmds)->cmd[i]);
+                i++;
+            }
+            free((*cmds)->cmd);
         }
-        if (cmds->infile != STDIN_FILENO)
-            close(cmds->infile);
-        if (cmds->outfile != STDOUT_FILENO)
-            close(cmds->outfile);
-        if (cmds->redirections)
-            free_lex(cmds->redirections);
-        free(cmds);
-        cmds = tmp;
+        if ((*cmds)->redirections)
+            lex_free(&(*cmds)->redirections);
+        free(*cmds);
+        *cmds = tmp;
     }
+    *cmds = NULL;
 }

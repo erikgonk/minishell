@@ -27,6 +27,13 @@ int	main(int argc, char **argv, char **envp)
 	return (0);
 }
 
+char    *clean_input(char *input)
+{
+    if (input)
+        free(input);
+    return (NULL);
+}
+
 void    mini_loop(t_data *data)
 {
     char    *input;
@@ -34,10 +41,10 @@ void    mini_loop(t_data *data)
     input = NULL;
     while (1)
     {
-        lex_free(&data->lexer);
-        clean_cmds(data->cmds);
-        input = clean_input(input);
         data->printed_error = 0;
+        lex_free(&data->lexer);
+        clean_cmds(&data->cmds);
+        input = clean_input(input);
         handle_signals(); //handle the main signals
         input = get_input(data);
         if (input[0] == '\0')
@@ -45,16 +52,9 @@ void    mini_loop(t_data *data)
         data->lexer = tokenizer(input);
         if (!data->lexer)
             continue ;
-        check_tokens(data, &data->lexer);
-        if (parser(data))
-            data->g_exit = execute(data); // updating the exit status w. the result from execute
+        if (check_tokens(data, &data->lexer))
+            parser(data);
+        data->g_exit = execute(data); // updating the exit status w. the result from execute
     }
     rl_clear_history();
-}
-
-char    *clean_input(char *input)
-{
-    if (input)
-        free(input);
-    return (NULL);
 }

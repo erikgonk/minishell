@@ -1,5 +1,6 @@
 #include "parser.h"
 
+//idk ab this function
 void    on_error(char *str, int fd, t_data *data)
 {
     fd_putstr_fd(str, fd);

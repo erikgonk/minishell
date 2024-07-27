@@ -74,7 +74,7 @@ static t_lex *make_token(int length, char *input, t_lex *tokens, t_data *data)
     t_lex *new;
 
     i = 0;
-    new = malloc(1, sizeof(t_lex));
+    new = malloc(sizeof(t_lex));
     if (!new)
         return (NULL);
     new->index = 0;

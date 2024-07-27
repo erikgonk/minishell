@@ -9,7 +9,6 @@
 /*   Updated: 2024/07/18 12:17:53 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "tokenizer.h"
 
 int  find_type(char *literal)
@@ -47,9 +46,9 @@ int token_length(char *input)
     int add = 1;
 
     if ((input[0] == C_LESS && input[1] == C_LESS) || (input[0] == C_GREAT && input[1] == C_GREAT))
-        return 2;
+        return (2);
     else if (input[0] == C_PIPE || input[0] == C_GREAT || input[0] == C_LESS)
-        return 1;
+        return (1);
     while (input[length] && input[length] != C_PIPE && input[length] != C_LESS && input[length] != C_GREAT && input[length] != ' ')
     {
         if (input[length] == C_SQUOTE || input[length] == C_DQUOTE)
@@ -58,7 +57,6 @@ int token_length(char *input)
             add = 1;
         length += add;
     }
-
     return (length);
 }
 
@@ -69,11 +67,7 @@ t_lex *fill_tokens(t_lex *tokens, char *input, int length)
 
     new = make_token(length, input, tokens, data);
     if (!new)
-    {
-        if (tokens)
-            lex_clear(tokens);
         return (NULL);
-    }
     if (tokens == NULL)
         tokens = new;
     else
@@ -101,7 +95,7 @@ t_lex	*tokenizer(char *input, t_data *data)
 		else
 		{
 			length = token_length(input);
-			tokens = fill_tokens(tokens, input, length);
+			tokens = fill_tokens(tokens, input, length, data);
 			last = lex_lstlast(tokens);
 			if (last->index = -1)
 			{

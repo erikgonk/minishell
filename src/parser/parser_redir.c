@@ -22,9 +22,9 @@ void    new_redir(t_lex *tmp, t_parser *parser)
     node = lex_new(tmp->next->literal, tmp->type);
     if (!node)
         return ;
-    lex_lstaddback(&parser->redirections, node);
-    lex_lstdelone(&parser->lexer, tmp->next->index);
-    lex_lstdelone(&parser->lexer, tmp->index);
+    lex_addback(&parser->redirections, node);
+    lex_delone(&parser->lexer, tmp->next->index);
+    lex_delone(&parser->lexer, tmp->index);
     parser->redir_count++;
 }
 

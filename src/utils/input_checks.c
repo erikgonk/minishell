@@ -1,3 +1,12 @@
+
+int	change_flag(int flag)
+{
+	if (flag == 0)
+		return (1);
+	else
+		return (0);
+}
+
 int	quotes(char *input, int *i, int flag, char c)
 {
 	if (input[*i] == c)
@@ -37,6 +46,7 @@ int	quote_checker(char *str)
 		return(1);
     return (0);
 }
+
 int	arg_count(char *str, char c)
 {
 	int	i;
@@ -69,7 +79,12 @@ int input_check(char *input, t_data *data)
     {
         printf("minish: syntax error: open quotes\n");
         data->g_exit = 2;
-        return (2);
+        return (1);
+    }
+    if (syntax_check(input))
+    {
+        data->g_exit = 1;
+        return (1);
     }
     if (arg_count(input, ' ') > 100) //idk how many arguments should be limit here 
     {

@@ -39,8 +39,7 @@ int    check_tokens(t_data *data, t_lex **lst)
     if ((*lst)->type == T_PIPE)
     {
         data->g_exit = 2;
-        printf("Mish: syntax error near unexpected token '|'\n");
-        mini_loop(data);
+        // idk what to do here printf("Mish: syntax error near unexpected token '|'\n");
         return (0);
     }
     while (*lst)
