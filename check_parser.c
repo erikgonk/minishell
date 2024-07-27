@@ -951,45 +951,53 @@ t_cmds  *cmds_lstlast(t_cmds *lst)
     return (lst);
 }
 
-void    cmds_addback(t_cmds **lst, t_cmds *add)
+void    cmds_addback(t_cmds **lst, t_cmds *node)
 {
-    t_cmds  *tmp;
+    t_cmds	*tmp;
 
-    if (!lst || !add)
-        return ;
-    if (*lst == NULL)
-        *lst = add;
-    else
-    {
-        tmp = *lst;
-        while (tmp->next)
-            tmp = tmp->next;
-        tmp->next = add;
-    }
-    return ;
+	tmp = *lst;
+	if (*lst == NULL)
+	{
+		*lst = node;
+		return ;
+	}
+	while (tmp->next != NULL)
+		tmp = tmp->next;
+	tmp->next = node;
+	node->prev = tmp;
 }
 
-void    clean_cmds(t_cmds *cmds)
+void clean_cmds(t_cmds **cmds)
 {
-    int     i;
-    t_cmds  *tmp;
+    int i;
+    t_cmds *tmp;
 
-    i = 0;
-    while (cmds)
+    if (!cmds || !*cmds)
+        return;
+
+    while (*cmds)
     {
-        tmp = cmds->next;
-        if (cmds->cmd)
+        i = 0;
+        tmp = (*cmds)->next;
+                if ((*cmds)->cmd)
         {
-            while (cmds->cmd[++i])
-                free(cmds->cmd[i]);
-            free(cmds->cmd);
+            while ((*cmds)->cmd[i])
+            {
+                free((*cmds)->cmd[i]);
+                i++;
+            }
+            free((*cmds)->cmd);
         }
-        if (cmds->redirections)
-            lex_free(&cmds->redirections);
-        free(cmds);
-        cmds = tmp;
+        if ((*cmds)->redirections)
+        {
+            lex_free(&(*cmds)->redirections);
+        }
+        free(*cmds);
+        *cmds = tmp;
     }
+    *cmds = NULL;
 }
+
 
 void    on_error(char *str, int fd, t_data *data)
 {
@@ -1037,7 +1045,7 @@ t_lex   *lex_new(char *str, int token)
     t_lex   *new;
     static int  i = 0;
 
-    new = (t_lex *)ft_calloc(1, sizeof(t_lex));
+    new = (t_lex *)malloc(sizeof(t_lex));
     if (!new)
         return (NULL);
     new->literal = ft_strdup(str);
@@ -1098,7 +1106,7 @@ t_cmds  *new_cmd(char **str, t_parser *parser)
 {
     t_cmds  *node;
 
-    node = (t_cmds *)ft_calloc(1, sizeof(t_cmds));
+    node = (t_cmds *)malloc(sizeof(t_cmds));
     if (!node)
         return (NULL);
     node->builtin = get_builtin(str[0]);
@@ -1113,7 +1121,7 @@ t_cmds  *create_cmd(t_parser *parser)
 {
     char    **str;
     int     arg_count;
-    int     pos;
+    int     i;
     t_lex   *tmp;
 
     add_redir(parser);
@@ -1121,19 +1129,19 @@ t_cmds  *create_cmd(t_parser *parser)
     str = (char **)malloc(sizeof(char *) * (arg_count + 1));
     if (!str)
         return (NULL);
-    pos = 0;
+    i = 0;
     tmp = parser->lexer;
-    while (tmp && arg_count > 0)
+    while (i < arg_count)
     {
-        if (tmp->type == T_WORD)
+        if (tmp->type == T_WORD && tmp->literal)
         {
-            str[pos++] = ft_strdup(tmp->literal);
+            str[i] = ft_strdup(tmp->literal);
             lex_delone(&parser->lexer, tmp->index);
             tmp = parser->lexer;
-            arg_count--;
         }
+        i++;
     }
-    str[pos] = NULL; //make sure this is the correct place to put it
+    str[i] = NULL;
     return (new_cmd(str, parser));
 }
 
@@ -1143,6 +1151,7 @@ int    parser(t_data *data)
     t_cmds      *node;
     t_parser    parser;
 
+    node = NULL;
     count_pipes(data->lexer, data);
     while (data->lexer)
     {
@@ -1308,8 +1317,14 @@ int	init_minishell(t_env *env, t_data *data, char **envp)
 	data->g_exit = 0;
     data->lexer = NULL;
     data->pipes = 0;
+    data->input = NULL;
     data->hdoc_count = 0;
     data->printed_error = 0;
+    data->cmds = NULL;
+    data->env = NULL;
+    data->parser = NULL;
+    data->pipes = 0;
+    data->pid = NULL;
     env->start = NULL;
     env->end = NULL;
     env->homedir = NULL;
@@ -1346,36 +1361,59 @@ char    *get_input(t_data *data)
     return (data->input);
 }
 
-void print_cmds(t_data *data) 
+void print_cmds(const t_data *data) 
 {
     t_cmds *tmp_cmd;
     t_lex *tmp_redir;
     int i;
-    
+
+    if (!data || !data->cmds)
+    {
+        printf("No commands to print.\n");
+        return;
+    }
+
     tmp_cmd = data->cmds;
     while (tmp_cmd) 
     {
-        i = 0; 
         printf("Command: ");
-        while (tmp_cmd->cmd && tmp_cmd->cmd[i]) 
+        if (tmp_cmd->cmd)
         {
-            printf("%s ", tmp_cmd->cmd[i]);
-            i++;
+            i = 0; 
+            while (tmp_cmd->cmd[i]) 
+            {
+                printf("%s ", tmp_cmd->cmd[i]);
+                i++;
+            }
+        }
+        else
+        {
+            printf("(No command)");
         }
         printf("\n");
+        
         printf("Builtin type: %i\n", tmp_cmd->builtin);
-        if (tmp_cmd->redirections) {
+
+        if (tmp_cmd->redirections) 
+        {
             printf("Redirections:\n");
             tmp_redir = tmp_cmd->redirections;
-            while (tmp_redir) {
+            while (tmp_redir) 
+            {
                 printf("  %s (Type: %d, Index: %d)\n", tmp_redir->literal, tmp_redir->type, tmp_redir->index);
                 tmp_redir = tmp_redir->next;
             }
         }
+        else
+        {
+            printf("(No redirections)\n");
+        }
+
         printf("\n");
         tmp_cmd = tmp_cmd->next;
     }
 }
+
 
 void    mini_loop(t_data *data)
 {
@@ -1386,7 +1424,7 @@ void    mini_loop(t_data *data)
     {
         data->printed_error = 0;
         lex_free(&data->lexer);
-        /*clean_cmds(data->cmds);*/
+        clean_cmds(&data->cmds);
         input = clean_input(input);
         input = get_input(data);
         if (input[0] == '\0')
@@ -1423,7 +1461,6 @@ int	main(int argc, char **argv, char **envp)
         printf("This program does not take arguments\n");
         exit(0);
     }
-
 	init_minishell(&env, &data, envp);
 	mini_loop(&data);
 	/*clean_shell(&env, &data);*/
