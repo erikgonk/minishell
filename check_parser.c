@@ -1102,20 +1102,35 @@ int get_builtin(char *str)
 		return (NO_BUILTIN);
 }
 
-t_cmds  *new_cmd(char **str, t_parser *parser)
+t_cmds *new_cmd(char **str, t_parser *parser)
 {
-    t_cmds  *node;
+    t_cmds *node;
 
-    node = (t_cmds *)malloc(sizeof(t_cmds));
+    node = (t_cmds *)ft_calloc(1, sizeof(t_cmds));
     if (!node)
-        return (NULL);
-    node->builtin = get_builtin(str[0]);
-    node->redirections = parser->redirections;
-    node->cmd = str;
+        return NULL;
+    if (str)
+    {
+        node->cmd = str;
+        if (str[0])
+            node->builtin = get_builtin(str[0]);
+        else
+            node->builtin = NO_BUILTIN;
+    }
+    else
+    {
+        node->cmd = NULL;
+        node->builtin = NO_BUILTIN;
+    }
+    if (parser)
+        node->redirections = parser->redirections;
+    else
+        node->redirections = NULL;
     node->prev = NULL;
     node->next = NULL;
     return (node);
 }
+
 
 t_cmds  *create_cmd(t_parser *parser)
 {
@@ -1142,6 +1157,11 @@ t_cmds  *create_cmd(t_parser *parser)
         i++;
     }
     str[i] = NULL;
+    if (i == 0)
+    {
+        free(str);
+        str = NULL;
+    }
     return (new_cmd(str, parser));
 }
 
