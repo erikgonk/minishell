@@ -46,6 +46,8 @@ int	cmds(t_data *data)
 		return (1);
 	// here doc
 	// builtin already executed, now there is at least a cmd, redir or pipe
+	if (data->lexer)
+		ft_innit_redirs(data);
 	data->g_exit = ft_childs(data, fd, pipe, kids);
 }
 
@@ -67,22 +69,6 @@ int	ft_start(t_data *data, t_exec *exec)
 	waitpid(pipex.pid1, NULL, -1);
 	close(exec.fd);
 	exit (0);
-}
-
-static char	**ft_get_path(char **e)
-{
-	char		**res;
-	int			i;
-
-	i = -1;
-	while (e[++i] && ft_strncmp("PATH", e[i], 4))
-	{
-		if (!e[i + 1])
-			perror(e[i]);
-	}
-	res = ft_split(e[i], ':');
-	*res += 5;
-	return (res);
 }
 
 char	*check_cmd(char **paths, char *argv)
