@@ -6,7 +6,7 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 16:06:47 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/25 12:40:55 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/29 19:07:01 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,24 +31,35 @@ int	ft_childs(t_data *data, int	fd, int pipe, char *kids)
 	}
 }
 
-int	cmds(t_data *data)
+void	ft_init_exec(t_exec *exec)
 {
-	int		fd;
-	int		pipe[2];
-	t_exec	*exec;
-	pid_t	*kids;
+	exec->i = -1;
+	exec->pipe[0] = 0;
+	exec->pipe[1] = 1;
+}
 
-	fd = -1;
-	pipe[0] = -1;
-	pipe[1] = -1;
+int	ft_redirs(t_data *data, t_exec *exec);
+
+int	cmds(t_data *data, t_data)
+{
+	t_exec	exec;
+	pid_t	*kids;
+	t_cmds	*cmds;
+
 	kids = (pid_t *)malloc(sizeof(pid_t) * ft_lst_size(data->cmds));
 	if (!kids)
 		return (1);
-	// here doc
-	// builtin already executed, now there is at least a cmd, redir or pipe
-	if (data->lexer)
-		ft_innit_redirs(data);
-	data->g_exit = ft_childs(data, fd, pipe, kids);
+	ft_init_exec(&exec);
+	while (cmds)
+	{
+		if (data->cmds->builtin && !data->cmds->redirections)
+			pipex->err = ft_builtins(data);
+		else if (data->cmds->redirections)
+			ft_redirs(data, &exec);
+		else
+			data->g_exit = ft_childs(data, pipe, kids);
+	}
+	return (data->g_exit);
 }
 
 

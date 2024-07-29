@@ -6,28 +6,20 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 12:13:37 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/25 17:56:53 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/29 18:56:25 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 #include "../../inc/exec.h"
 
-typedef struct s_childs
-{
-	pid_t			pid1;
-	int				fd;
-	int				tube[2];
-	struct t_childs	*next;
-}	t_childs;
-
 typedef struct s_exec
 {
 	char		*cmd;
 	char		**path;
-	s_childs	*childs;
+	char		**argv;
 	int			i;
-	int			err_status;
+	int			pipe[2];
 }	t_exec;
 
 static int	ft_builtins(t_data *data);
@@ -49,20 +41,15 @@ static int	ft_builtins(t_data *data);
 		data->g_exit(data);
 	else
 		return (127);
-	return (data->g_exit);
+	exit (data->g_exit);
 }
 
-int	ft_executor(t_data	*data, t_exec *exec)
+int	ft_executor(t_data	*data, t_exec exec)
 {
-	if (!data->cmds->next && data->cmds->builtin && data->cmds->redirections)
-		err = ft_builtins(data);
-	while (data->cmds)
-	{
-		if (!data->cmds->cmd || !data->cmds->cmd[exec->i])	
-			return (0);
-		else
-			data->g_exit = ft_cmds(data, exec);
-		data->cmds = data->cmds->next;
-	}
-		return (data->g_exit);
+	if (!data->cmds->next && data->cmds->builtin && !data->cmds->redirections)
+		data->g_exit = ft_builtins(data);// already exits
+//	if (heredoc)
+//		ft_heredoc(data);
+	data->g_exit = ft_cmds(data, exec);
+	return (data->g_exit);
 }
