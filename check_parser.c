@@ -107,7 +107,7 @@ void    free_tokens(t_lex *tokens);
 t_lex   *fill_tokens(t_lex *tokens, char *input, int length, t_data *data);
 int  find_type(char *literal);
 void    mini_loop(t_data *data);
-int set_env(t_env *env, char *var, char *str, int ow);
+int set_env(t_env *env, char *var, char *str);
 char    *get_env(char *var, t_env env);
 
 
@@ -367,58 +367,6 @@ void	*ft_calloc(size_t count, size_t size)
 	return (str);
 }
 
-static void update_pwd(t_env *env, char *var, char *str)
-{
-    if (!ft_strcmp(var, "PWD"))
-    {
-        if (env->pwd)
-            free(env->pwd);
-        if (str)
-            env->pwd = ft_strdup(str);
-        else
-            env->pwd = NULL;
-    }
-    if (!ft_strcmp(var, "OLDPWD"))
-    {
-        if (env->oldpwd)
-            free(env->oldpwd);
-        if (str)
-            env->oldpwd = ft_strdup(str);
-        else
-            env->oldpwd = NULL;
-    }
-}
-
-int  ow_and_str(t_node *tmp, char *str, t_env *env)
-{
-    free(tmp->str);
-    tmp->str = str;
-    update_pwd(env, tmp->var, str);
-    return (0);
-}
-
-int  ow_and_nostr(t_node *tmp, char *str, t_env *env)
-{
-    tmp->str = str;
-    update_pwd(env, tmp->var, str);
-    return (0);
-}
-
-int  no_ow(t_node *tmp, char *str, t_env *env)
-{
-    char    *cur_env;
-
-    cur_env = ft_strdup(tmp->str);
-    if (!cur_env)
-        return (1);
-    if (tmp->str)
-        free(tmp->str);
-    tmp->str = ft_strjoin(cur_env, str);
-    update_pwd(env, tmp->var, tmp->str);
-    free(cur_env);
-    free(str);
-    return (0);
-}
 
 char    *extract_str(char *envstr)
 {
@@ -465,9 +413,7 @@ char    *extract_var(char *envstr)
         }
         i++;
     }
-    end = i;
-    var = ft_substr(envstr, start, end);
-    return (var);
+    return (NULL);
 }
 
 t_node  *init_node(char *var, char *str)
@@ -502,7 +448,7 @@ void	ft_putstr_fd(char *s, int fd)
 	write(fd, s, ft_strlen(s));
 }
 
-int set_env(t_env *env, char *var, char *str, int ow)
+int set_env(t_env *env, char *var, char *str)
 {
     t_node *tmp;
 
@@ -511,18 +457,15 @@ int set_env(t_env *env, char *var, char *str, int ow)
     {
         if (!ft_strcmp(tmp->var, var))
         {
-            if (ow && tmp->str)
-                return (ow_and_str(tmp, str, env));
-            else if (ow)
-                return (ow_and_nostr(tmp, str, env));
-            else
-                return (no_ow(tmp, str, env));
+            free(tmp->str);
+            tmp->str = str;
+            return (0);
         }
         tmp = tmp->next;
     }
     tmp = init_node(ft_strdup(var), str);
     if (!tmp)
-        return (-1);
+        return (1);
     add_to_env(tmp, env);
     return (0);
 }
@@ -553,26 +496,27 @@ int set_standard_env(t_env *env, char *shlvl)
 {
     int i;
 
-    if (set_env(env, "OLDPWD", NULL, 1))
-        return (1);
+    i = 1;
+    if (set_env(env, "OLDPWD", NULL))
+        return (i);
     if (in_env("PWD", *env) && get_env("PWD", *env))
         env->pwd = ft_strdup(get_env("PWD", *env));
     if (in_env("OLDPWD", *env) && get_env("OLDPWD", *env))
         env->oldpwd = ft_strdup(get_env("OLDPWD", *env));
-    /*if (in_env("HOME", *env) && get_env("HOME", *env))
-        env->homedir = ft_strdup(get_env("HOME", *env));*/
+    if (in_env("HOME", *env) && get_env("HOME", *env))
+        env->homedir = ft_strdup(get_env("HOME", *env));
     if (!shlvl ||shlvl[0] == '-')
-        i = set_env(env, "SHLVL", "0", 1);
+        i = set_env(env, "SHLVL", "0");
     else if (ft_atoi(shlvl) >= 1000)
     {
         ft_putstr_fd("mish: warning: shell level (", 2);
         shlvl = ft_itoa(ft_atoi(shlvl) + 1);
         ft_putstr_fd(shlvl, 2);
         ft_putstr_fd(") too high, resetting to 1\n", 2);
-        i = set_env(env, "SHLVL", "1", 1);
+        i = set_env(env, "SHLVL", "1");
     }
     else
-        i = set_env(env, "SHLVL", ft_itoa(ft_atoi(get_env("SHLVL", *env)) + 1), 1); //increase current shlvl with one
+        i = set_env(env, "SHLVL", ft_itoa(ft_atoi(get_env("SHLVL", *env)) + 1)); //increase current shlvl with one
     return (i);
 }
 
@@ -973,13 +917,12 @@ void clean_cmds(t_cmds **cmds)
     t_cmds *tmp;
 
     if (!cmds || !*cmds)
-        return;
-
+        return ;
     while (*cmds)
     {
         i = 0;
         tmp = (*cmds)->next;
-                if ((*cmds)->cmd)
+        if ((*cmds)->cmd)
         {
             while ((*cmds)->cmd[i])
             {
@@ -989,9 +932,7 @@ void clean_cmds(t_cmds **cmds)
             free((*cmds)->cmd);
         }
         if ((*cmds)->redirections)
-        {
             lex_free(&(*cmds)->redirections);
-        }
         free(*cmds);
         *cmds = tmp;
     }
@@ -1402,7 +1343,7 @@ void print_cmds(const t_data *data)
             i = 0; 
             while (tmp_cmd->cmd[i]) 
             {
-                printf("%s ", tmp_cmd->cmd[i]);
+                printf("[%s] ", tmp_cmd->cmd[i]);
                 i++;
             }
         }
@@ -1428,7 +1369,6 @@ void print_cmds(const t_data *data)
         {
             printf("(No redirections)\n");
         }
-
         printf("\n");
         tmp_cmd = tmp_cmd->next;
     }
@@ -1453,7 +1393,7 @@ void    mini_loop(t_data *data)
             continue ;
         }
         data->lexer = tokenizer(input, data);
-                if (!data->lexer)
+        if (!data->lexer)
             continue ;
         if (check_tokens(data, &data->lexer))
             parser(data);
@@ -1486,24 +1426,3 @@ int	main(int argc, char **argv, char **envp)
 	/*clean_shell(&env, &data);*/
 	return (0);
 }
-/*
-int main()
-{
-    t_lex *tokens;
-    t_data data;
-
-    data.g_exit = 0;
-    tokens = tokenizer("<< ls | cat -e file > outfile |", &data);
-    check_tokens(&data, &tokens);
-    while (tokens)
-    {
-        printf("%i ", tokens->index);
-        printf("%s ", tokens->literal);
-        printf("%i ", tokens->type);
-        printf("error status: %i", data.g_exit);
-        printf("\n");
-        tokens = tokens->next;
-    }
-    return (0);
-}*/
-
