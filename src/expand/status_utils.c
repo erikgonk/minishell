@@ -31,8 +31,8 @@ int     get_status(char c, int current)
 void    no_quote_exp(t_data *data, char *str, t_expander *exp)
 {
     while (str[exp->pos] && (str[exp->pos] != C_DQUOTE || str[exp->pos] != C_SQUOTE))
-        exp.pos++;
-    exp.status = get_status(str[exp->pos], exp->status);
+        exp->pos++;
+    exp->status = get_status(str[exp->pos], exp->status);
     
 }
 
