@@ -15,7 +15,9 @@
 */
 void    double_quote_exp(t_data *data, char *str, t_expander *exp)
 {
-    if (str[pos] == C_DQUOTE)
+    char    *tmp;
+
+    if (str[exp->pos] == C_DQUOTE)
         exp->start = exp->pos++; //skipping the quote, we don`t want this in the expanded string
     while (str[exp->pos] && exp->status == 2) //iterating until quote is closed
     {
@@ -35,15 +37,17 @@ void    double_quote_exp(t_data *data, char *str, t_expander *exp)
         exp->pre_and_exp = ft_strjoin(exp->pre_exp, exp->exp_var);
         free(exp->exp_var);
         free(exp->pre_exp);
-        exp->tmp = ft_strjoin(exp->finished, exp->pre_and_exp);
+        tmp = ft_strjoin(exp->finished, exp->pre_and_exp);
         free(exp->finished);
-        exp->finished = ft_strdup(exp->tmp);
+        exp->finished = ft_strdup(tmp);
     }
 }
 
 //no expansion is carried out, but we have to remove the quotes --> [echo]['hello everyone'] should be [echo][hello everyone]
 void    single_quote_exp(t_data *data, char *str, t_expander *exp)
 {
+    char    *tmp;
+
     if (str[exp->pos] == C_SQUOTE)
         exp->start = exp->pos++;
     while (str[exp->pos] && exp->status == 1)
@@ -58,14 +62,16 @@ void    single_quote_exp(t_data *data, char *str, t_expander *exp)
         exp->pre_exp = ft_substr(str, exp->start, (exp->pos - exp->start)); //copying everything inside the single quotes (new string without single quotes)
         if (!exp->pre_exp)
             print_error(data, MALLOC);
-        exp->tmp = ft_strjoin(exp->finished, exp->pre_exp);
-        exp->finished = ft_strdup(exp->tmp);
-        free(exp->tmp);
+        tmp = ft_strjoin(exp->finished, exp->pre_exp);
+        exp->finished = ft_strdup(tmp);
+        free(tmp);
     }
 }
 
 void    no_quote_exp(t_data *data, char *str, t_expander *exp)
 {
+    char    *tmp;
+
     exp->start = exp->pos;
     if (str[exp->pos] == C_SQUOTE || str[exp->pos] == C_DQUOTE)
         exp->start = exp->start++;
@@ -87,8 +93,8 @@ void    no_quote_exp(t_data *data, char *str, t_expander *exp)
         exp->pre_and_exp = ft_strjoin(exp->pre_exp, exp->exp_var);
         free(exp->exp_var);
         free(exp->pre_exp);
-        exp->tmp = ft_strjoin(exp->finished, exp->pre_and_exp);
+        tmp = ft_strjoin(exp->finished, exp->pre_and_exp);
         free(exp->finished);
-        exp->finished = ft_strdup(exp->tmp);
+        exp->finished = ft_strdup(tmp);
     }   
 }
