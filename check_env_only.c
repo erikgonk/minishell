@@ -494,6 +494,7 @@ void	clean_env(t_env *env)
     free(env->homedir);
     free(env->pwd);
     free(env->oldpwd);
+
 }
 
 int main(int argc, char **argv, char **envp)
