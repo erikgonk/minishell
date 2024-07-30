@@ -1,4 +1,5 @@
-#include "expander.h"
+#include "../../inc/expander.h"
+#include "minishell.h"
 
 int     get_status(char c, int current)
 {
@@ -51,16 +52,21 @@ char    *expand_single(t_data *data, char *str)
     t_expander exp;
 
     exp.pos = 0;
-    exp.result = NULL;
+    exp.finished = NULL;
+    exp.start = 0;
+    exp.exp_var = NULL;
+    exp.pre_and_exp = NULL;
+    exp.pre_exp = NULL;
+    exp.var = NULL;
     exp.status = get_status(str[exp.pos], 0); //to get the current status (first char)
     while (str[exp.pos])
     {
-        if (status == 0)
+        if (exp.status == 0)
             no_quote_exp(data, str, &exp);
-        if (status == 1)
+        if (exp.status == 1)
             single_quote_exp(data, str, &exp);
-        if (status == 2)
+        if (exp.status == 2)
             double_quote_exp(data, str, &exp);
     }
-    return (exp.result);
+    return (exp.finished);
 }
