@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:33:44 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/23 12:34:09 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/30 16:16:06 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define BUILTINS_H
 
 # include "minishell.h"
+# include "exec.h"
 
 # define F_NONE 0
 # define F_ADD 1
@@ -44,7 +45,7 @@ char				**ft_sort_lst_exp(char **list, int i, int j, int pos);
 // UNSET
 int					ft_unset(t_data *cmd, int i);
 t_node 				*get_env_lst(char *to_find, t_node *lst);
-// static char				**ft_free_willy(char **split);
+char				**ft_free_willy(char **split);
 // static t_node	*ft_get_env_before_lst(char *to_find, t_node *lst, t_node env);
 // static int		ft_extra_unset(t_data *data, t_node *node, t_node node_bef);
 

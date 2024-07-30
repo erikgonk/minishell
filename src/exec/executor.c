@@ -6,21 +6,12 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 12:13:37 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/29 18:56:25 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/30 16:34:04 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 #include "../../inc/exec.h"
-
-typedef struct s_exec
-{
-	char		*cmd;
-	char		**path;
-	char		**argv;
-	int			i;
-	int			pipe[2];
-}	t_exec;
 
 static int	ft_builtins(t_data *data);
 {
@@ -50,6 +41,9 @@ int	ft_executor(t_data	*data, t_exec exec)
 		data->g_exit = ft_builtins(data);// already exits
 //	if (heredoc)
 //		ft_heredoc(data);
-	data->g_exit = ft_cmds(data, exec);
+
+//	if (data->lexer)
+//		ft_redirs(data, &exec);
+	data->g_exit = ft_cmds(data, &exec);
 	return (data->g_exit);
 }

@@ -6,11 +6,12 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:32:56 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/25 12:03:53 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/30 16:28:09 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/builtins.h"
+#include "../../inc/exec.h"
 
 void	ft_echo(t_data *data)
 {

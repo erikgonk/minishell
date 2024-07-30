@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 10:47:58 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/24 17:49:59 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/30 16:34:56 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,28 @@
 # define EXEC_H
 
 # include "minishell.h"
-
-# define ONE_CMD 0
-# define ONE_REDIR 1
-# define MORE_REDIR 2
-
-typedef struct s_childs
-{
-	pid_t			pid1;
-	int				fd;
-	int				tube[2];
-	struct t_childs	*next;
-}	t_childs;
+# include "builtins.h"
 
 typedef struct s_exec
 {
+	char		**env;
 	char		*cmd;
 	char		**path;
-	s_childs	*childs;
+	char		**argv;
 	int			i;
+	int			pipe[2];
+	int			fd;
 }	t_exec;
 
 // main
-int		exec(t_pipex pipex);
 char	*check_cmd(char **paths, char *argv);
 void	child(t_exec exec, char **argv, char **env);
+
+// cmd
+int			cmds(t_data *data, t_exec *exec);
+void		ft_init_exec(t_exec *exec);
+int			ft_env_to_cmd(t_node *env, t_exec *exec, int size, int i);
+int			ft_count_list_elems_str(t_node *env);
+static int	ft_lst_size(t_cmds *cmd);
 
 #endif

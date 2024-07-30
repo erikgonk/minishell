@@ -6,7 +6,7 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 16:47:55 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/16 17:26:30 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/30 16:31:16 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,86 @@
 # include <stdio.h>
 // libft 
 # include "../src/libft/inc/libft.h"
-// execv
-# include "exec.h"
+// exec
+//# include "exec.h"
 // builtins
-# include "builtins.h"
+//# include "builtins.h"
 
-// main
+/*-----------------Enums------------------*/
+typedef enum e_token
+{
+	T_PIPE = 1,
+	T_REDIR_IN,
+	T_HEREDOC,
+	T_REDIR_OUT,
+	T_APPEND,
+	T_WORD,
+}   t_token;
+
+typedef enum e_builtin
+{
+    PWD = 1,
+    ECHO,
+    CD,
+    EXPORT,
+    UNSET,
+    ENV,
+    EXIT,
+}   e_builtin;
+
+/*--------------Structures----------------*/
+typedef struct s_lex
+{
+	enum e_token	type; //type of token
+	char			*literal; //the string literal (eg. "cat -e")
+	int				index; //position in the linked list
+	struct s_lex	*next;
+}	t_lex;
+
+typedef struct s_parser
+{
+    t_lex   *lexer;
+    t_lex   *redirections;
+    int     redir_count;
+}   t_parser;
+
+typedef struct s_cmds
+{
+    char            **cmd; //the full command with its flags
+    enum e_builtin  builtin; //builtin spesification 
+    t_lex           *redirections; //structure with redirection information (type of redir and the corresponding file name)
+    struct s_cmds   *next;
+    struct s_cmds   *prev;
+}   t_cmds;
+
+typedef struct s_node
+{
+    char    *var;
+    char    *str;
+    struct s_node   *next;
+}   t_node;
+
+typedef struct s_env
+{
+    t_node      *start;
+    t_node      *end;
+    char        *pwd;
+    char        *old_pwd;
+    char        *homedir; //for cd ~
+}   t_env;
+
+typedef struct s_data
+{
+    char        *input; // users input string
+    t_lex       *lexer; // pointer to the linked list of tokens
+    t_cmds      *cmds; //pointer to the command linked list
+    t_parser    *parser; // pointer to the parser util structure
+    t_env       *env; //pointer to the environment list
+    int         hdoc_count; // How many heredocs are present in the input
+    int         *pid; // Pointer to array of the pids
+    int         g_exit; // "global" return error number
+    int         printed_error; //to check whether an error message has already been printed (syntax errors)
+    int         pipes; // NUmber of pipes present to know for how many child processes needed
+}   t_data;
 
 #endif

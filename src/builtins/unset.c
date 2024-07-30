@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 17:46:30 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/25 12:02:13 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/30 16:03:55 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static t_node	*ft_get_env_before_lst(char *to_find, t_node *lst, t_node env)
 	return (NULL);
 }
 
-static char	**ft_free_willy(char **split)
+char	**ft_free_willy(char **split)
 {
 	int		i;
 
