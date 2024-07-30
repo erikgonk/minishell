@@ -15,30 +15,31 @@ int set_standard_env(t_env *env, char *shlvl)
 {
     int i;
 
-    if (set_env(env, "OLDPWD", NULL, 1))
-        return (1);
+    i = 1;
+    if (set_env(env, "OLDPWD", NULL))
+        return (i);
     if (in_env("PWD", *env) && get_env("PWD", *env))
         env->pwd = ft_strdup(get_env("PWD", *env));
     if (in_env("OLDPWD", *env) && get_env("OLDPWD", *env))
         env->oldpwd = ft_strdup(get_env("OLDPWD", *env));
     if (in_env("HOME", *env) && get_env("HOME", *env))
         env->homedir = ft_strdup(get_env("HOME", *env));
-    if (!shlvl || shlvl[0] == '-')
-        i = set_env(env, "SHLVL", "0", 1);
+    if (!shlvl ||shlvl[0] == '-')
+        i = set_env(env, "SHLVL", "0");
     else if (ft_atoi(shlvl) >= 1000)
     {
-        ft_putstr_fd("mish: warning: shell level (");
+        ft_putstr_fd("mish: warning: shell level (", 2);
         shlvl = ft_itoa(ft_atoi(shlvl) + 1);
-        ft_putstr_fd(shlvl);
-        ft_putstr_fd(") too high, resetting to 1\n");
-        i = set_env(env, "SHLVL", "1", 1);
+        ft_putstr_fd(shlvl, 2);
+        ft_putstr_fd(") too high, resetting to 1\n", 2);
+        i = set_env(env, "SHLVL", "1");
     }
     else
-        i = set_env(env, "SHLVL", ft_itoa(ft_atoi(get_env("SHLVL, *env")) + 1), 1); //increase current shelvl with one
+        i = set_env(env, "SHLVL", ft_itoa(ft_atoi(get_env("SHLVL", *env)) + 1)); //increase current shlvl with one
     return (i);
 }
 
-int set_env(t_env *env, char *var, char *str, int ow)
+int set_env(t_env *env, char *var, char *str)
 {
     t_node *tmp;
 
@@ -47,18 +48,16 @@ int set_env(t_env *env, char *var, char *str, int ow)
     {
         if (!ft_strcmp(tmp->var, var))
         {
-            if (ow && tmp->str)
-                return (ow_and_str(tmp, str, env));
-            else if (ow)
-                return (ow_and_nostr(tmp, str, env));
-            else
-                return (no_ow(tmp, str, env));
+            free(tmp->str);
+            tmp->str = str;
+            return (0);
         }
         tmp = tmp->next;
     }
-    tmp = make_node(ft_strdup(var), str);
-    if (add_node_to_env(env, tmp))
-        return (-1);
+    tmp = init_node(ft_strdup(var), str);
+    if (!tmp)
+        return (1);
+    add_to_env(tmp, env);
     return (0);
 }
 

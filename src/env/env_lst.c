@@ -43,15 +43,16 @@ char    *extract_var(char *envstr)
     char    *var;
 
     i = 0;
+    start = 0;
     while (envstr[i])
     {
         if (envstr[i + 1] == '=')
         {
-            end = i;
+            end = i + 1;
             var = ft_substr(envstr, start, end);
             if (!var)
                 return (NULL);
-            return (str);
+            return (var);
         }
         i++;
     }
@@ -75,15 +76,16 @@ t_node  *init_node(char *var, char *str)
 
 void    add_to_env(t_node *node, t_env *env)
 {
-    t_node  *tmp;
-
-    if (!(env->start)) //check whether this is the first node in t_node
-        env->start = node; // if yes, set it as the start node in env
-    env->end = node; // set the new node as the end node (since we add to the back)
-    tmp = env->start;  // iterate through the t_node list in order to find the last node
-    while (tmp->next)
-        tmp = tmp->next;
-    tmp->next = node; //set the last nodes next pointer to the current node (new last)
+    if (!env->start)
+    {
+        env->start = node;
+        env->end = node;
+    }
+    else
+    {
+        env->end->next = node;
+        env->end = node;
+    }
 }
 
 int    transform_env(t_env *env, char **envp)
@@ -93,6 +95,7 @@ int    transform_env(t_env *env, char **envp)
     char    *var;
     char    *str;
 
+    i = 0;
     while (envp[i])
     {
         var = extract_var(envp[i]);
