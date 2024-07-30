@@ -80,9 +80,6 @@ typedef struct s_cmds
 {
     char            **cmd; //the full command with its flags
     enum e_builtin  builtin; //builtin spesification 
-    int             hdoc; //file descriptor for current command if hdoc
-    int             infile;
-    int             outfile;
     t_lex           *redirections; //structure with redirection information (type of redir and the corresponding file name)
     struct s_cmds   *next;
     struct s_cmds   *prev;
