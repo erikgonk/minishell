@@ -1,36 +1,43 @@
-#include "expander.h"
-
+#include "../../inc/expander.h"
+#include "minishell.h"
+/**
+ * typedef struct s_expander
+{
+    char    *pre_and_exp;
+    char    *finished;
+    char    *exp_var;
+    char    *pre_exp;
+    char    *var;
+    int     pos;
+    int     start;
+    int     status;
+}   t_expander;
+*/
 void    double_quote_exp(t_data *data, char *str, t_expander *exp)
 {
     if (str[pos] == C_DQUOTE)
         exp->start = exp->pos++; //skipping the quote, we don`t want this in the expanded string
     while (str[exp->pos] && exp->status == 2) //iterating until quote is closed
     {
-        exp->status = get_status(str[exp->pos])
-        if (str[exp->pos] == '$')
+        exp->status = get_status(str[exp->pos]);
+        if (str[exp->pos] == '$' || exp->status != 2)
             break ;
         exp->pos++; 
     }
     if (exp->start != exp->pos)
     {
-        exp->sub = ft_substr(str, exp->start, (exp->pos - exp->start)); //save string until the '$' symbol
-        if (!exp->sub)
+        exp->pre_exp = ft_substr(str, exp->start, (exp->pos - exp->start)); //save string until the '$' symbol
+        if (!exp->pre_exp)
             print_error(data, NULL);
-        if (check_invalid_chars(str, exp->sub)) //checking whether there are any invalid characters for expansion/if var does not exist
-            exp->expanded = ft_strdup(exp->sub); // then just keeping the string unexpanded
-        else
-            exp->expanded = expand_var(data, exp->sub); //expand the variable if it exists and store in expanded string
-        if (!exp->expanded)
-            print_error(data, MALLOC);
-        free (exp->sub);
-        if (exp->finished) // if something is already stored in finished, we free it before storing something else there
-            free(exp->finished);
-        exp->finished = ft_strjoin(exp->tmp, exp->expanded); //join the tmp string from before with the now newly expanded part of string
-        if (!exp->finished)
-            print_error(data, MALLOC);
-        free(exp->tmp);
-        exp->tmp = ft_strdup(exp->finished); //update the tmp variable with the whole finished string ready for next iteration/expansion if we have multiple
-        free(exp->expanded);
+        exp->var = find_var(exp, str, data);
+        exp->exp_var = expand_var(exp->var);
+        free(exp->var);
+        exp->pre_and_exp = ft_strjoin(exp->pre_exp, exp->exp_var);
+        free(exp->exp_var);
+        free(exp->pre_exp);
+        exp->tmp = ft_strjoin(exp->finished, exp->pre_and_exp);
+        free(exp->finished);
+        exp->finished = ft_strdup(exp->tmp);
     }
 }
 
@@ -71,29 +78,23 @@ void    no_quote_exp(t_data *data, char *str, t_expander *exp)
     while (str[exp->pos] && exp->status == 0) //iterating until quote is closed
     {
         exp->pos++;
-        exp->status = get_status(str[exp->pos])
-        if (str[exp->pos] == '$')
+        exp->status = get_status(str[exp->pos]);
+        if (str[exp->pos] == '$' || exp->status != 0)
             break ; 
     }
     if (exp->start != exp->pos)
     {
-        exp->sub = ft_substr(str, exp->start, (exp->pos - exp->start)); //save string until the '$' symbol
-        if (!exp->sub)
+        exp->pre_exp = ft_substr(str, exp->start, (exp->pos - exp->start)); //save string until the '$' symbol
+        if (!exp->pre_exp)
             print_error(data, NULL);
-        if (check_invalid_chars(str, exp->sub)) //checking whether there are any invalid characters for expansion/if var does not exist
-            exp->expanded = ft_strdup(exp->sub); // then just keeping the string unexpanded
-        else
-            exp->expanded = expand_var(data, exp->sub); //expand the variable if it exists and store in expanded string
-        if (!exp->expanded)
-            print_error(data, MALLOC);
-        free (exp->sub);
-        if (exp->finished) // if something is already stored in finished, we free it before storing something else there
-            free(exp->finished);
-        exp->finished = ft_strjoin(exp->tmp, exp->expanded); //join the tmp string from before with the now newly expanded part of string
-        if (!exp->finished)
-            print_error(data, MALLOC);
-        free(exp->tmp);
-        exp->tmp = ft_strdup(exp->finished); //update the tmp variable with the whole finished string ready for next iteration/expansion if we have multiple
-        free(exp->expanded);
-    }
+        exp->var = find_var(exp, str, data);
+        exp->exp_var = expand_var(exp->var);
+        free(exp->var);
+        exp->pre_and_exp = ft_strjoin(exp->pre_exp, exp->exp_var);
+        free(exp->exp_var);
+        free(exp->pre_exp);
+        exp->tmp = ft_strjoin(exp->finished, exp->pre_and_exp);
+        free(exp->finished);
+        exp->finished = ft_strdup(exp->tmp);
+    }   
 }
