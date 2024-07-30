@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:27:05 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/30 16:27:15 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/30 19:16:50 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,21 @@ void	close_pipes(int fd[2])
 	close(fd[1]);
 }
 
-t_node	*ft_get_path(t_data *data, char **cmd)
+char	*ft_get_cmd(t_data *data, t_cmds *cmd)
 {
         t_node  *lst;
+		if (access(cmd->cmd[0], X_OK) == 0)
+			return (cmd->cmd[0]);
         lst = get_env_lst("PATH", data->env->start);
-        if (!lst)
+        if (!lst || !lst->str)
         {
-                ft_printf("bash: %s: No such file or directory\n", cmd[1], 2);
-                return (127);
+                ft_printf("bash: %s: No such file or directory\n", cmd->cmd[1], 2);
+                exit (127);
         }
-        return (lst);
+        return (lst->str);
+}
+
+char	*ft_get_path(t_data *data, t_cmds *cmd)
+{
+	// save args here
 }

@@ -6,145 +6,85 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 16:06:47 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/30 17:05:45 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/30 19:16:01 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 #include "../../inc/exec.h"
 
-static int	ft_lst_size(t_cmds *cmd)
+void	ft_middle_cmd(t_data *data, t_cmds *cmd, t_exec *exec)
 {
-	int		i;
+	exex->fd = dup(exec->p[0]);// reads info from file before
+	close_pipes(exec->p);
+	pipe(exec->p);// creates again p[0] & p[1]
+	dup2(exec->fd, 0);// reads from fd (where the info has been saved)
+	close(exec->fd);
+	dup2(p[1], 1);// writes in the pipe
+	close_pipes(exec->p);
+}	
 
-	i = -1;
-	while (cmd && ++i > -42)
-		cmd = cmd->next;
-	return (i);
-}
-
-int	ft_childs(t_data *data, int	fd, int pipe, char *kids);
-int	ft_builtins(t_data *data);
-
-int	ft_count_list_elems_str(t_node *env)
+int	ft_innit_cmd(t_data *data, t_cmds *cmd, t_exec *exec)
 {
-	int		i;
-
-	i = 0;
-	while (env)
+	if (!cmd->prev)
 	{
-		if (env->str)
-			i++;
-		env = env->next;
+		dup2(exec->p[1], 1);// writes in the pipe
+		close_pipes(exec->p);
 	}
-	return (i);
+	else if (cmd->next)
+		ft_middle_cmd(data, cmd, exec);
+	else
+	{
+		dup2(exec->p[0], 0);// writes in the pipe
+		close_pipes(exec->p);
+	}
 }
 
-int	ft_env_to_cmd(t_node *env, t_exec *exec, int size, int i)
-{
-	char		*tmp;
+int	ft_inni_builtin(t_data *data, t_cmds *cmd, t_exec *exec);
 
-	if (!env)
-		return (1);
-	exec->env = ft_calloc(size, sizeof(char *));
-	while (env)
+int	ft_childs(t_data *data, t_cmds *cmd, t_exec *exec)
+{
+	pid_t		pid;
+
+	pid = fork();
+	if (pid == 0)
 	{
-		if (env->str)
+		if (!cmd->cmd[0])
+			exit (0);
+		ft_innit_cmd(data, cmd, exex);
+		if (cmd->builtin)
 		{
-			tmp = ft_strjoin(env->var, "=");
-			if (!tmp)
-				return (1);
-			exec->env[i] = ft_strjoin(tmp, env->str);
-			if (!exec->env[i])
-				return (free(tmp), ft_free_willy(exec->env), 1);
-			free(tmp);
+			ft_inni_builtin(data, cmd, exec);
+			exit (data->g_exit);
 		}
-		env = env->next;
+		exec->cmd = ft_get_cmd(data, cmd);// error controled in the function
+		exec->path = ft_get_path(data, cmd);
+		execve(exec->cmd, exec->path, exec->env);
+		exit (data->g_exit);
 	}
-	return (0);
-}
-
-void	ft_init_exec(t_exec *exec)
-{
-	exec->i = -1;
-	exec->pipe[0] = 0;
-	exec->pipe[1] = 1;
+	return (pid);
 }
 
 int	cmds(t_data *data, t_exec *exec)
 {
-	pid_t	*kids;
-	t_cmds	*cmds;
+	int		i;
+	pid_t	*kids;// para buscar la salida del ultimo child
+	t_cmds	*cmd;
 
+	i = -1;
 	kids = ft_calloc(ft_lst_size(data->cmds), sizeof(pid_t));
 	if (!kids)
 		return (1);
 	ft_init_exec(exec);
-	while (cmds)
+	if (ft_env_to_cmd(data->env->start, exec, ft_count_list_elems_str(data->env->start), -1) == 1)// saves env in exec->env
+		break ;// exit??? ---> mirar que hacer cuando la funcion de error
+	while (cmd)
 	{
-		if (ft_env_to_cmd(data->env->start, exec, ft_count_list_elems_str(data->env->start), -1) == 1)
-			break ;// mirar que hacer cuando la funcion de error
-		if (data->cmds->builtin && !data->cmds->redirections)
-			data->g_exit = ft_builtins(data);
-		else
-			data->g_exit = ft_childs(data, pipe, kids);
+		kids[++i] = ft_childs(data, cmd, exec);
+		cmd = cmd->next;
 	}
-	free(kids);
+//	ft_find_exit_status(data, kids); --> data to count how many childs (cmds) are & kids to get it
+	close_pipes(exec->p);
 // free exec
-	return (data->g_exit);
+	return (free(kids), data->g_exit);
 }
-
-
-
-
-/*
-int	ft_start(t_data *data, t_exec *exec)
-{
-	exec.paths = ft_get_path(env);
-	exec.fd = open(argv[1], O_RDONLY);
-	if (exec.fd < 0)
-		perror("argv[1]");
-	if (pipe(exec.tube) < 0)
-		perror("Pipe Function");
-	exec.pid1 = fork();
-	if (exec.pid1 == 0)
-		child(exec, argv, env);
-	waitpid(pipex.pid1, NULL, -1);
-	close(exec.fd);
-	exit (0);
-}
-
-char	*check_cmd(char **paths, char *argv)
-{
-	char		*tmp;
-	char		*cmd;
-
-	while (*paths)
-	{
-		tmp = ft_strjoin(*paths, "/");
-		cmd = ft_strjoin(tmp, argv);
-		free(tmp);
-		if (access(cmd, 0) == 0)
-			return (cmd);
-		free(cmd);
-		paths++;
-	}
-	return (NULL);
-}
-
-void	child(t_exec exec, char **argv, char **env)
-{
-	dup2(exec.tube[1], 1);
-	close(exec.tube[0]);
-	close(exec.tube[1]);
-	dup2(exec.fd, 0);
-	close(exec.fd);
-	exec.cmd_args = ft_split(argv[2], ' ');
-	if (exec.cmd_args[0] && (access(exec.cmd_args[0], X_OK) == 0))
-		exec.cmd = exec.cmd_args[0];
-	else
-		exec.cmd = check_cmd(exec.paths, exec.cmd_args[0]);
-	if (!exec.cmd)
-		exit ((ft_fd_printf(2, "%s: cmd not found\n", argv[2]) * 0) + 1);
-	execve(exec.cmd, exec.cmd_args, env);
-}*/
