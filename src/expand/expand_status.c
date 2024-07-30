@@ -55,19 +55,13 @@ void    single_quote_exp(t_data *data, char *str, t_expander *exp)
     }
     if (exp->start != exp->pos)
     {
-        exp->sub = ft_substr(str, exp->start, (exp->pos - exp->start)); //copying everything inside the single quotes (new string without single quotes)
-        if (!exp->sub)
+        exp->pre_exp = ft_substr(str, exp->start, (exp->pos - exp->start)); //copying everything inside the single quotes (new string without single quotes)
+        if (!exp->pre_exp)
             print_error(data, MALLOC);
-        if (exp->finished) //freeing the finished string if exist
-            free(exp->finished);
-        exp->finished = ft_strjoin(exp->tmp, exp->sub); // updating the finished string by joining the tmp with the new string
-        if (!exp->finished)
-            print_error(data, MALLOC);
-        free(exp->sub);
+        exp->tmp = ft_strjoin(exp->finished, exp->pre_exp);
+        exp->finished = ft_strdup(exp->tmp);
         free(exp->tmp);
-        exp->tmp = ft_strdup(exp->finished); //updating temporary variable to get ready for next expansion
     }
-    
 }
 
 void    no_quote_exp(t_data *data, char *str, t_expander *exp)
