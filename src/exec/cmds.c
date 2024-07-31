@@ -15,12 +15,12 @@
 
 void	ft_middle_cmd(t_data *data, t_cmds *cmd, t_exec *exec)
 {
-	exex->fd = dup(exec->p[0]);// reads info from file before
+	exec->fd = dup(exec->p[0]);// reads info from file before
 	close_pipes(exec->p);
 	pipe(exec->p);// creates again p[0] & p[1]
 	dup2(exec->fd, 0);// reads from fd (where the info has been saved)
 	close(exec->fd);
-	dup2(p[1], 1);// writes in the pipe
+	dup2(exec->p[1], 1);// writes in the pipe
 	close_pipes(exec->p);
 }	
 
@@ -38,6 +38,7 @@ int	ft_innit_cmd(t_data *data, t_cmds *cmd, t_exec *exec)
 		dup2(exec->p[0], 0);// writes in the pipe
 		close_pipes(exec->p);
 	}
+	return (0);
 }
 
 int	ft_inni_builtin(t_data *data, t_cmds *cmd, t_exec *exec);
@@ -51,14 +52,13 @@ int	ft_childs(t_data *data, t_cmds *cmd, t_exec *exec)
 	{
 		if (!cmd->cmd[0])
 			exit (0);
-		ft_innit_cmd(data, cmd, exex);
+		ft_innit_cmd(data, cmd, exec);
 		if (cmd->builtin)
 		{
 			ft_inni_builtin(data, cmd, exec);
 			exit (data->g_exit);
 		}
 		exec->cmd = ft_get_cmd(data, cmd);// error controled in the function
-		exec->path = ft_get_path(data, cmd);
 		execve(exec->cmd, cmd->cmd, exec->env);
 		exit (data->g_exit);
 	}

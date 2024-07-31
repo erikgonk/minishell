@@ -45,5 +45,8 @@ int	ft_executor(t_data	*data, t_exec exec)
 //	if (data->lexer)
 //		ft_redirs(data, &exec);
 	data->g_exit = ft_cmds(data, &exec);
+	ft_free_willy(exec->env);
+	ft_free_willy(exec->paths);
+	free(cmd);
 	return (data->g_exit);
 }

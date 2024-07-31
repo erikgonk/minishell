@@ -19,8 +19,11 @@ void	close_pipes(int fd[2])
 	close(fd[1]);
 }
 
-char	*ft_get_cmd(t_data *data, t_cmds *cmd)
+char	*ft_get_cmd(t_data *data, t_cmds *cmd, t_exec *exec)
 {
+		int			i;
+
+		i = -1;
         t_node  *lst;
 		if (access(cmd->cmd[0], X_OK) == 0)
 			return (cmd->cmd[0]);
@@ -30,5 +33,13 @@ char	*ft_get_cmd(t_data *data, t_cmds *cmd)
                 ft_printf("bash: %s: No such file or directory\n", cmd->cmd[1], 2);
                 exit (127);
         }
-        return (lst->str);
+		exec->paths = ft_split(lst->str, ':');
+		if (!exec->paths)
+			exit (127);
+		while (exec->paths[++i])
+		{
+			if (access(exec->paths[i], 0) == 0)
+				return (exec->paths[i]);
+		}
+        return (NULL);
 }

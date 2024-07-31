@@ -19,6 +19,7 @@
 typedef struct s_exec
 {
 	char		**env;
+	char		**paths;
 	char		*cmd;
 	int			p[2];
 	int			fd;
