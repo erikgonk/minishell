@@ -39,7 +39,7 @@ static void	ft_add_replace_str_env(t_env *env, char **cmd, char *str, int flag)/
 	t_node	*node = NULL;
 	char	*tmp = NULL;
 
-	*tmp = ft_strchr((const char *)cmd[1][0], '=');
+	*tmp = ft_strchr(cmd[1], '=');
 	if (!*tmp + 1)// var=
 		node->str = "";
 	else if (flag == F_CREATE)// var=str
@@ -78,51 +78,51 @@ static void	ft_create_env(t_env *env, char **cmd, char *str, int flag)// (var=st
 	free(tmp);
 }
 
-static int	ft_separate_export(t_env *env, char **cmd, char *str, int flag)
+static int	ft_separate_export(t_env *env, t_data *data, char *str, int flag)
 {
 	int		err;
+	char	**cmd;
 
 	err = 0;
+	cmd = ft_split(data->cmds->cmd[1], '+');
 	if (flag == F_NONE && !get_env_lst(str, env->start))// var NOT exist
-		err = ft_create_env(env, NULL, str, flag);
+		ft_create_env(env, NULL, str, flag);
 	else if (flag == F_NONE)// var exist
 		return (0);
 	else if (flag != F_NONE && !get_env_lst(cmd[0], env->start))// (var=str && var+=str && var=) Not exist
-		err = ft_create_env(env, cmd, str, flag);
+		ft_create_env(env, cmd, str, flag);
 	else// (var=str && var+=str && var=) exist
-		err = ft_add_replace_str_env(env, cmd, str, flag);
+		ft_add_replace_str_env(env, cmd, str, flag);
 	if (cmd)
 		ft_free_willy(cmd);
 	return (err);
 }
 
-int	ft_export(t_data *cmd)
+int	ft_export(t_data *data)
 {
-	char	**cmd = NULL;
+	char	**str = NULL;
 	char	*tmp = NULL;
-	int		err;
 	int		i;
 
-	err = 0;
 	i = 0;
-	if (ft_parsing(cmd->cmds->cmd[i]) != 1 && !cmd->cmds->cmd[i + 1])
+	if (ft_parsing(data->cmds->cmd[i]) != 1 && !data->cmds->cmd[i + 1])
 		ft_print_export(cmd);
-	while (cmd->cmds->cmd[++i])
+	while (data->cmds->cmd[++i])
 	{
-		if (ft_parsing(cmd->cmds->cmd[i]) == 1)
+		if (ft_parsing(data->cmds->cmd[i]) == 1)
 			return (1);
-		*tmp = ft_strchr(cmd->cmds->cmd[i], '+');
-		if (cmd->cmds->cmd[i][0] == '=')
+		*tmp = ft_strchr(data->cmds->cmd[i], '+');
+		if (data->cmds->cmd[i][0] == '=')
 		{
-			ft_pritf("mish: export: `%s': not a valid identifier\n", cmd->cmds->cmd[i], 0);
+			ft_pritf("mish: export: `%s': not a valid identifier\n", data->cmds->cmd[i], 0);
 			return (free(tmp), 1);
 		}
 		if (*tmp + 1 == '=')// var+=str & var+=
-			err = ft_separate_export(cmd->env, ft_split(str, "+"), cmd->cmds->cmd[i], F_ADD);
-		else if (!ft_strchr(cmd->cmds->cmd[i], '='))// var
-			err = ft_separate_export(cmd->env, NULL, cmd->cmds->cmd[i], F_NONE);
+			data->g_exit= ft_separate_export(data->env, data, data->cmds->cmd[i], F_ADD);
+		else if (!ft_strchr(data->cmds->cmd[i], '='))// var
+			data->g_exit = ft_separate_export(data->env, NULL, data->cmds->cmd[ia], F_NONE);
 		else
-			err = ft_separate_export(cmd->env, ft_split(str, "+"), cmd->cmds->cmd[i], F_CREATE);// var=str & var
+			data->g_exit = ft_separate_export(cmd->env, data, data->cmds->cmd[i], F_CREATE);// var=str & var
 		free(tmp);
 	}
 	return (free(tmp), err);
