@@ -6,7 +6,7 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 16:06:47 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/31 12:02:56 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/31 15:55:05 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	ft_innit_cmd(t_data *data, t_cmds *cmd, t_exec *exec)
 		ft_middle_cmd(data, cmd, exec);
 	else
 	{
-		dup2(exec->p[0], 0);// writes in the pipe
+		dup2(exec->p[0], 0);// writes in the terminal
 		close_pipes(exec->p);
 	}
 	return (0);
@@ -52,15 +52,16 @@ int	ft_childs(t_data *data, t_cmds *cmd, t_exec *exec)
 	{
 		if (!cmd->cmd[0])
 			exit (0);
-		ft_innit_cmd(data, cmd, exec);
+		else if (data->cmds->next)
+			ft_innit_cmd(data, cmd, exec);
 		if (cmd->builtin)
 		{
 			ft_inni_builtin(data, cmd, exec);
 			exit (data->g_exit);
 		}
-		exec->cmd = ft_get_cmd(data, cmd);// error controled in the function
+		exec->cmd = ft_get_cmd(data, cmd, exec);// error controled in the function
 		execve(exec->cmd, cmd->cmd, exec->env);
-		exit (data->g_exit);
+		exit (1);
 	}
 	return (pid);
 }
@@ -87,7 +88,7 @@ void	ft_find_exit_status(t_data *data, pid_t *kids, int	size)
 		data->g_exit = WEXITSTATUS(res);
 }
 
-int	cmds(t_data *data, t_exec *exec)
+int	ft_cmds(t_data *data, t_exec *exec)
 {
 	int		i;
 	pid_t	*kids;// para buscar la salida del ultimo child
@@ -99,14 +100,13 @@ int	cmds(t_data *data, t_exec *exec)
 		return (1);
 	ft_init_exec(exec);
 	if (ft_env_to_cmd(data->env->start, exec, ft_count_list_elems_str(data->env->start), -1) == 1)// saves env in exec->env
-		break ;// exit??? ---> mirar que hacer cuando la funcion de error
+		exit (1);
 	while (cmd)
 	{
 		kids[++i] = ft_childs(data, cmd, exec);
 		cmd = cmd->next;
 	}
-	ft_find_exit_status(data, kids, (ft_lst_size(data->cmds) - 1));// --> data to count how many childs (cmds) are & kids to get it
+	ft_find_exit_status(data, kids, (ft_lst_size(data->cmds) - 1));
 	close_pipes(exec->p);
-// free exec
-	return (free(kids), data->g_exit);
+	return (free(kids), 0);
 }

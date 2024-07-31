@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:33:44 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/30 16:16:06 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/31 15:52:27 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@
 
 
 // CD
-int		ft_cd(t_data *data, int i);
+int		ft_cd(t_data *data);
 
 // ENV
-int		ft_env(t_env env);
+int		ft_env(t_data *data);
 void	ft_print_env(t_node env);
 
 // EXPORT
-int					ft_export(t_data *cmd, int i);
+int					ft_export(t_data *cmd);
 // static int		ft_separate_export(t_env *env, char **cmd, char *str, int flag);
 // static void		ft_create_env(t_env *env, char **cmd, char *str, int flag);
 // static void		ft_add_replace_str_env(t_env *env, char **cmd, char *str, int flag);
@@ -43,7 +43,7 @@ char				**ft_sort_lst_exp(char **list, int i, int j, int pos);
 // static char		**ft_swap(char **list, int pos, int i);
 
 // UNSET
-int					ft_unset(t_data *cmd, int i);
+int					ft_unset(t_data *cmd);
 t_node 				*get_env_lst(char *to_find, t_node *lst);
 char				**ft_free_willy(char **split);
 // static t_node	*ft_get_env_before_lst(char *to_find, t_node *lst, t_node env);
@@ -53,7 +53,9 @@ char				**ft_free_willy(char **split);
 int					ft_pwd(t_data *data);
 
 // ECHO
+int					ft_echo(t_data *data);
 
 // EXIT
+int					ft_exit(t_data *data);
 
 #endif
