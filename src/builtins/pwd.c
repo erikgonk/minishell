@@ -16,24 +16,24 @@
 int	ft_pwd(t_data *data)
 {
 	char		*pwd;
-	t_env		*aux;
+	t_node		*aux;
 
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 	{
-		aux = get_env_lst("PWD", aux->env->start);
+		aux = get_env_lst("PWD", data->env->start);
 		if (aux)
 		{
 			ft_printf("%s\n", aux->str, 1);
 			return (0);
 		}
-		else if (aux->pwd)
+		else if (data->env->pwd)
 		{
-			ft_printf("%s\n", aux->pwd, 1);
+			ft_printf("%s\n", data->env->pwd, 1);
 			return (0);
 		}
 		return (1);
 	}
 	printf("%s\n", pwd);
-	return (free(pwd, 0);
+	return (free(pwd), 0);
 }
