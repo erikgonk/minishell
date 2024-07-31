@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:06:33 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/30 17:08:18 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/31 11:26:37 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 void	ft_init_exec(t_exec *exec)
 {
 	exec->i = -1;
-	exec->pipe[0] = 0;
-	exec->pipe[1] = 1;
+	exec->p[0] = 0;
+	exec->p[1] = 1;
 }
 
 int	ft_lst_size(t_cmds *cmd)

@@ -6,7 +6,7 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 16:06:47 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/30 19:16:01 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/31 12:02:56 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,32 @@ int	ft_childs(t_data *data, t_cmds *cmd, t_exec *exec)
 		}
 		exec->cmd = ft_get_cmd(data, cmd);// error controled in the function
 		exec->path = ft_get_path(data, cmd);
-		execve(exec->cmd, exec->path, exec->env);
+		execve(exec->cmd, cmd->cmd, exec->env);
 		exit (data->g_exit);
 	}
 	return (pid);
+}
+
+void	ft_find_exit_status(t_data *data, pid_t *kids, int	size)
+{
+	int		res;
+	int		status;
+	int		i;
+	pid_t	process;
+
+	res = 0;
+	status = 0;
+	i = 0;
+	while (i++ < size)
+	{
+		process = waitpid(-1, &status, 0);
+		if (process == kids[size])
+			res = status;
+	}
+	if (kids)
+		free(kids);
+	if (WEXITSTATUS(res))
+		data->g_exit = WEXITSTATUS(res);
 }
 
 int	cmds(t_data *data, t_exec *exec)
@@ -83,7 +105,7 @@ int	cmds(t_data *data, t_exec *exec)
 		kids[++i] = ft_childs(data, cmd, exec);
 		cmd = cmd->next;
 	}
-//	ft_find_exit_status(data, kids); --> data to count how many childs (cmds) are & kids to get it
+	ft_find_exit_status(data, kids, (ft_lst_size(data->cmds) - 1));// --> data to count how many childs (cmds) are & kids to get it
 	close_pipes(exec->p);
 // free exec
 	return (free(kids), data->g_exit);

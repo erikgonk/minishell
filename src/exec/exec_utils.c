@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:27:05 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/30 19:16:50 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/31 11:39:43 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,4 @@ char	*ft_get_cmd(t_data *data, t_cmds *cmd)
                 exit (127);
         }
         return (lst->str);
-}
-
-char	*ft_get_path(t_data *data, t_cmds *cmd)
-{
-	// save args here
 }
