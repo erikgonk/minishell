@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 15:20:13 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/25 11:59:40 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/31 17:02:33 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,19 @@
 
 static int	ft_parsing(char *str)
 {
+	int		i;
+
 	i = -1;
 	while (str[++i])
 	{
-		else if (!ft_isalpha(str[i]) && str[i] != '_' && str[i] != '=')
+		if (!ft_isalpha(str[i]) && str[i] != '_' && str[i] != '=')
 		{
 			if (str[i] == '+' && str[i + 1] == '=')
 			{
 				i++;
 				continue ;
 			}
-			ft_printf("bash: export: `%s': not a valid identifier\n", str)
+			ft_printf("bash: export: `%s': not a valid identifier\n", str, 2);
 			return (1);
 		}
 	}
@@ -37,21 +39,21 @@ static void	ft_add_replace_str_env(t_env *env, char **cmd, char *str, int flag)/
 	t_node	*node = NULL;
 	char	*tmp = NULL;
 
-	*tmp = ft_strchr(cmd->cmds->cmd[i], '=');
+	*tmp = ft_strchr((const char *)cmd[1][0], '=');
 	if (!*tmp + 1)// var=
 		node->str = "";
 	else if (flag == F_CREATE)// var=str
 		node->str = cmd[1];
 	else if (flag == F_ADD)// var+=str
-		ft_strlcat(node->str, cmd[1], ft_strlen(cmdp1[1]));
+		ft_strlcat(node->str, cmd[1], ft_strlen(cmd[1]));
 	free(tmp);
 }
 
 static void	ft_create_env(t_env *env, char **cmd, char *str, int flag)// (var=str && var+=str && var && var=) Not exist
 {
-	t_node		*node;
+	t_node		*node = NULL;
 	
-	node = malloc(sizeof(struct node));
+	node = malloc(sizeof(t_node));
 	env->end->next = node;
 	node->next = NULL;
 	if (cmd)// var=str && var+=str
@@ -62,7 +64,7 @@ static void	ft_create_env(t_env *env, char **cmd, char *str, int flag)// (var=st
 	}
 	char	*tmp;
 
-	*tmp = ft_strchr(cmd->cmds.cmd[i], '=');
+	*tmp = ft_strchr(cmd[1], '=');
 	// var
 	if (!*tmp + 1 && tmp)
 	{
@@ -116,11 +118,11 @@ int	ft_export(t_data *cmd)
 			return (free(tmp), 1);
 		}
 		if (*tmp + 1 == '=')// var+=str & var+=
-			err = ft_separate_export(cmd->env, ft_split(str, "+"), cmd->cmds->cmd[i], F_ADD)
+			err = ft_separate_export(cmd->env, ft_split(str, "+"), cmd->cmds->cmd[i], F_ADD);
 		else if (!ft_strchr(cmd->cmds->cmd[i], '='))// var
 			err = ft_separate_export(cmd->env, NULL, cmd->cmds->cmd[i], F_NONE);
 		else
-			err = ft_separate_export(cmd->env, ft_split(str, "+"), cmd->cmds->cmd[i], F_CREATE)// var=str & var=
+			err = ft_separate_export(cmd->env, ft_split(str, "+"), cmd->cmds->cmd[i], F_CREATE);// var=str & var
 		free(tmp);
 	}
 	return (free(tmp), err);

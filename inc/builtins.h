@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:33:44 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/31 15:52:27 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/31 16:43:50 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,12 @@
 # define F_ADD 1
 # define F_CREATE 2
 
-
 // CD
 int		ft_cd(t_data *data);
 
 // ENV
 int		ft_env(t_data *data);
-void	ft_print_env(t_node env);
+void	ft_print_env(t_node *env);
 
 // EXPORT
 int					ft_export(t_data *cmd);

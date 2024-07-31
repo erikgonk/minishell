@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:27:05 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/31 16:00:20 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/31 16:34:40 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	*ft_get_cmd(t_data *data, t_cmds *cmd, t_exec *exec)
         lst = get_env_lst("PATH", data->env->start);
         if (!lst || !lst->str)
         {
-				ft_printf("bash: %s: No such file or directory\n", cmd->cmd[0], 2);
+				ft_printf("minish: %s: No such file or directory\n", cmd->cmd[0], 2);
     			exit (127);
         }
 		exec->path = ft_split(lst->str, ':');
@@ -57,6 +57,6 @@ char	*ft_get_cmd(t_data *data, t_cmds *cmd, t_exec *exec)
 				return (exec->path[i]);
 			// I gotta check when you cannot access a file
 		}
-		ft_printf("bash: %s: No such file or directory\n", cmd->cmd[0], 2);
+		ft_printf("minish: %s: No such file or directory\n", cmd->cmd[0], 2);
 		exit (127);
 }

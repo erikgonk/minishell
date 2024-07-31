@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 17:47:31 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/29 11:36:50 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/07/31 16:39:35 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	ft_env(t_data *data)
 {
 	if (!data->env->start || !data->env->start->var || !data->env->start->str)
 	{
-		ft_printf("env: not found", 1);
+		ft_printf("minish: env: not found", 2);
 		return (1);
 	}
 	ft_print_env(data->env->start);
