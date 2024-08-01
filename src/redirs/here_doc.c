@@ -13,7 +13,4 @@
 #include "../../inc/minishell.h"
 #include "../../inc/exec.h"
 
-int	ft_here_doc(t_data *data)
-{
-
-}
+int	ft_here_doc(t_data *data);
