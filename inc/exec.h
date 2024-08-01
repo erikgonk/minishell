@@ -24,6 +24,8 @@ typedef struct s_exec
 	char		*cmd;
 	int			p[2];
 	int			fd;
+	t_cmds		*cmd_t;
+	t_env		*env_t;
 }	t_exec;
 
 // exec
