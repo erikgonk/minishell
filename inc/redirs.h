@@ -17,4 +17,10 @@
 # include "builtins.h"
 # include "exec.h"
 
+// redirs
+void    ft_redirections(t_data *data, t_cmds *cmd, t_exec *exec);
+void    ft_redir_to_fd(t_data *data, t_cmds *cmd, int *fd, t_exec *exec);
+void    ft_middle_redirs(t_data *data, t_cmds *cmd, int *fd, t_exec *exec);
+void    ft_inni_redirs(t_lex *lex);
+
 #endif

@@ -15,6 +15,7 @@
 
 # include "minishell.h"
 # include "builtins.h"
+# include "redirs.h"
 
 typedef struct s_exec
 {
@@ -46,8 +47,5 @@ int			ft_env_to_cmd(t_node *env, t_exec *exec, int size, int i);
 void	close_pipes(int fd[2]);
 void	ft_get_cmd_help(t_exec *exec, t_cmds *cmd, int i);
 char	*ft_get_cmd(t_data *data, t_cmds *cmd, t_exec *exec);
-// redirs
-void	ft_inni_builtin(t_lex *lex);
-
 
 #endif

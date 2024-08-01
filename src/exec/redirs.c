@@ -40,7 +40,7 @@ void	ft_inni_redirs(t_lex *lex)
 	}
 }
 
-void	ft_middle_cmd(t_data *data, int *fd, t_exec *exec)
+void	ft_middle_redirs(t_data *data, t_cmds *cmd, int *fd, t_exec *exec)
 {
 	exec->fd = dup(exec->p[0]);// reads info from file before
 	close_pipes(exec->p);
@@ -50,7 +50,7 @@ void	ft_middle_cmd(t_data *data, int *fd, t_exec *exec)
 	close(*fd);
 }	
 
-void	ft_redir_to_fd(t_data *data, int *fd, t_exec *exec)
+void	ft_redir_to_fd(t_data *data, t_cmds *cmd, int *fd, t_exec *exec)
 {
 	if (!cmd->prev)
 	{
@@ -59,7 +59,7 @@ void	ft_redir_to_fd(t_data *data, int *fd, t_exec *exec)
 		close(*fd);
 	}
 	else if (cmd->next)
-		ft_middle_cmd(data, fd, exec);
+		ft_middle_redirs(data, cmd, fd, exec);
 	else
 	{
 		dup2(*fd, 0);// writes in the terminal
@@ -68,7 +68,7 @@ void	ft_redir_to_fd(t_data *data, int *fd, t_exec *exec)
 	}
 }
 
-void	ft_redirections(t_data *data, t_cmds *cmd, t_exec exec)
+void	ft_redirections(t_data *data, t_cmds *cmd, t_exec *exec)
 {
 	if (cmd->redirections)
 		ft_inni_redirs(cmd->redirections);// open fds on the cmd lst
@@ -78,9 +78,9 @@ void	ft_redirections(t_data *data, t_cmds *cmd, t_exec exec)
 		if (cmd->redirections->err == -1)
 			return ;
 		if (cmd->redirections->type == T_REDIR_IN || cmd->redirections->type == T_HEREDOC)
-			ft_redir_to_fd(data, &cmd->redirections->in, exec);
+			ft_redir_to_fd(data, cmd, &cmd->redirections->in, exec);
 		else if (cmd->redirections->type == T_REDIR_OUT || cmd->redirections->type == T_APPEND)
-			ft_redir_to_fd(data, &cmd->redirections->out, exec);
+			ft_redir_to_fd(data, cmd, &cmd->redirections->out, exec);
 		cmd->redirections = cmd->redirections->next;
 	}
 }
