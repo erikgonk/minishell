@@ -6,7 +6,7 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 16:06:47 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/31 15:55:05 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/01 13:28:54 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ int	ft_innit_cmd(t_data *data, t_cmds *cmd, t_exec *exec)
 	}
 	return (0);
 }
-
-int	ft_inni_builtin(t_data *data, t_cmds *cmd, t_exec *exec);
 
 int	ft_childs(t_data *data, t_cmds *cmd, t_exec *exec)
 {
@@ -91,7 +89,7 @@ void	ft_find_exit_status(t_data *data, pid_t *kids, int	size)
 int	ft_cmds(t_data *data, t_exec *exec)
 {
 	int		i;
-	pid_t	*kids;// para buscar la salida del ultimo child
+	pid_t	*kids;// to look for the exit status
 	t_cmds	*cmd;
 
 	i = -1;
@@ -99,7 +97,7 @@ int	ft_cmds(t_data *data, t_exec *exec)
 	if (!kids)
 		return (1);
 	ft_init_exec(exec);
-	if (ft_env_to_cmd(data->env->start, exec, ft_count_list_elems_str(data->env->start), -1) == 1)// saves env in exec->env
+	if (ft_env_to_cmd(data->env->start, exec, ft_count_list_elems_str(data->env->start), -1) == 1)
 		exit (1);
 	while (cmd)
 	{
