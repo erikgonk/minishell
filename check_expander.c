@@ -307,7 +307,7 @@ void    double_quote_exp(char *str, t_expander *exp, t_env *env)
             break ;
         exp->pos++; 
     }
-    if (exp->start != exp->pos)
+    if (str[exp->pos] == '$')
     {
         exp->pre_exp = ft_substr(str, exp->start, (exp->pos - exp->start)); //save string until the '$' symbol
         if (!exp->pre_exp)
@@ -363,7 +363,7 @@ void    no_quote_exp(char *str, t_expander *exp, t_env *env)
 
     exp->start = exp->pos;
     if (str[exp->pos] == '\'' || str[exp->pos] == '\"')
-        exp->start = exp->start++;
+        exp->start++;
     while (str[exp->pos] && exp->status == 0) //iterating until quote is closed
     {
         exp->status = get_status(str[exp->pos], 0);
@@ -371,7 +371,7 @@ void    no_quote_exp(char *str, t_expander *exp, t_env *env)
             break ;
         exp->pos++;
     }
-    if (exp->start != exp->pos)
+    if (str[exp->pos] == '$')
     {
         exp->pre_exp = ft_substr(str, exp->start, (exp->pos - exp->start)); //save string until the '$' symbol
         if (!exp->pre_exp)
@@ -621,7 +621,7 @@ int main(int argc, char **argv, char **envp)
     env.oldpwd = NULL;
     env.pwd = NULL;
     transform_env(&env, envp);
-    expanded = expand_single("\"hello \'$USER\' $SHLVL\"", &env);
+    expanded = expand_single("\"'$HELLO' $USER\"", &env);
     /*t_node *lst;
     lst = env.start;
     while (lst)
