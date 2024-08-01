@@ -289,7 +289,7 @@ char    *find_var(char  *str, t_expander *exp)
         exp->pos++;
     length = exp->pos - start;
     if (length <= 0)
-        return (NULL);
+        return (ft_strdup(""));
     return(ft_substr(str, start, length));
 }
 
@@ -621,7 +621,7 @@ int main(int argc, char **argv, char **envp)
     env.oldpwd = NULL;
     env.pwd = NULL;
     transform_env(&env, envp);
-    expanded = expand_single("\"'$HELLO' $USER\"", &env);
+    expanded = expand_single("\"$!\'", &env);
     /*t_node *lst;
     lst = env.start;
     while (lst)
