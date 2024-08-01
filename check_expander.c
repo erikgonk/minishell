@@ -335,7 +335,8 @@ void    single_quote_exp(char *str, t_expander *exp)
     char    *tmp;
 
     if (str[exp->pos] == '\'')
-        exp->start = exp->pos++;
+        exp->pos++;
+    exp->start = exp->pos;
     while (str[exp->pos] && exp->status == 1)
     {
         exp->pos++;
@@ -620,7 +621,7 @@ int main(int argc, char **argv, char **envp)
     env.oldpwd = NULL;
     env.pwd = NULL;
     transform_env(&env, envp);
-    expanded = expand_single("\'hello \"$USER\" $SHLVL\'", &env);
+    expanded = expand_single("\"hello \'$USER\' $SHLVL\"", &env);
     /*t_node *lst;
     lst = env.start;
     while (lst)
