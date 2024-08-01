@@ -6,7 +6,7 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 16:06:47 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/01 13:28:54 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/01 17:19:10 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	ft_middle_cmd(t_data *data, t_cmds *cmd, t_exec *exec)
 	close_pipes(exec->p);
 }	
 
-int	ft_innit_cmd(t_data *data, t_cmds *cmd, t_exec *exec)
+int	ft_forking(t_data *data, t_cmds *cmd, t_exec *exec)
 {
 	if (!cmd->prev)
 	{
@@ -50,11 +50,13 @@ int	ft_childs(t_data *data, t_cmds *cmd, t_exec *exec)
 	{
 		if (!cmd->cmd[0])
 			exit (0);
+		if (cmd->redirections)
+			ft_redirection(data, cmd, exec);
 		else if (data->cmds->next)
-			ft_innit_cmd(data, cmd, exec);
+			ft_forking(data, cmd, exec);
 		if (cmd->builtin)
 		{
-			ft_inni_builtin(data, cmd, exec);
+			ft_builtins(data, cmd);
 			exit (data->g_exit);
 		}
 		exec->cmd = ft_get_cmd(data, cmd, exec);// error controled in the function
@@ -96,7 +98,7 @@ int	ft_cmds(t_data *data, t_exec *exec)
 	kids = ft_calloc(ft_lst_size(data->cmds), sizeof(pid_t));
 	if (!kids)
 		return (1);
-	ft_init_exec(exec);
+	ft_init_exec(exec);// initializes t_exec
 	if (ft_env_to_cmd(data->env->start, exec, ft_count_list_elems_str(data->env->start), -1) == 1)
 		exit (1);
 	while (cmd)

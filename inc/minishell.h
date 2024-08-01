@@ -6,7 +6,7 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 16:47:55 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/30 16:31:16 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/01 17:28:30 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,9 @@ typedef struct s_lex
 	enum e_token	type; //type of token
 	char			*literal; //the string literal (eg. "cat -e")
 	int				index; //position in the linked list
+	int				in;// < && <<
+	int				out;// > && >>
+	int				err;// error opening the redir -> err = -1
 	struct s_lex	*next;
 }	t_lex;
 
