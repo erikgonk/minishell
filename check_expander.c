@@ -269,6 +269,8 @@ char    *expand_var(char *var, t_env *env)
     t_node  *tmp;
 
     tmp = env->start;
+    if (var[0] == '?')
+        return (ft_strdup("0")); //return g_exit here, but I dont have the data structure in this checker file
     while (tmp)
     {
         if (!ft_strcmp(tmp->var, var) && tmp->str)
@@ -285,6 +287,11 @@ char    *find_var(char  *str, t_expander *exp)
 
     exp->pos++;
     start = exp->pos;
+    if (str[exp->pos] == '?')
+    {
+        exp->pos++;
+        return (ft_strdup("?"));
+    }
     while (ft_isalnum(str[exp->pos]) || str[exp->pos] == '_')
         exp->pos++;
     length = exp->pos - start;
@@ -621,7 +628,7 @@ int main(int argc, char **argv, char **envp)
     env.oldpwd = NULL;
     env.pwd = NULL;
     transform_env(&env, envp);
-    expanded = expand_single("\'\'$USER", &env);
+    expanded = expand_single("$?$?$?$?$?$?", &env);
     /*t_node *lst;
     lst = env.start;
     while (lst)
