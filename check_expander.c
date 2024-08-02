@@ -628,7 +628,7 @@ int main(int argc, char **argv, char **envp)
     env.oldpwd = NULL;
     env.pwd = NULL;
     transform_env(&env, envp);
-    expanded = expand_single("$?$?$?$?$?$?", &env);
+    expanded = expand_single("$?heyyl", &env);
     /*t_node *lst;
     lst = env.start;
     while (lst)
