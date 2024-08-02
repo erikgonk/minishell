@@ -13,8 +13,4 @@
 #include "../../inc/builtins.h"
 #include "../../inc/exec.h"
 
-void	ft_echo(t_data *data)
-{
-	t_exec		*exec;
-
-}
+void	ft_echo(t_exec *exec);

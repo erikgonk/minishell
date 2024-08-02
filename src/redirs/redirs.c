@@ -70,17 +70,17 @@ void	ft_redir_to_fd(t_data *data, t_cmds *cmd, int *fd, t_exec *exec)
 
 void	ft_redirections(t_data *data, t_cmds *cmd, t_exec *exec)
 {
-	if (cmd->redirections)
-		ft_inni_redirs(cmd->redirections);// open fds on the cmd lst
-	while (cmd->redirections)
+	if (exec->cmd_t->redirections)
+		ft_inni_redirs(exec->cmd_t->redirections);// open fds on the cmd lst
+	while (exec->cmd_t->redirections)
 	{
 		// see how to delete the fd before this
-		if (cmd->redirections->err == -1)
+		if (exec->cmd_t->redirections->err == -1)
 			return ;
-		if (cmd->redirections->type == T_REDIR_IN || cmd->redirections->type == T_HEREDOC)
-			ft_redir_to_fd(data, cmd, &cmd->redirections->in, exec);
-		else if (cmd->redirections->type == T_REDIR_OUT || cmd->redirections->type == T_APPEND)
-			ft_redir_to_fd(data, cmd, &cmd->redirections->out, exec);
-		cmd->redirections = cmd->redirections->next;
+		if (exec->cmd_t->redirections->type == T_REDIR_IN || exec->cmd_t->redirections->type == T_HEREDOC)
+			ft_redir_to_fd(data, exec->cmd_t, &exec->cmd_t->redirections->in, exec);
+		else if (exec->cmd_t->redirections->type == T_REDIR_OUT || exec->cmd_t->redirections->type == T_APPEND)
+			ft_redir_to_fd(data, exec->cmd_t, &exec->cmd_t->redirections->out, exec);
+		exec->cmd_t->redirections = exec->cmd_t->redirections->next;
 	}
 }

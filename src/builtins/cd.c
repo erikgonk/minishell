@@ -13,7 +13,7 @@
 #include "../../inc/builtins.h"
 #include "../../inc/minishell.h"
 
-static char	*ft_change_env_path(t_data *data, t_cmds *cmd, char *get)
+static char	*ft_change_env_path(t_exec *exec, t_cmds *cmd, char *get)
 {
 	char		*path;
 	t_node		*aux;
@@ -23,10 +23,10 @@ static char	*ft_change_env_path(t_data *data, t_cmds *cmd, char *get)
 	path = getcwd(NULL, 0);
 	if (!path)
 	{
-		env = get_env_lst("PWD", data->env->start);
+		env = get_env_lst("PWD", exec->env_t->start);
 		path = env->str;
 	}
-	aux = get_env_lst(get, data->env->start);
+	aux = get_env_lst(get, exec->env_t->start);
 	if (!aux)
 		return (NULL);
 	tmp = aux->str;
@@ -34,30 +34,30 @@ static char	*ft_change_env_path(t_data *data, t_cmds *cmd, char *get)
 	return (free(tmp), path);
 }
 
-int	ft_cd(t_data *data)
+int	ft_cd(t_exec *exec)
 {
 	char		*path;
 	t_node		*tmp;
 
-	ft_change_env_path(data, data->cmds, data->env->old_pwd);
-	if (!data->cmds->cmd[1] || (data->cmds->cmd[1][0] == '~' && ft_strlen(data->cmds->cmd[1]) == 1))
+	ft_change_env_path(exec, exec->cmd_t, exec->env_t->old_pwd);
+	if (!exec->cmd_t->cmd[1] || (exec->cmd_t->cmd[1][0] == '~' && ft_strlen(exec->cmd_t->cmd[1]) == 1))
 	{
-		tmp = get_env_lst("HOME", data->env->start);
+		tmp = get_env_lst("HOME", exec->env_t->start);
 		path = tmp->str;
 	}
 	else
-		path = data->cmds->cmd[1];
+		path = exec->cmd_t->cmd[1];
 	if (!path)
 	{
 		ft_printf("mish: cd: HOME not set", 2);
 		return (1);
 	}
-	if (data->cmds->cmd[1][0] == '-')
+	if (exec->cmd_t->cmd[1][0] == '-')
 	{
 		chdir(path);
 		return (0);
 	}
 	chdir(path);
-	ft_change_env_path(data, data->cmds, data->env->pwd);
+	ft_change_env_path(exec, exec->cmd_t, exec->env_t->pwd);
 	return (0);
 }

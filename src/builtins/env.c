@@ -23,13 +23,13 @@ void    ft_print_env(t_node *env)
 	}
 }
 
-int	ft_env(t_data *data)
+int	ft_env(t_exec *exec)
 {
-	if (!data->env->start || !data->env->start->var || !data->env->start->str)
+	if (!exec->env_t->start || !exec->env_t->start->var || !exec->env_t->start->str)
 	{
 		ft_printf("minish: env: not found", 2);
 		return (1);
 	}
-	ft_print_env(data->env->start);
+	ft_print_env(exec->env_t->start);
 	return (0);
 }

@@ -98,27 +98,27 @@ static int	ft_separate_export(t_env *env, t_data *data, char *str, int flag)
 	return (err);
 }
 
-int	ft_export(t_data *data)
+int	ft_export(t_exec *exec)
 {
 	char	**str = NULL;
 	char	*tmp = NULL;
 	int		i;
 
 	i = 0;
-	if (ft_parsing(data->cmds->cmd[i]) != 1 && !data->cmds->cmd[i + 1])
+	if (ft_parsing(exec->cmd_t->cmd[i]) != 1 && !exec->cmd_t->cmd[i + 1])
 		ft_print_export(cmd);
-	while (data->cmds->cmd[++i])
+	while (exec->cmd_t->cmd[++i])
 	{
-		if (ft_parsing(data->cmds->cmd[i]) == 1)
+		if (ft_parsing(exec->cmd_t->cmd[i]) == 1)
 			return (1);
-		*tmp = ft_strchr(data->cmds->cmd[i], '+');
-		if (data->cmds->cmd[i][0] == '=')
+		tmp = ft_strchr(exec->cmd_t->cmd[i], '+');
+		if (exec->cmd_t->cmd[i][0] == '=')
 		{
-			ft_pritf("mish: export: `%s': not a valid identifier\n", data->cmds->cmd[i], 0);
+			ft_pritf("mish: export: `%s': not a valid identifier\n", exec->cmd_t->cmd[i], 0);
 			return (free(tmp), 1);
 		}
 		if (*tmp + 1 == '=')// var+=str & var+=
-			data->g_exit= ft_separate_export(data->env, data, data->cmds->cmd[i], F_ADD);
+			data->g_exit= ft_separate_export(exec->env_t, exec, exec->cmd_t->cmd[i], F_ADD);
 		else if (!ft_strchr(data->cmds->cmd[i], '='))// var
 			data->g_exit = ft_separate_export(data->env, NULL, data->cmds->cmd[ia], F_NONE);
 		else

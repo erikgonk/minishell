@@ -16,6 +16,7 @@
 # include "minishell.h"
 # include "builtins.h"
 # include "redirs.h"
+# include "exec.h"
 
 typedef struct s_exec
 {
@@ -24,12 +25,14 @@ typedef struct s_exec
 	char		*cmd;
 	int			p[2];
 	int			fd;
+	int			g_exit;
+	t_lex       *lexer;
 	t_cmds		*cmd_t;
 	t_env		*env_t;
 }	t_exec;
 
 // exec
-static int	ft_builtins(t_data *data, t_cmds *cmd);
+static int	ft_builtins(t_exec *exec);
 int	ft_executor(t_data	*data);
 
 // cmd

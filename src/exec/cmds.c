@@ -48,19 +48,19 @@ int	ft_childs(t_data *data, t_cmds *cmd, t_exec *exec)
 	pid = fork();
 	if (pid == 0)
 	{
-		if (!cmd->cmd[0])
+		if (!exec->cmd_t->cmd[0])
 			exit (0);
-		if (cmd->redirections)
-			ft_redirection(data, cmd, exec);
-		else if (data->cmds->next)
-			ft_forking(data, cmd, exec);
-		if (cmd->builtin)
+		if (exec->cmd_t->redirections)
+			ft_redirections(data, exec->cmd_t, exec);
+		else if (exec->cmd_t->next)
+			ft_forking(data, exec->cmd_t, exec);
+		if (exec->cmd_t->builtin)
 		{
-			ft_builtins(data, cmd);
+			data->g_exit = ft_builtins(exec);
 			exit (data->g_exit);
 		}
-		exec->cmd = ft_get_cmd(data, cmd, exec);// error controled in the function
-		execve(exec->cmd, cmd->cmd, exec->env);
+		exec->cmd = ft_get_cmd(data, exec->cmd_t, exec);// error controled in the function
+		execve(exec->cmd, exec->cmd_t->cmd, exec->env);
 		exit (1);
 	}
 	return (pid);
@@ -92,7 +92,6 @@ int	ft_cmds(t_data *data, t_exec *exec)
 {
 	int		i;
 	pid_t	*kids;// to look for the exit status
-	t_cmds	*cmd;
 
 	i = -1;
 	kids = ft_calloc(ft_lst_size(data->cmds), sizeof(pid_t));
@@ -101,10 +100,10 @@ int	ft_cmds(t_data *data, t_exec *exec)
 	ft_init_exec(exec);// initializes t_exec
 	if (ft_env_to_cmd(data->env->start, exec, ft_count_list_elems_str(data->env->start), -1) == 1)
 		exit (1);
-	while (cmd)
+	while (exec->cmd_t)
 	{
-		kids[++i] = ft_childs(data, cmd, exec);
-		cmd = cmd->next;
+		kids[++i] = ft_childs(data, exec->cmd_t, exec);
+		exec->cmd_t = exec->cmd_t->next;
 	}
 	ft_find_exit_status(data, kids, (ft_lst_size(data->cmds) - 1));
 	close_pipes(exec->p);
