@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../inc/builtins.h"
-#include "../../inc/minishell.h"
-#include "../../inc/exec.h"
 
 t_node  *get_env_lst(char *to_find, t_node *lst)
 {

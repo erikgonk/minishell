@@ -15,6 +15,7 @@
 
 # include "minishell.h"
 # include "exec.h"
+# include "redirs.h"
 
 # define F_NONE 0
 # define F_ADD 1

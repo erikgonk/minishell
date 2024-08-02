@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../inc/builtins.h"
-#include "../../inc/minishell.h"
-#include "../../inc/exec.h"
 
 int	ft_pwd(t_exec *exec)
 {

@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../inc/builtins.h"
-#include "../../inc/minishell.h"
-#include "../../inc/exec.h"
 
 static char	**ft_swap(char **list, int pos, int i)
 {

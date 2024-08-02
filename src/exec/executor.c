@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
 #include "../../inc/exec.h"
 
 static int	ft_builtins(t_exec *exec)

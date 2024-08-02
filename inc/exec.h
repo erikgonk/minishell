@@ -16,7 +16,6 @@
 # include "minishell.h"
 # include "builtins.h"
 # include "redirs.h"
-# include "exec.h"
 
 typedef struct s_exec
 {

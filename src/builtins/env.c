@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../inc/builtins.h"
-#include "../../inc/minishell.h"
-#include "../../inc/exec.h"
 
 void    ft_print_env(t_node *env)
 {

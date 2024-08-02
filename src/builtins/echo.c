@@ -11,7 +11,5 @@
 /* ************************************************************************** */
 
 #include "../../inc/builtins.h"
-#include "../../inc/exec.h"
-#include "../../inc/minishell.h"
 
 void	ft_echo(t_exec *exec);

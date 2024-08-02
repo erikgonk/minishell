@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../inc/builtins.h"
-#include "../../inc/minishell.h"
-#include "../../inc/exec.h"
 
 static char	*ft_change_env_path(t_exec *exec, t_cmds *cmd, char *get)
 {

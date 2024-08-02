@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
 #include "../../inc/exec.h"
 
 void	ft_middle_cmd(t_data *data, t_cmds *cmd, t_exec *exec)

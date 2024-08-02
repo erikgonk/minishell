@@ -13,6 +13,10 @@
 #ifndef REDIRS_H
 # define REDIRS_H
 
+# include "minishell.h"
+# include "exec.h"
+# include "builtins.h"
+
 // redirs
 void    ft_redirections(t_data *data, t_cmds *cmd, t_exec *exec);
 void    ft_redir_to_fd(t_data *data, t_cmds *cmd, int *fd, t_exec *exec);
