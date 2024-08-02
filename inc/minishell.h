@@ -6,7 +6,7 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 16:47:55 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/02 17:09:43 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/02 18:41:36 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ typedef struct s_env
     t_node      *start;
     t_node      *end;
     char        *pwd;
-    char        *old_pwd;
+    char        *oldpwd;
     char        *homedir; //for cd ~
 }   t_env;
 
