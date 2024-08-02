@@ -299,15 +299,15 @@ void    double_quote_exp(char *str, t_expander *exp, t_env *env)
 
     if (str[exp->pos] == '\"')
         exp->pos++;
-    exp->start = exp->pos; //skipping the quote, we don`t want this in the expanded string
+    exp->start = exp->pos;
     while (str[exp->pos] && exp->status == 2) //iterating until quote is closed
     {
-        exp->status = get_status(str[exp->pos], 2);
+        exp->status = get_status(str[exp->pos], exp->status);
         if (str[exp->pos] == '$' || exp->status != 2)
             break ;
-        exp->pos++; 
+        exp->pos++;
     }
-    if (str[exp->pos] == '$')
+    if (exp->start != exp->pos || str[exp->pos] == '$')
     {
         exp->pre_exp = ft_substr(str, exp->start, (exp->pos - exp->start)); //save string until the '$' symbol
         if (!exp->pre_exp)
@@ -339,10 +339,10 @@ void    single_quote_exp(char *str, t_expander *exp)
     exp->start = exp->pos;
     while (str[exp->pos] && exp->status == 1)
     {
-        exp->pos++;
-        exp->status = get_status(str[exp->pos], 1);
+        exp->status = get_status(str[exp->pos], exp->status);
         if (exp->status != 1)
             break ;
+        exp->pos++;
     }
     if (exp->start != exp->pos)
     {
@@ -361,17 +361,17 @@ void    no_quote_exp(char *str, t_expander *exp, t_env *env)
 {
     char    *tmp;
 
-    exp->start = exp->pos;
     if (str[exp->pos] == '\'' || str[exp->pos] == '\"')
-        exp->start++;
+        exp->pos++;
+    exp->start = exp->pos;
     while (str[exp->pos] && exp->status == 0) //iterating until quote is closed
     {
-        exp->status = get_status(str[exp->pos], 0);
+        exp->status = get_status(str[exp->pos], exp->status);
         if (str[exp->pos] == '$' || exp->status != 0)
             break ;
         exp->pos++;
     }
-    if (str[exp->pos] == '$')
+    if (exp->start != exp->pos || str[exp->pos] == '$')
     {
         exp->pre_exp = ft_substr(str, exp->start, (exp->pos - exp->start)); //save string until the '$' symbol
         if (!exp->pre_exp)
@@ -414,8 +414,6 @@ char    *expand_single(char *str, t_env *env)
         if (exp.status == 2)
             double_quote_exp(str, &exp, env);
     }
-    if (!exp.finished)
-        return (str);
     return (exp.finished);
 }
 
@@ -623,7 +621,7 @@ int main(int argc, char **argv, char **envp)
     env.oldpwd = NULL;
     env.pwd = NULL;
     transform_env(&env, envp);
-    expanded = expand_single("\"\'check\'\"", &env);
+    expanded = expand_single("\'\'$USER", &env);
     /*t_node *lst;
     lst = env.start;
     while (lst)
