@@ -6,14 +6,12 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 14:37:05 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/02 10:54:52 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/02 11:45:02 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-#include "../../inc/builtins.h"
 #include "../../inc/exec.h"
-#include "../../inc/redirs.h"
 
 void	ft_inni_redirs(t_lex *lex)
 {

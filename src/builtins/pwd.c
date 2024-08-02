@@ -6,10 +6,11 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:48:51 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/02 10:54:01 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/02 11:47:47 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../inc/minishell.h"
 #include "../../inc/builtins.h"
 
 int	ft_pwd(t_exec *exec)

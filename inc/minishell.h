@@ -6,7 +6,7 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 16:47:55 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/01 17:28:30 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/02 11:48:53 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,6 @@
 # include <stdio.h>
 // libft 
 # include "../src/libft/inc/libft.h"
-// exec
-//# include "exec.h"
-// builtins
-//# include "builtins.h"
 
 /*-----------------Enums------------------*/
 typedef enum e_token
@@ -113,5 +109,20 @@ typedef struct s_data
     int         printed_error; //to check whether an error message has already been printed (syntax errors)
     int         pipes; // NUmber of pipes present to know for how many child processes needed
 }   t_data;
+
+/*-----------------Executon------------------*/
+
+typedef struct s_exec
+{
+	char		**env;
+	char		**path;
+	char		*cmd;
+	int			p[2];
+	int			fd;
+	int			g_exit;
+	t_lex       *lexer;
+	t_cmds		*cmd_t;
+	t_env		*env_t;
+}	t_exec;
 
 #endif

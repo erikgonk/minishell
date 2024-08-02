@@ -6,18 +6,19 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 15:20:58 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/02 10:52:45 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/02 12:27:16 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../inc/minishell.h"
 #include "../../inc/builtins.h"
 
 static char	*ft_change_env_path(t_exec *exec, t_cmds *cmd, char *get)
 {
-	char		*path;
 	t_node		*aux;
-	char		*tmp;
 	t_node		*env;
+	char		*tmp;
+	char		*path;
 
 	path = getcwd(NULL, 0);
 	if (!path)

@@ -6,10 +6,11 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:32:56 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/02 10:53:00 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/02 11:47:17 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../inc/minishell.h"
 #include "../../inc/builtins.h"
 
 void	ft_echo(t_exec *exec);

@@ -6,29 +6,12 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 10:47:58 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/01 17:12:56 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/02 11:40:11 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXEC_H
 # define EXEC_H
-
-# include "minishell.h"
-# include "builtins.h"
-# include "redirs.h"
-
-typedef struct s_exec
-{
-	char		**env;
-	char		**path;
-	char		*cmd;
-	int			p[2];
-	int			fd;
-	int			g_exit;
-	t_lex       *lexer;
-	t_cmds		*cmd_t;
-	t_env		*env_t;
-}	t_exec;
 
 // exec
 static int	ft_builtins(t_exec *exec);

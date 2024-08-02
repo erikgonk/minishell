@@ -6,16 +6,18 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:06:33 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/31 16:01:15 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/02 11:52:39 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../inc/minishell.h"
 #include "../../inc/exec.h"
 
 void	ft_init_exec(t_exec *exec)
 {
 	exec->p[0] = 0;
 	exec->p[1] = 1;
+	exec->g_exit = 0;
 }
 
 int	ft_lst_size(t_cmds *cmd)

@@ -6,10 +6,11 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 16:08:45 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/02 10:53:50 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/02 11:47:42 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../inc/minishell.h"
 #include "../../inc/builtins.h"
 
 static char	**ft_swap(char **list, int pos, int i)

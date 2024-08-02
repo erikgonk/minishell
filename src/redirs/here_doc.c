@@ -6,11 +6,10 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 16:07:41 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/25 16:09:22 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/02 11:44:33 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-#include "../../inc/exec.h"
 
 int	ft_here_doc(t_data *data);

@@ -6,16 +6,12 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:33:44 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/31 16:43:50 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/02 11:38:11 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BUILTINS_H
 # define BUILTINS_H
-
-# include "minishell.h"
-# include "exec.h"
-# include "redirs.h"
 
 # define F_NONE 0
 # define F_ADD 1

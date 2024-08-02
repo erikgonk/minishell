@@ -6,10 +6,11 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 16:06:47 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/01 17:19:10 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/02 12:17:44 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../inc/minishell.h"
 #include "../../inc/exec.h"
 
 void	ft_middle_cmd(t_data *data, t_cmds *cmd, t_exec *exec)
@@ -47,19 +48,19 @@ int	ft_childs(t_data *data, t_cmds *cmd, t_exec *exec)
 	pid = fork();
 	if (pid == 0)
 	{
-		if (!exec->cmd_t->cmd[0])
+		if (!cmd->cmd[0])
 			exit (0);
-		if (exec->cmd_t->redirections)
-			ft_redirections(data, exec->cmd_t, exec);
-		else if (exec->cmd_t->next)
-			ft_forking(data, exec->cmd_t, exec);
-		if (exec->cmd_t->builtin)
+		if (cmd->redirections)
+			ft_redirections(data, cmd, exec);
+		else if (cmd->next)
+			ft_forking(data, cmd, exec);
+		if (cmd->builtin)
 		{
 			data->g_exit = ft_builtins(exec);
 			exit (data->g_exit);
 		}
-		exec->cmd = ft_get_cmd(data, exec->cmd_t, exec);// error controled in the function
-		execve(exec->cmd, exec->cmd_t->cmd, exec->env);
+		exec->cmd = ft_get_cmd(data, cmd, exec);// error controled in the function
+		execve(exec->cmd, cmd->cmd, exec->env);
 		exit (1);
 	}
 	return (pid);
@@ -87,7 +88,7 @@ void	ft_find_exit_status(t_data *data, pid_t *kids, int	size)
 		data->g_exit = WEXITSTATUS(res);
 }
 
-int	ft_cmds(t_data *data, t_exec *exec)
+int	ft_cmds(t_data *data, t_exec *exec, t_cmds *cmd)
 {
 	int		i;
 	pid_t	*kids;// to look for the exit status
@@ -99,12 +100,12 @@ int	ft_cmds(t_data *data, t_exec *exec)
 	ft_init_exec(exec);// initializes t_exec
 	if (ft_env_to_cmd(data->env->start, exec, ft_count_list_elems_str(data->env->start), -1) == 1)
 		exit (1);
-	while (exec->cmd_t)
+	while (cmd)
 	{
-		kids[++i] = ft_childs(data, exec->cmd_t, exec);
-		exec->cmd_t = exec->cmd_t->next;
+		kids[++i] = ft_childs(data, cmd, exec);
+		cmd = cmd->next;
 	}
 	ft_find_exit_status(data, kids, (ft_lst_size(data->cmds) - 1));
 	close_pipes(exec->p);
-	return (free(kids), 0);
+	return (free(kids), exec->g_exit);
 }

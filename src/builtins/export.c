@@ -6,12 +6,12 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 15:20:13 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/02 10:53:27 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/02 11:47:26 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../inc/minishell.h"
 #include "../../inc/builtins.h"
-
 
 static int	ft_parsing(char *str)
 {
