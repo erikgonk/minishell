@@ -6,12 +6,13 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 15:20:58 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/31 16:37:25 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/02 10:52:45 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/builtins.h"
 #include "../../inc/minishell.h"
+#include "../../inc/exec.h"
 
 static char	*ft_change_env_path(t_exec *exec, t_cmds *cmd, char *get)
 {

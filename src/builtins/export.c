@@ -6,12 +6,14 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 15:20:13 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/31 17:02:33 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/02 10:53:27 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/builtins.h"
 #include "../../inc/minishell.h"
+#include "../../inc/exec.h"
+
 
 static int	ft_parsing(char *str)
 {
@@ -78,13 +80,13 @@ static void	ft_create_env(t_env *env, char **cmd, char *str, int flag)// (var=st
 	free(tmp);
 }
 
-static int	ft_separate_export(t_env *env, t_data *data, char *str, int flag)
+static int	ft_separate_export(t_env *env, t_exec *exec, char *str, int flag)
 {
 	int		err;
 	char	**cmd;
 
 	err = 0;
-	cmd = ft_split(data->cmds->cmd[1], '+');
+	cmd = ft_split(exec->cmd_t->cmd[1], '+');
 	if (flag == F_NONE && !get_env_lst(str, env->start))// var NOT exist
 		ft_create_env(env, NULL, str, flag);
 	else if (flag == F_NONE)// var exist
@@ -118,11 +120,11 @@ int	ft_export(t_exec *exec)
 			return (free(tmp), 1);
 		}
 		if (*tmp + 1 == '=')// var+=str & var+=
-			data->g_exit= ft_separate_export(exec->env_t, exec, exec->cmd_t->cmd[i], F_ADD);
-		else if (!ft_strchr(data->cmds->cmd[i], '='))// var
-			data->g_exit = ft_separate_export(data->env, NULL, data->cmds->cmd[ia], F_NONE);
+			exec->g_exit= ft_separate_export(exec->env_t, exec, exec->cmd_t->cmd[i], F_ADD);
+		else if (!ft_strchr(exec->cmds->cmd[i], '='))// var
+			exec->g_exit = ft_separate_export(exec->env_t, NULL, exec->cmd_t->cmd[ia], F_NONE);
 		else
-			data->g_exit = ft_separate_export(cmd->env, data, data->cmds->cmd[i], F_CREATE);// var=str & var
+			exec->g_exit = ft_separate_export(cmd->env, exec, exec->cmd_t->cmd[i], F_CREATE);// var=str & var
 		free(tmp);
 	}
 	return (free(tmp), err);

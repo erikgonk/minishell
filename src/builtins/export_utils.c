@@ -6,12 +6,13 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 12:44:20 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/22 12:36:27 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/02 10:53:39 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/builtins.h"
 #include "../../inc/minishell.h"
+#include "../../inc/exec.h"
 
 static int	ft_lstlen(t_node *env)
 {
@@ -68,14 +69,14 @@ static void	ft_printing(char **list)
 		ft_printf("%s\n", list[i], 1);
 }
 
-void	ft_print_export(t_data *cmd)
+void	ft_print_export(t_exec *exec)
 {
 	char		**list = NULL;
 	int			i;
 
-	list = malloc(sizeof (char *) * ft_count_ist_elems(cmd->env->start) + 1);
+	list = malloc(sizeof (char *) * ft_count_ist_elems(exec->env_t->start) + 1);
 	i = -1;
-	list = ft_save_lst(cmd->env->start, list, -1);
+	list = ft_save_lst(exec->env_t->start, list, -1);
 	ft_printing(list);
 	while (list[++i])
 		free(list[i]);

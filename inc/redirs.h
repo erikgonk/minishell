@@ -6,16 +6,12 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 14:35:52 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/01 14:36:56 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/02 10:55:32 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef REDIRS_H
 # define REDIRS_H
-
-# include "minishell.h"
-# include "builtins.h"
-# include "exec.h"
 
 // redirs
 void    ft_redirections(t_data *data, t_cmds *cmd, t_exec *exec);

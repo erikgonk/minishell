@@ -6,12 +6,13 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 17:47:31 by erigonza          #+#    #+#             */
-/*   Updated: 2024/07/31 16:39:35 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/02 10:53:08 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/builtins.h"
 #include "../../inc/minishell.h"
+#include "../../inc/exec.h"
 
 void    ft_print_env(t_node *env)
 {
