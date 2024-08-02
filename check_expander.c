@@ -414,6 +414,8 @@ char    *expand_single(char *str, t_env *env)
         if (exp.status == 2)
             double_quote_exp(str, &exp, env);
     }
+    if (!exp.finished)
+        return (str);
     return (exp.finished);
 }
 
@@ -621,7 +623,7 @@ int main(int argc, char **argv, char **envp)
     env.oldpwd = NULL;
     env.pwd = NULL;
     transform_env(&env, envp);
-    expanded = expand_single("\"$!\'", &env);
+    expanded = expand_single("\"\'check\'\"", &env);
     /*t_node *lst;
     lst = env.start;
     while (lst)
