@@ -6,67 +6,84 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 16:08:45 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/02 11:47:42 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/02 16:51:14 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 #include "../../inc/builtins.h"
 
-static char	**ft_swap(char **list, int pos, int i)
+static char	**ft_swap(char **lst, int pos, int i)
 {
 	char	*tmp = NULL;
 
-	while (list[++i])
+	while (lst[++i])
 	{
-		if (list[i] > list[pos])
+		if (lst[i] > lst[pos])
 		{
-			tmp = list[i];
-			list[i] = list[pos];
-			list[pos] = tmp;	
-			return (free(tmp), list);
+			tmp = lst[i];
+			lst[i] = lst[pos];
+			lst[pos] = tmp;	
+			return (free(tmp), lst);
 		}
-		else if (list[i] == list[pos])
+		else if (lst[i] == lst[pos])
 		{
-			if (ft_small_char(list, pos, i) != pos)
+			if (ft_small_char(lst, pos, i, 0) != pos)
 				continue ;
-			tmp = list[i];
-			list[i] = list[pos];
-			list[pos] = tmp;	
-			return (free(tmp), list);
+			tmp = lst[i];
+			lst[i] = lst[pos];
+			lst[pos] = tmp;	
+			return (free(tmp), lst);
 		}
 	}
-	return (list);
+	return (lst);
 }
 
-char **ft_sort_lst_exp(char **list, int i, int j, int pos)
+static int	ft_sorted(char **lst)
 {
-	while (list[++i])
+	int		i;
+	int		j;
+
+	i = -1;
+	while (lst[++i])
+	{
+		j = 0;
+		while (lst[i][j] == lst[i + 1][j])
+			j++;
+		if (lst[i][j] > lst[i + 1][j])
+			return (1);
+	}
+	return (0);
+}
+
+char **ft_sort_list_exp(char **lst, int i, int j, int pos)
+{
+	while (lst[++i])
 	{
 		pos = 0;
 		j = 0;
-		while (list[++j])
+		while (lst[++j])
 		{
-			if (list[j][0] < list[i][0])
+			if (lst[j][0] < lst[i][0])
 			{
 				pos = j;
 				break ;
 			}
-			else if (list[j][0] == list[i][0])
-				pos = ft_small_char(list, i, j , 0);
+			else if (lst[j][0] == lst[i][0])
+				break ;
+				pos = ft_small_char(lst, i, j , 0);
 			if (pos != 0)
 			{
-				list = ft_swap(list, pos, -1);
-				break ;
+				lst = ft_swap(lst, pos, -1);
 			}
 		}
-		if (sorted(list) == 0)
+		if (ft_sorted(lst) == 0)
 			break ;
 	}
-	return (list);
+	return (lst);
 }
 
-int	ft_count_list_elems(t_node lst)
+int	ft_count_list_elems(t_node *lst)
 {
 	int		i;
 
@@ -77,4 +94,17 @@ int	ft_count_list_elems(t_node lst)
 		lst = lst->next;
 	}
 	return (i);
+}
+
+int	ft_find_char(char *str, char c)
+{
+	int		i;
+
+	i = -1;
+	while (str[++i])
+	{
+		if (str[i] == c)
+			return (i);
+	}
+	return (-1);
 }

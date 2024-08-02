@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 12:44:20 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/02 11:47:31 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/02 16:37:22 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	ft_lstlen(t_node *env)
 	return (i);
 }
 
-static int	ft_small_char(char **list, int i, int j, int k)
+int	ft_small_char(char **list, int i, int j, int k)
 {
 	while (list[j][k] && list[i][k])
 	{
@@ -42,7 +42,7 @@ static char	**ft_save_lst(t_node *env, char **list, int i)
 	while (env && env->var)
 	{
 		list[++i] = ft_strdup(env->var);
-		if (env.str)
+		if (env->str)
 		{
 			ft_strjoin(list[i], "=");
 			ft_strjoin(list[i], "\"");
@@ -68,16 +68,17 @@ static void	ft_printing(char **list)
 		ft_printf("%s\n", list[i], 1);
 }
 
-void	ft_print_export(t_exec *exec)
+int	ft_print_export(t_exec *exec)
 {
-	char		**list = NULL;
 	int			i;
+	char		**lst;
 
-	list = malloc(sizeof (char *) * ft_count_ist_elems(exec->env_t->start) + 1);
 	i = -1;
-	list = ft_save_lst(exec->env_t->start, list, -1);
-	ft_printing(list);
-	while (list[++i])
-		free(list[i]);
-	free(list);
+	lst = malloc(sizeof (char *) * ft_count_list_elems(exec->env_t->start));
+	if (!lst)
+		return (1);
+	lst = ft_save_lst(exec->env_t->start, lst, -1);
+	ft_printing(lst);
+	ft_free_willy(lst);
+	return (0);
 }

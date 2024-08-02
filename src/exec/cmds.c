@@ -6,12 +6,13 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 16:06:47 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/02 12:17:44 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/02 17:05:49 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 #include "../../inc/exec.h"
+#include "../../inc/redirs.h"
 
 void	ft_middle_cmd(t_data *data, t_cmds *cmd, t_exec *exec)
 {

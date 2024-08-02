@@ -6,12 +6,13 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:27:05 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/02 11:46:37 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/02 17:05:29 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 #include "../../inc/exec.h"
+#include "../../inc/builtins.h"
 
 void	close_pipes(int fd[2])
 {

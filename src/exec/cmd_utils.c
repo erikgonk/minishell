@@ -6,12 +6,13 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:06:33 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/02 11:52:39 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/02 17:05:01 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 #include "../../inc/exec.h"
+#include "../../inc/builtins.h"
 
 void	ft_init_exec(t_exec *exec)
 {
@@ -51,6 +52,8 @@ int	ft_env_to_cmd(t_node *env, t_exec *exec, int size, int i)
 	if (!env)
 		return (1);
 	exec->env = ft_calloc(size, sizeof(char *));
+	if (!exec->env)
+		return (1);
 	while (env)
 	{
 		if (env->str)
@@ -60,7 +63,10 @@ int	ft_env_to_cmd(t_node *env, t_exec *exec, int size, int i)
 				return (1);
 			exec->env[i] = ft_strjoin(tmp, env->str);
 			if (!exec->env[i])
-				return (free(tmp), ft_free_willy(exec->env), 1);
+			{
+				ft_free_willy(exec->env);
+				return (free(tmp), 1);
+			}
 			free(tmp);
 		}
 		env = env->next;

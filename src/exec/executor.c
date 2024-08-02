@@ -6,14 +6,16 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 12:13:37 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/02 12:13:39 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/02 17:14:00 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 #include "../../inc/exec.h"
+#include "../../inc/builtins.h"
+#include "../../inc/redirs.h"
 
-static int	ft_builtins(t_exec *exec)
+int	ft_builtins(t_exec *exec)
 {
 //	static char		**builtins = {"pwd", "echo", "cd", "export", "unset", "env", "exit"};
 	if (ft_strcmp("pwd", exec->cmd_t->cmd[0]) == 0)
@@ -49,7 +51,7 @@ int	ft_executor(t_data *data, t_exec *exec, t_cmds *cmd)
 			ft_inni_redirs(cmd->redirections);
 		cmd = cmd->next;
 	}
-	data->g_exit = ft_cmds(data, exec);
+	data->g_exit = ft_cmds(data, exec, cmd);
 	ft_free_willy(exec->env);
 	ft_free_willy(exec->path);	
 	return (data->g_exit);

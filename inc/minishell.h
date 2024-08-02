@@ -6,7 +6,7 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 16:47:55 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/02 11:48:53 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/02 17:09:43 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef enum e_builtin
     UNSET,
     ENV,
     EXIT,
+	NO_BUILTIN,
 }   e_builtin;
 
 /*--------------Structures----------------*/

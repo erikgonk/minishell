@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 17:46:30 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/02 12:36:44 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/02 15:22:38 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,11 @@ int	ft_unset(t_exec *exec)
 	node_bef = ft_get_env_before_lst(exec->cmd_t->cmd[1], exec->env_t->start, exec->env_t->start, exec);
 	node = get_env_lst(exec->cmd_t->cmd[1], exec->env_t->start);
 	if (!node_bef || !node)	
-		exit (1);
+		return (1);
 	else if (ft_extra_unset(exec, node, node_bef) == 0)
-		exit (0);
+		return (0);
 	node_bef->next = node->next;
 	if (node->str)
 		free(node->str);
-	exit (0);
+	return (0);
 }
