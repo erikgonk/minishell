@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 15:20:58 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/02 18:41:21 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/03 13:38:25 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ int	ft_cd(t_exec *exec)
 	t_node		*tmp;
 
 	ft_change_env_path(exec, exec->cmd_t, exec->env_t->oldpwd);
-	if (!exec->cmd_t->cmd[1] || (exec->cmd_t->cmd[1][0] == '~' && ft_strlen(exec->cmd_t->cmd[1]) == 1))
+	if (!exec->cmd_t->cmd[1] || (exec->cmd_t->cmd[1][0] == '~'
+		&& ft_strlen(exec->cmd_t->cmd[1]) == 1))
 	{
 		tmp = get_env_lst("HOME", exec->env_t->start);
 		path = tmp->str;

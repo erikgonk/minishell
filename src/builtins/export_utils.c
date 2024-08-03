@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 12:44:20 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/02 16:37:22 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/03 14:05:19 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	ft_small_char(char **list, int i, int j, int k)
 	{
 		if (list[j][k] < list[i][k])
 			return (j);
-		k++;	
+		k++;
 	}
 	return (i);
 }

@@ -6,7 +6,7 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 16:06:47 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/02 17:05:49 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/03 14:22:45 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	ft_middle_cmd(t_data *data, t_cmds *cmd, t_exec *exec)
 	close(exec->fd);
 	dup2(exec->p[1], 1);// writes in the pipe
 	close_pipes(exec->p);
-}	
+}
 
 int	ft_forking(t_data *data, t_cmds *cmd, t_exec *exec)
 {
@@ -60,14 +60,14 @@ int	ft_childs(t_data *data, t_cmds *cmd, t_exec *exec)
 			data->g_exit = ft_builtins(exec);
 			exit (data->g_exit);
 		}
-		exec->cmd = ft_get_cmd(data, cmd, exec);// error controled in the function
+		exec->cmd = ft_get_cmd(data, cmd, exec); // error controled in the function
 		execve(exec->cmd, cmd->cmd, exec->env);
 		exit (1);
 	}
 	return (pid);
 }
 
-void	ft_find_exit_status(t_data *data, pid_t *kids, int	size)
+void	ft_find_exit_status(t_data *data, pid_t *kids, int size)
 {
 	int		res;
 	int		status;
@@ -92,15 +92,18 @@ void	ft_find_exit_status(t_data *data, pid_t *kids, int	size)
 int	ft_cmds(t_data *data, t_exec *exec, t_cmds *cmd)
 {
 	int		i;
-	pid_t	*kids;// to look for the exit status
+	pid_t	*kids; // to look for the exit status
 
 	i = -1;
 	kids = ft_calloc(ft_lst_size(data->cmds), sizeof(pid_t));
 	if (!kids)
 		return (1);
-	ft_init_exec(exec);// initializes t_exec
-	if (ft_env_to_cmd(data->env->start, exec, ft_count_list_elems_str(data->env->start), -1) == 1)
+	ft_init_exec(exec); // initializes t_exec
+	if (ft_env_to_cmd(data->env->start, exec,
+			ft_count_list_elems_str(data->env->start), -1) == 1)
+	{
 		exit (1);
+	}
 	while (cmd)
 	{
 		kids[++i] = ft_childs(data, cmd, exec);

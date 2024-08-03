@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:27:05 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/02 17:05:29 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/03 14:30:43 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,22 @@
 #include "../../inc/exec.h"
 #include "../../inc/builtins.h"
 
-void	close_pipes(int fd[2])
+void	ft_close_pipes(int fd[2])
 {
 	close(fd[0]);
 	close(fd[1]);
 }
 
-void	ft_get_cmd_help(t_exec *exec, t_cmds *cmd, int i)
+static int	ft_get_cmd_help(t_exec *exec, t_cmds *cmd, int i)
 {
 	char	*tmp;
 
+	if (access(cmd->cmd[1], F_OK) != 0)
+	{
+		ft_printf("%s: %s: Permission denied", cmd[0], cmd[i], 2);
+		exec->g_exit = 1;
+		return (1);
+	}
 	tmp = ft_strjoin(exec->path[i], "/");
 	if (!tmp)
 		exit (127);
@@ -36,28 +42,28 @@ void	ft_get_cmd_help(t_exec *exec, t_cmds *cmd, int i)
 
 char	*ft_get_cmd(t_data *data, t_cmds *cmd, t_exec *exec)
 {
-		int			i;
+	int			i;
+	t_node		*lst;
 
-		i = -1;
-        t_node  *lst;
-		if (access(cmd->cmd[0], X_OK) == 0)
-			return (cmd->cmd[0]);
-        lst = get_env_lst("PATH", data->env->start);
-        if (!lst || !lst->str)
-        {
-				ft_printf("minish: %s: No such file or directory\n", cmd->cmd[0], 2);
-    			exit (127);
-        }
-		exec->path = ft_split(lst->str, ':');
-		if (!exec->path)
-			exit (127);
-		while (exec->path[++i])
-		{
-			ft_get_cmd_help(exec, cmd, i);
-			if (access(exec->path[i], X_OK) == 0)
-				return (exec->path[i]);
-			// I gotta check when you cannot access a file
-		}
+	i = -1;
+	if (access(cmd->cmd[0], X_OK) == 0)
+		return (cmd->cmd[0]);
+	lst = get_env_lst("PATH", data->env->start);
+	if (!lst || !lst->str)
+	{
 		ft_printf("minish: %s: No such file or directory\n", cmd->cmd[0], 2);
 		exit (127);
+	}
+	exec->path = ft_split(lst->str, ':');
+	if (!exec->path)
+		exit (127);
+	while (exec->path[++i])
+	{
+		if (ft_get_cmd_help(exec, cmd, i) == 1)
+			continue ;
+		if (access(exec->path[i], X_OK) == 0)
+			return (exec->path[i]);
+	}
+	ft_printf("minish: %s: No such file or directory\n", cmd->cmd[0], 2);
+	exit (127);
 }

@@ -1,36 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   export_utils3.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/16 17:47:31 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/03 13:39:30 by erigonza         ###   ########.fr       */
+/*   Created: 2024/08/03 13:44:01 by erigonza          #+#    #+#             */
+/*   Updated: 2024/08/03 13:45:00 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 #include "../../inc/builtins.h"
 
-void	ft_print_env(t_node *env)
+int	ft_parsing(char *str)
 {
-	while (env)
-	{
-		if (env->var && env->str)
-			ft_printf("%s=%s\n", env->var, env->str, 1);
-		env = env->next;
-	}
-}
+	int		i;
+	char	**cmd;
 
-int	ft_env(t_exec *exec)
-{
-	if (!exec->env_t->start || !exec->env_t->start->var
-		|| !exec->env_t->start->str)
-	{
-		ft_printf("minish: env: not found", 2);
+	i = -1;
+	cmd = ft_split(str, '=');
+	if (!cmd)
 		return (1);
+	while (cmd[0][++i])
+	{
+		if (!ft_isalpha(cmd[0][i]) && cmd[0][i] != '_' && cmd[0][i] != '=')
+		{
+			if (cmd[0][i] == '+' && cmd[0][i + 1] == '=')
+			{
+				i++;
+				continue ;
+			}
+			ft_printf("bash: export: ", 2);
+			ft_printf("`%s': not a valid identifier\n", str, 2);
+			ft_free_willy(cmd);
+			return (1);
+		}
 	}
-	ft_print_env(exec->env_t->start);
+	ft_free_willy(cmd);
 	return (0);
 }
