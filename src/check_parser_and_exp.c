@@ -153,6 +153,148 @@ char    *get_env(char *var, t_env env);
  *
  */
 
+
+#include <stdarg.h>
+void	ft_putstr(char *str, int *len)
+{
+	if (!str)
+		str = "(null)";
+	while (*str)
+		*len += write(1, str++, 1);
+}
+
+void	pud(long long int number,  int base, int *len)
+{
+	char	*hex = "0123456789abcdef";
+
+	if (number < 0)
+	{
+		number *= -1;
+		*len += write(1, "-", 1); 
+	}
+	if (number >= base)
+		pud((number / base), base, len);
+	*len += write(1, &hex[number % base], 1);
+}
+
+int ft_printf(const char *str, ...)
+{
+	int	len = 0;
+	va_list	ptr;
+
+	va_start(ptr, str);
+
+	while (*str)
+	{
+		if ((*str == '%') && (
+					(*(str + 1) == 's') ||
+					(*(str + 1) == 'd') ||
+					(*(str + 1) == 'x')))
+		{
+			str++;
+			if (*str == 's')
+				ft_putstr(va_arg(ptr, char *), &len);
+			else if (*str == 'd')
+				pud((long long int)va_arg(ptr, int), 10, &len);
+			else if (*str == 'x')
+				pud((long long int)va_arg(ptr, unsigned int), 16, &len);
+		}
+		else
+			len += write(1, str, 1);
+		str++;
+
+	}
+	return (va_end(ptr), len);
+}
+
+size_t	ft_strlen(const char *s)
+{
+	unsigned int	i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
+}
+
+size_t  ft_strlcat(char *dst, const char *src, size_t dstsize)
+{
+        size_t          i;
+        size_t          j;
+        size_t          len;
+
+        i = ft_strlen(dst);
+        j = 0;
+        len = i;
+        while (src[j] && dstsize > i + 1)
+                dst[i++] = src[j++];
+        dst[i] = '\0';
+        if (ft_strlen(dst) < dstsize)
+                return (len + ft_strlen(src));
+        else
+                return (ft_strlen(src) + dstsize);
+}
+
+static int      count_words(const char *str, char c)
+{
+        int     i;
+        int     trigger;
+
+        i = 0;
+        trigger = 0;
+        while (*str)
+        {
+                if (*str != c && trigger == 0)
+                {
+                        trigger = 1;
+                        i++;
+                }
+                else if (*str == c)
+                        trigger = 0;
+                str++;
+        }
+        return (i);
+}
+
+static char     **free_willy(char **split, int j)
+{
+        while (j >= 0)
+                free(split[j--]);
+        free(split);
+        return (0);
+}
+
+char    **ft_split(char const *s, char c)
+{
+        size_t  i;
+        size_t  j;
+        char    **split;
+        int             start;
+
+        start = 0;
+        split = malloc(sizeof (char *) * (count_words(s, c) + 1));
+        if (!split)
+                return (0);
+        i = 0;
+        j = 0;
+        while (s[i])
+        {
+                if (i > 0 && s[i] != c && s[i - 1] == c)
+                        start = i;
+                if (s[i] != c && (s[i + 1] == '\0' || s[i + 1] == c))
+                {
+                        split[j++] = ft_substr(s, start, i - start + 1);
+                        if (split[j - 1] == 0)
+                                return (free_willy(split, j - 2));
+                }
+                i++;
+        }
+        split[j] = 0;
+        return (split);
+}
+
+
+
 int	ft_isalpha(int c)
 {
 	if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122))
@@ -175,15 +317,7 @@ int	ft_isalnum(int c)
 	return (0);
 }
 
-size_t	ft_strlen(const char *s)
-{
-	unsigned int	i;
 
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
-}
 
 int	ft_strcmp(char *str1, char *str2)
 {
@@ -1962,7 +2096,7 @@ int	ft_export(t_exec *exec)
 		pos = ft_find_char(exec->cmd_t->cmd[i], '=');
 		if (exec->cmd_t->cmd[i][0] == '=')
 		{
-			ft_pritf("mish: export: `%s': not a valid identifier\n", exec->cmd_t->cmd[i], 2);
+			ft_printf("mish: export: `%s': not a valid identifier\n", exec->cmd_t->cmd[i], 2);
 			return (1);
 		}
 		if (pos == -1)// var
@@ -2403,8 +2537,8 @@ int	ft_builtins(t_exec *exec)
 		exec->g_exit = ft_unset(exec);
 	else if (ft_strcmp("env", exec->cmd_t->cmd[0] == 0))
 		exec->g_exit = ft_env(exec);
-	else if (ft_strcmp("exit", exec->cmd_t->cmd[0] == 0))// NOT DONE YET
-		exec->g_exit = ft_exit(exec);
+//	else if (ft_strcmp("exit", exec->cmd_t->cmd[0] == 0))// NOT DONE YET
+//		exec->g_exit = ft_exit(exec);
 	else
 		return (127);
 	return (exec->g_exit);
