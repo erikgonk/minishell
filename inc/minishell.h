@@ -27,6 +27,8 @@
 # include <string.h>
 // perror
 # include <stdio.h>
+// terminos (signals)
+# include <termios.h>
 // libft 
 # include "../src/libft/inc/libft.h"
 
