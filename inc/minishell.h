@@ -6,7 +6,7 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 16:47:55 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/02 18:41:36 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/05 15:29:18 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 // perror
 # include <stdio.h>
 // terminos (signals)
-# include <termios.h>
+//# include <termios.h>
 // libft 
 # include "../src/libft/inc/libft.h"
 

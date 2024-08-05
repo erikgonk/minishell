@@ -3,6 +3,7 @@
 #include "../../inc/redirs.h"
 #include <signal.h>
 
+/*
 // avoid ^C ^D...
 void	ft_sig_innit(void)
 {
@@ -12,6 +13,7 @@ void	ft_sig_innit(void)
 	term.c_lflag &= ~ECHOCTL;
 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 }
+*/
 
 // controls Control + C
 void	ft_sig_c(int sig, t_data *data)

@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 14:37:05 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/03 13:34:44 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/05 14:31:56 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ void	ft_inni_redirs(t_lex *lex)
 		}
 		else if (lex->type == T_REDIR_IN || lex->type == T_HEREDOC)
 			lex->in = open(lex->literal, O_RDONLY);
-		else if (lex->type == T_REDIR_OUT)
-			lex->out = open(lex->literal, O_WRONLY | O_APPEND | O_CREAT, 0644);
 		else if (lex->type == T_APPEND)
+			lex->out = open(lex->literal, O_WRONLY | O_APPEND | O_CREAT, 0644);
+		else if (lex->type == T_REDIR_OUT)
 			lex->out = open(lex->literal, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 		lex = lex->next;
 	}
