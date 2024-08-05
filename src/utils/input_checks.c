@@ -1,3 +1,4 @@
+#include "minishell.h"
 
 int	change_flag(int flag)
 {
@@ -5,6 +6,39 @@ int	change_flag(int flag)
 		return (1);
 	else
 		return (0);
+}
+
+static int syntax_check(char *input)
+{
+    int i;
+
+    i = 0;
+    while (input[i])
+    {
+        if (input[i] == ';')
+        {
+            printf("mish: we don't do the ';' around here\n");
+            return(1);
+        }
+        else if (input[i] == '\\')
+        {
+            printf("mish: we don't to the '\\' around here\n");
+            return(1);
+        }
+        else if (input[i] == '|' && input[i + 1] == '|')
+        {
+            printf("mish: we don't do the '||' around here\n");
+            return(1);
+        }
+        else if (input[i] == '&' && input[i + 1] == '&')
+        {
+            printf("mish: we don't do the '&&' around here\n");
+            return(1);
+        }
+        else
+            i++;
+    }
+    return (0);
 }
 
 int	quotes(char *input, int *i, int flag, char c)

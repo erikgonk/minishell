@@ -9,7 +9,7 @@
 /*   Updated: 2024/07/18 11:58:57 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "env.h"
+#include "minishell.h"
 
 int set_standard_env(t_env *env, char *shlvl)
 {

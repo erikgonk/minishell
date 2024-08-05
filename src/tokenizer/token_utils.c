@@ -9,8 +9,28 @@
 /*   Updated: 2024/07/18 12:18:01 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include "minishell.h"
 
-#include "tokenizer.h"
+static void    print_error(int type, t_data *data)
+{
+    if (!data->printed_error)
+    {
+        if (type == T_PIPE)
+            printf("Syntax error near unexpected token '|'\n");
+        if (type == T_REDIR_IN)
+            printf("Syntax error near unexpected token '<'\n");
+        if (type == T_HEREDOC)
+            printf("Syntax error near unexpected token '<<'\n");
+        if (type == T_REDIR_OUT)
+            printf("Syntax error near unexpected token '>'\n");
+        if (type == T_APPEND)
+            printf("Syntax error near unexpected token '>>'\n");
+        if (type == 10)
+            printf("Syntax error near unexpected token 'newline'\n");
+        data->printed_error = 1;
+    }
+    return ;
+}
 
 void    add_index(t_lex *tokens)
 {
@@ -68,7 +88,7 @@ int     check_syntax_and_hdoc(t_data *data, t_lex *tokens, char *input, t_lex *n
     return (0);
 }
 
-static t_lex *make_token(int length, char *input, t_lex *tokens, t_data *data)
+t_lex *make_token(int length, char *input, t_lex *tokens, t_data *data)
 {
     int i;
     t_lex *new;

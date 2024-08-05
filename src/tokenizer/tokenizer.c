@@ -9,7 +9,7 @@
 /*   Updated: 2024/07/18 12:17:53 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "tokenizer.h"
+#include "minishell.h"
 
 int  find_type(char *literal)
 {
@@ -60,7 +60,7 @@ int token_length(char *input)
     return (length);
 }
 
-t_lex *fill_tokens(t_lex *tokens, char *input, int length)
+t_lex *fill_tokens(t_lex *tokens, char *input, int length, t_data *data)
 {
     t_lex *last;
     t_lex *new;
@@ -83,8 +83,8 @@ t_lex *fill_tokens(t_lex *tokens, char *input, int length)
 t_lex	*tokenizer(char *input, t_data *data)
 {
 	t_lex	*tokens;
-	t_lex	*last;
 	int		length;
+    t_lex   *last;
 
 	length = 0;
 	tokens = NULL;
@@ -96,12 +96,12 @@ t_lex	*tokenizer(char *input, t_data *data)
 		{
 			length = token_length(input);
 			tokens = fill_tokens(tokens, input, length, data);
-			last = lex_lstlast(tokens);
-			if (last->index = -1)
-			{
-				lex_delone(&tokens, -1);
-				break ;
-			}
+            last = lex_lstlast(tokens);
+            if (last->index == -1)
+            {
+                lex_delone(&tokens, -1);
+                break ;
+            }
 			input += length;
 		}
 	}

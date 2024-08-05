@@ -9,7 +9,7 @@
 /*   Updated: 2024/07/15 14:36:58 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "env.h"
+#include "minishell.h"
 
 char    *extract_str(char *envstr)
 {

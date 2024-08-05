@@ -1,4 +1,3 @@
-#include "parser.h"
 #include "minishell.h"
 
 int    parser(t_data *data)

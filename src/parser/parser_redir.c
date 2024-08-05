@@ -1,19 +1,4 @@
-#include "parser.h"
-
-t_lex   *lex_new(char *str, int token)
-{
-    t_lex   *new;
-    static int  i = 0;
-
-    new = (t_lex *)ft_calloc(1, sizeof(t_lex));
-    if (!new)
-        return (NULL);
-    new->literal = ft_strdup(str);
-    new->type = token;
-    new->index = i++;
-    new->next = NULL;
-    return (new);
-}
+#include "minishell.h"
 
 void    new_redir(t_lex *tmp, t_parser *parser)
 {
@@ -35,7 +20,7 @@ void    add_redir(t_parser *parser)
     tmp = parser->lexer;
     while (tmp && tmp->type == T_WORD)
         tmp = tmp->next;
-    if (!tmp || tmp->type == T_PIPE)
+    if (!tmp ||tmp->type == T_PIPE)
         return ;
     if (tmp->type >= T_REDIR_IN && tmp->type <= T_APPEND)
         new_redir(tmp, parser);

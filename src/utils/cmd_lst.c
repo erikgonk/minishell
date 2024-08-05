@@ -1,4 +1,4 @@
-#include "utils.h"
+#include "minishell.h"
 
 t_cmds  *cmds_lstnew(char **command)
 {

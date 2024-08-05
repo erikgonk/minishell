@@ -1,72 +1,109 @@
-#include "../../inc/expander.h"
 #include "minishell.h"
 
-int     get_status(char c, int current)
+int get_status(char c, int current) 
 {
-    if (current == 0)
+    if (current == 0) 
     {
-        if (c == C_DQUOTE)
+        if (c == '\"') 
             return (2);
-        if (c == C_SQUOTE)
+        if (c == '\'') 
             return (1);
-        else
-            return (0);
+        return (0);
     }
-    if (current == 1)
-    {
-        if (c == C_SQUOTE)
-            return (0);
-        else
-            return (1);
-    }
-    if (current == 2)
-    {
-        if (c == C_DQUOTE)
-            return (0);
-        else
-            return (2);
-    }
+    if (current == 1 && c == '\'') 
+        return (0);
+    if (current == 2 && c == '\"') 
+        return (0);
+    return (current);
 }
 
-void    no_quote_exp(t_data *data, char *str, t_expander *exp)
+void append_to_finished(t_expander *exp, char *str) 
 {
-    while (str[exp->pos] && (str[exp->pos] != C_DQUOTE || str[exp->pos] != C_SQUOTE))
+    char *tmp;
+
+    if (exp->finished)
+        tmp = ft_strjoin(exp->finished, str);
+    else
+        tmp = ft_strdup(str);
+    if (exp->finished)
+        free(exp->finished);
+    exp->finished = tmp;
+}
+
+void no_quote_exp(char *str, t_expander *exp, t_data *data) 
+{
+    if (str[exp->pos] == '\"' ||str[exp->pos] == '\'')
         exp->pos++;
-    exp->status = get_status(str[exp->pos], exp->status);
-    
+    exp->start = exp->pos;
+    while (str[exp->pos] && exp->status == 0) 
+    {
+        exp->status = get_status(str[exp->pos], exp->status);
+        if (str[exp->pos] == '$' ||exp->status != 0) 
+            break;
+        exp->pos++;
+    }
+    if (exp->start != exp->pos) 
+    {
+        exp->pre_exp = ft_substr(str, exp->start, (exp->pos - exp->start));
+        append_to_finished(exp, exp->pre_exp);
+        free(exp->pre_exp);
+    }
+    if (str[exp->pos] == '$') 
+    {
+        exp->pos++;
+        exp->var = find_var(str, exp);
+        exp->exp_var = expand_var(exp->var, data);
+        append_to_finished(exp, exp->exp_var);
+        free(exp->var);
+        free(exp->exp_var);
+    }
 }
 
-/**
- * Possibly add a t_exp structure because I am having issues with too many parameters in my function
- * t_exp 
- * {
- *      int status; ---> to know whether we are in double, single or no quote
- *      int pos; ---> to know which position we are in the string
- *      char *result; ---> to store the result of the whole expanded string
- *      char *var; ---> to know which variable to expand when checking environment
- *      char *expanded; ---> the expanded variable (?) don`t know if this is necessary
- * }
-*/
-char    *expand_single(t_data *data, char *str)
+void single_quote_exp(char *str, t_expander *exp) 
 {
-    t_expander exp;
-
-    exp.pos = 0;
-    exp.finished = NULL;
-    exp.start = 0;
-    exp.exp_var = NULL;
-    exp.pre_and_exp = NULL;
-    exp.pre_exp = NULL;
-    exp.var = NULL;
-    exp.status = get_status(str[exp.pos], 0); //to get the current status (first char)
-    while (str[exp.pos])
+    exp->start = exp->pos;
+    if (str[exp->pos] == '\'') 
+        exp->start++;
+    while (str[exp->pos] && exp->status == 1) 
     {
-        if (exp.status == 0)
-            no_quote_exp(data, str, &exp);
-        if (exp.status == 1)
-            single_quote_exp(data, str, &exp);
-        if (exp.status == 2)
-            double_quote_exp(data, str, &exp);
+        exp->pos++;
+        exp->status = get_status(str[exp->pos], exp->status);
+        if (exp->status != 1) 
+            break;
     }
-    return (exp.finished);
+    if (exp->start != exp->pos) 
+    {
+        exp->pre_exp = ft_substr(str, exp->start, (exp->pos - exp->start));
+        append_to_finished(exp, exp->pre_exp);
+        free(exp->pre_exp);
+    }
+}
+
+void double_quote_exp(char *str, t_expander *exp, t_data *data) 
+{
+    exp->start = exp->pos;
+    if (str[exp->pos] == '\"')
+        exp->start++;
+    while (str[exp->pos] && exp->status == 2) 
+    {        
+        exp->pos++;
+        exp->status = get_status(str[exp->pos], exp->status);
+        if (str[exp->pos] == '$' ||exp->status != 2) 
+            break;
+    }
+    if (exp->start != exp->pos) 
+    {
+        exp->pre_exp = ft_substr(str, exp->start, (exp->pos - exp->start));
+        append_to_finished(exp, exp->pre_exp);
+        free(exp->pre_exp);
+    }
+    if (str[exp->pos] == '$') 
+    {        
+        exp->pos++;
+        exp->var = find_var(str, exp);
+        exp->exp_var = expand_var(exp->var, data);
+        append_to_finished(exp, exp->exp_var);
+        free(exp->var);
+        free(exp->exp_var);
+    }
 }

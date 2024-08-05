@@ -33,6 +33,7 @@ int	init_minishell(t_env *env, t_data *data, char **envp)
     env->pwd = NULL;
     if (transform_env(env, envp)) //should not exit if environment is not found, shell should still be working (?)
 		exit(1);
+    data->env = env;
 	return (0);
 }
 

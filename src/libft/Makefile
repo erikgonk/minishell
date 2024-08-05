@@ -29,7 +29,7 @@ OBJS = $(addprefix $(DIR_OBJ)/,$(SRCS:.c=.o))
 
 AR		= ar rcs
 RM		 = rm -fr
-CFLAGS	= -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS	= -Wall -Wextra -Werror
 CC = gcc
 
 all:		$(DIR_OBJ) ${NAME}
