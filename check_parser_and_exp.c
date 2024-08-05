@@ -1655,7 +1655,7 @@ void	ft_sig_c(int sig)
 {
 	if (sig == SIGINT)
 	{
-		printf("hola\n");
+		printf("\n");
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
