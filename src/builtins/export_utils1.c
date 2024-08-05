@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export_utils.c                                     :+:      :+:    :+:   */
+/*   export_utils1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 12:44:20 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/03 14:05:19 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/05 13:07:52 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,10 @@ static void	ft_printing(char **list)
 
 	i = -1;
 	while (list[++i])
+	{
+		ft_printf("declare -x ", 1);
 		ft_printf("%s\n", list[i], 1);
+	}
 }
 
 int	ft_print_export(t_exec *exec)

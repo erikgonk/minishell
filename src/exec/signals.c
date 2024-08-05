@@ -1,11 +1,12 @@
 #include "../../inc/minishell.h"
 #include "../../inc/exec.h"
 #include "../../inc/redirs.h"
+#include <signal.h>
 
 // avoid ^C ^D...
 void	ft_sig_innit(void)
 {
-	struct terminos		term;
+	struct termios		term;
 
 	tcgetattr(STDIN_FILENO, &term);
 	term.c_lflag &= ~ECHOCTL;
@@ -22,7 +23,6 @@ void	ft_sig_c(int sig, t_data *data)
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
-		get_stt(TRUE, 1);
 	}
 }
 
