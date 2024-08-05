@@ -3,7 +3,7 @@
 #include "../../inc/redirs.h"
 
 // avoid ^C ^D...
-void	ft_term_innit(void)
+void	ft_sig_innit(void)
 {
 	struct terminos		term;
 
@@ -13,7 +13,7 @@ void	ft_term_innit(void)
 }
 
 // controls Control + C
-void	ft_signal_c(int sig, t_data *data)
+void	ft_sig_c(int sig, t_data *data)
 {
 	if (sig == SIGINT)
 	{
@@ -27,7 +27,7 @@ void	ft_signal_c(int sig, t_data *data)
 }
 
 // controls Control + C in here doc
-void	ft_signal_hdoc(int sig, t_data *data)
+void	ft_sig_c_hdoc(int sig, t_data *data)
 {
 	if (sig == SIGINT)
 	{
