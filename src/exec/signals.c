@@ -15,16 +15,29 @@ void	ft_sig_innit(void)
 }
 */
 
+int	get_stt(int flag, int val)
+{
+	static int	var;
+
+	if (flag == 1)
+		var = val;
+	return (var);
+}
+
+// ----------------> add to main_loop
+// signal(SIGINT, ft_sig_c);
+// signal(SIGQUIT, SIG_IGN);
+// data->g_exit = get_stt(0, 0);
 // controls Control + C
-void	ft_sig_c(int sig, t_data *data)
+void	ft_sig_c(int sig)
 {
 	if (sig == SIGINT)
 	{
-		data->g_exit = 130;
-		ft_printf("\n", 2);
+		printf("hola\n");
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
+		get_stt(1, 130);
 	}
 }
 
