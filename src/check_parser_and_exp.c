@@ -13,7 +13,7 @@
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include "../inc/expander.h"
+# include "./inc/expander.h"
 
 # define PROMPT "mish> "
 # define C_LESS '<'
@@ -21,10 +21,6 @@
 # define C_PIPE '|'
 # define C_SQUOTE '\''
 # define C_DQUOTE '"'
-
-# define F_NONE 0
-# define F_ADD 1
-# define F_CREATE 2
 
 /*-----------------Enums------------------*/
 typedef enum e_token
@@ -55,9 +51,6 @@ typedef struct s_lex
 	enum e_token	type; //type of token
 	char			*literal; //the string literal (eg. "cat -e")
 	int				index; //position in the linked list
-	int				in;// < && <<
-	int				out;// > && >>
-	int				err;// error opening the redir -> err = -1
 	struct s_lex	*next;
 }	t_lex;
 
@@ -108,20 +101,6 @@ typedef struct s_env
     char        *homedir; //for cd ~
 }   t_env;
 
-typedef struct s_exec
-{
-	char		**env;
-	char		**path;
-	char		*cmd;
-	int			p[2];
-	int			fd;
-	int			g_exit;
-	t_lex       *lexer;
-	t_cmds		*cmd_t;
-	t_env		*env_t;
-}	t_exec;
-
-
 t_lex	*tokenizer(char *input, t_data *data);
 int     token_length(char *input);
 void    add_index(t_lex *tokens);
@@ -131,6 +110,29 @@ int  find_type(char *literal);
 void    mini_loop(t_data *data);
 int set_env(t_env *env, char *var, char *str);
 char    *get_env(char *var, t_env env);
+
+
+void    ft_print_env(t_node *env)
+{
+	while (env)
+	{
+		if (env->var && env->str)
+			printf("%s=%s\n", env->var, env->str);
+		env = env->next;
+	}
+}
+
+int	ft_env(t_env *env)
+{
+	if (!env->start || !env->start->var || !env->start->str)
+	{
+		printf("env: not found");
+		return (1);
+	}
+	ft_print_env(env->start);
+	return (0);
+}
+
 
 
 /*
@@ -152,148 +154,6 @@ char    *get_env(char *var, t_env env);
  *
  *
  */
-
-
-#include <stdarg.h>
-void	ft_putstr(char *str, int *len)
-{
-	if (!str)
-		str = "(null)";
-	while (*str)
-		*len += write(1, str++, 1);
-}
-
-void	pud(long long int number,  int base, int *len)
-{
-	char	*hex = "0123456789abcdef";
-
-	if (number < 0)
-	{
-		number *= -1;
-		*len += write(1, "-", 1); 
-	}
-	if (number >= base)
-		pud((number / base), base, len);
-	*len += write(1, &hex[number % base], 1);
-}
-
-int ft_printf(const char *str, ...)
-{
-	int	len = 0;
-	va_list	ptr;
-
-	va_start(ptr, str);
-
-	while (*str)
-	{
-		if ((*str == '%') && (
-					(*(str + 1) == 's') ||
-					(*(str + 1) == 'd') ||
-					(*(str + 1) == 'x')))
-		{
-			str++;
-			if (*str == 's')
-				ft_putstr(va_arg(ptr, char *), &len);
-			else if (*str == 'd')
-				pud((long long int)va_arg(ptr, int), 10, &len);
-			else if (*str == 'x')
-				pud((long long int)va_arg(ptr, unsigned int), 16, &len);
-		}
-		else
-			len += write(1, str, 1);
-		str++;
-
-	}
-	return (va_end(ptr), len);
-}
-
-size_t	ft_strlen(const char *s)
-{
-	unsigned int	i;
-
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
-}
-
-size_t  ft_strlcat(char *dst, const char *src, size_t dstsize)
-{
-        size_t          i;
-        size_t          j;
-        size_t          len;
-
-        i = ft_strlen(dst);
-        j = 0;
-        len = i;
-        while (src[j] && dstsize > i + 1)
-                dst[i++] = src[j++];
-        dst[i] = '\0';
-        if (ft_strlen(dst) < dstsize)
-                return (len + ft_strlen(src));
-        else
-                return (ft_strlen(src) + dstsize);
-}
-
-static int      count_words(const char *str, char c)
-{
-        int     i;
-        int     trigger;
-
-        i = 0;
-        trigger = 0;
-        while (*str)
-        {
-                if (*str != c && trigger == 0)
-                {
-                        trigger = 1;
-                        i++;
-                }
-                else if (*str == c)
-                        trigger = 0;
-                str++;
-        }
-        return (i);
-}
-
-static char     **free_willy(char **split, int j)
-{
-        while (j >= 0)
-                free(split[j--]);
-        free(split);
-        return (0);
-}
-
-char    **ft_split(char const *s, char c)
-{
-        size_t  i;
-        size_t  j;
-        char    **split;
-        int             start;
-
-        start = 0;
-        split = malloc(sizeof (char *) * (count_words(s, c) + 1));
-        if (!split)
-                return (0);
-        i = 0;
-        j = 0;
-        while (s[i])
-        {
-                if (i > 0 && s[i] != c && s[i - 1] == c)
-                        start = i;
-                if (s[i] != c && (s[i + 1] == '\0' || s[i + 1] == c))
-                {
-                        split[j++] = ft_substr(s, start, i - start + 1);
-                        if (split[j - 1] == 0)
-                                return (free_willy(split, j - 2));
-                }
-                i++;
-        }
-        split[j] = 0;
-        return (split);
-}
-
-
 
 int	ft_isalpha(int c)
 {
@@ -317,7 +177,15 @@ int	ft_isalnum(int c)
 	return (0);
 }
 
+size_t	ft_strlen(const char *s)
+{
+	unsigned int	i;
 
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
+}
 
 int	ft_strcmp(char *str1, char *str2)
 {
@@ -1772,36 +1640,28 @@ void    executor(t_data *data)
     print_cmds(data);
 }
 
+#include <signal.h>
 
-// erik
+int	get_stt(int flag, int val)
+{
+	static int	var;
 
+	if (flag == 1)
+		var = val;
+	return (var);
+}
 
-
-
-
-
-
-
-
-// erik 2
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+void	ft_sig_c(int sig)
+{
+	if (sig == SIGINT)
+	{
+		printf("hola\n");
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+		get_stt(1, 130);
+	}
+}
 
 void    mini_loop(t_data *data)
 {
@@ -1810,6 +1670,10 @@ void    mini_loop(t_data *data)
     input = NULL;
     while (1)
     {
+		signal(SIGINT, ft_sig_c);
+		signal(SIGQUIT, SIG_IGN);
+//		if (signal(SIGINT, ft_sig_c) != SIG_ERR)
+//			data->g_exit = 130;
         data->printed_error = 0;
         lex_free(&data->lexer);
         clean_cmds(&data->cmds);
@@ -1825,6 +1689,7 @@ void    mini_loop(t_data *data)
             continue ;
         if (check_tokens(data, &data->lexer))
             parser(data);
+		data->g_exit = get_stt(0, 0);
         executor(data);
         printf("%i\n", data->g_exit);
     }
