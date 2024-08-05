@@ -1,59 +1,60 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/05/26 16:38:02 by erigonza          #+#    #+#              #
-#    Updated: 2024/05/26 16:38:03 by erigonza         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
-NAME	= minishell
-
-SRCS = 
-DIR_SRC = ./src
-DIR_OBJ = $(DIR_SRC)/obj
-OBJS = $(addprefix $(DIR_OBJ)/, $(SRCS:.c=.o))
-
-LIB		= src/libft/libft.a
-
-AR		= ar rcs
-
-RM		 = rm -fr
-
-INC = -I ./inc/
-
-CFLAGS	= -Wall -Wextra -Werror -g #-fsanitize=address
-
+# Compiler and flags
 CC = gcc
+CFLAGS = -Wall -Wextra -Werror -I./inc -I./src/libft/inc -I/opt/homebrew/opt/readline/include
 
-all:		libft ${NAME}
+# Directories
+SRC_DIR = ./src
+OBJ_DIR = ./obj
+LIBFT_DIR = ./src/libft
 
-libft: 
-				make -C src/libft
-				mkdir -p $(DIR_OBJ)
+# Source files
+SRC_FILES = $(SRC_DIR)/main.c \
+            $(SRC_DIR)/main_utils.c \
+            $(SRC_DIR)/env/env_lst.c \
+            $(SRC_DIR)/env/set_env.c \
+            $(SRC_DIR)/expand/expand.c \
+            $(SRC_DIR)/expand/status_utils.c \
+            $(SRC_DIR)/expand/var_expand.c \
+            $(SRC_DIR)/parser/parser.c \
+            $(SRC_DIR)/parser/parser_redir.c \
+            $(SRC_DIR)/parser/parser_utils.c \
+            $(SRC_DIR)/tokenizer/token_checks.c \
+            $(SRC_DIR)/tokenizer/token_utils.c \
+            $(SRC_DIR)/tokenizer/tokenizer.c \
+            $(SRC_DIR)/utils/cmd_lst.c \
+            $(SRC_DIR)/utils/input_checks.c \
+            $(SRC_DIR)/utils/lex_lst.c \
 
-$(DIR_OBJ)/%.o:		$(DIR_SRC)/%.c Makefile ./inc/pipex.h
-				$(CC) $(FLAGS) $(INC)  -c $< -o $@
-				clear
+OBJ_FILES = $(SRC_FILES:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
-${NAME}:	${OBJS}
-				${CC} ${CFLAGS} ${OBJS} ${LIB} -o ${NAME} $(INC)
-				clear
+# Target executable
+TARGET = minishell
+
+# Libraries
+LIBFT = $(LIBFT_DIR)/libft.a
+LIBS = -L$(LIBFT_DIR) -lft -lreadline -lhistory -L/opt/homebrew/opt/readline/lib
+
+# Makefile rules
+all: $(TARGET)
+
+$(TARGET): $(OBJ_FILES) $(LIBFT)
+	$(CC) $(CFLAGS) $(OBJ_FILES) $(LIBS) -o $(TARGET)
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(LIBFT):
+	$(MAKE) -C $(LIBFT_DIR)
 
 clean:
-				make clean -C src/libft
-				${RM} ${OBJS}
-				clear
+	$(MAKE) -C $(LIBFT_DIR) clean
+	rm -rf $(OBJ_DIR)
 
-fclean:		clean
-				make fclean -C src/libft 
-				${RM} ${NAME} ${DIR_OBJ}
-				clear
+fclean: clean
+	$(MAKE) -C $(LIBFT_DIR) fclean
+	rm -rf $(TARGET)
 
-re:			fclean all
+re: fclean all
 
-.PHONY:		clean fclean re all libft
-.SILENT:
+.PHONY: all clean fclean re
