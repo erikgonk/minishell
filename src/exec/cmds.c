@@ -6,7 +6,7 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 16:06:47 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/03 14:22:45 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/05 17:17:04 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ int	ft_childs(t_data *data, t_cmds *cmd, t_exec *exec)
 	pid = fork();
 	if (pid == 0)
 	{
+		signal(SIGINT, exit);
+		signal(SIGQUIT, exit);
 		if (!cmd->cmd[0])
 			exit (0);
 		if (cmd->redirections)
