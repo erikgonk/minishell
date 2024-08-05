@@ -73,7 +73,7 @@ void	ft_redirections(t_data *data, t_cmds *cmd, t_exec *exec)
 	while (exec->cmd_t->redirections)
 	{
 		if (exec->cmd_t->redirections->err == -1)
-			return ;
+			exit(1);
 		if (exec->cmd_t->redirections->type == T_REDIR_IN
 			|| exec->cmd_t->redirections->type == T_HEREDOC)
 			ft_redir_to_fd(data, exec->cmd_t, &exec->cmd_t->redirections->in,
