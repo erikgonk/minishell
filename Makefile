@@ -6,6 +6,7 @@ CFLAGS = -Wall -Wextra -Werror -I./inc -I./src/libft/inc -I/opt/homebrew/opt/rea
 SRC_DIR = ./src
 OBJ_DIR = ./obj
 LIBFT_DIR = ./src/libft
+INC = ./inc/*.h
 
 # Source files
 SRC_FILES = $(SRC_DIR)/main.c \
@@ -37,7 +38,7 @@ LIBS = -L$(LIBFT_DIR) -lft -lreadline -lhistory -L/opt/homebrew/opt/readline/lib
 # Makefile rules
 all: $(TARGET)
 
-$(TARGET): $(OBJ_FILES) $(LIBFT)
+$(TARGET): $(OBJ_FILES) $(LIBFT) $(INC)
 	$(CC) $(CFLAGS) $(OBJ_FILES) $(LIBS) -o $(TARGET)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c

@@ -26,6 +26,7 @@
 # include <string.h>
 // perror
 # include <stdio.h>
+# include <signal.h>
 // libft 
 # include "../src/libft/inc/libft.h"
 # include "parser.h"
@@ -42,10 +43,7 @@
 # define C_GREAT '>'
 # define C_PIPE '|'
 # define C_SQUOTE '\''
-# define C_DQUOTE '"'
-
-typedef struct s_data t_data;
-typedef struct s_env t_env;
+# define C_DQUOTE '\"'
 
 /*-----------------Enums------------------*/
 typedef enum e_token
@@ -138,15 +136,16 @@ typedef struct s_data
     int         pipes; // NUmber of pipes present to know for how many child processes needed
 }   t_data;
 
-/*------------Main--------------*/
+/*---------main + main utils----------*/
 void    mini_loop(t_data *data);
 char    *clean_input(char *input);
 char    *get_input(t_data *data);
 int     init_minishell(t_env *env, t_data *data, char **envp);
+void    free_env(t_env *env);
 
+//for testing + printing tests
 void    print_cmds(const t_data *data);
 void    executor(t_data *data);
 void    clean_shell(t_data *data);
-
 
 #endif

@@ -9,10 +9,10 @@ typedef struct s_lex        t_lex;
 typedef struct s_cmds       t_cmds;
 
 /*-----------Parser-------------*/
-int    parser(t_data *data);
+int     parser(t_data *data);
 t_cmds  *create_cmd(t_parser *parser);
-t_cmds *new_cmd(char **str, t_parser *parser);
-int get_builtin(char *str);
+t_cmds  *new_cmd(char **str, t_parser *parser);
+int     get_builtin(char *str);
 
 /*-----------Parser_utils.c-------------*/
 void        on_error(char *str, int fd, t_data *data);

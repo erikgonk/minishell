@@ -161,6 +161,8 @@ void    clean_shell(t_data *data)
         lex_free(&data->lexer);
     if (data->input)
         clean_input(data->input);
+    if (data->cmds)
+        clean_cmds(&data->cmds);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -175,6 +177,5 @@ int	main(int argc, char **argv, char **envp)
     }
 	init_minishell(&env, &data, envp);
 	mini_loop(&data);
-	/*clean_shell(&env, &data);*/
 	return (0);
 }
