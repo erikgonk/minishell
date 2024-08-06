@@ -29,5 +29,6 @@ t_cmds  *cmds_lstnew(char **command);
 t_cmds  *cmds_lstlast(t_cmds *lst);
 void    cmds_addback(t_cmds **lst, t_cmds *node);
 void clean_cmds(t_cmds **cmds);
+int     my_strcmp(char *str1, const char *str2);
 
 #endif
