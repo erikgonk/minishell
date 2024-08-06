@@ -13,17 +13,26 @@
 #include "../../inc/minishell.h"
 #include "../../inc/builtins.h"
 
-static int	ft_add_replace_str_env(t_env *env, char **cmd,
-		char *str, int flag)// (var=str && var+=str && var=) exist
+static int	ft_add_replace_str_env(t_exec *exec, char **cmd, int flag)// (var=str && var+=str && var=) exist
 {
 	t_node	*node;
 	int		pos;
 
+	node = get_env_lst(cmd[1], exec->env_t->start);
+	if (!node)
+	{
+		node->str = malloc(sizeof(char) + 1);
+		node = exec->env_t->end->next;
+		node->next = NULL;
+	}
 	pos = ft_find_char(cmd[1], '=');
 	if (!cmd[1][pos + 1]) // var=
 		node->str = "";
 	else if (flag == F_CREATE) // var=str
+	{
+		free(node->str);
 		node->str = cmd[1];
+	}
 	else if (flag == F_ADD) // var+=str
 		ft_strlcat(node->str, cmd[1], ft_strlen(cmd[1]));
 	return (0);
@@ -32,7 +41,6 @@ static int	ft_add_replace_str_env(t_env *env, char **cmd,
 // (var=str && var+=str && var && var=) Not exist
 static int	ft_create_env(t_env *env, char **cmd, char *str, int flag)
 {
-	char		*tmp;
 	t_node		*node;
 
 	node = malloc(sizeof(t_node));
@@ -44,7 +52,7 @@ static int	ft_create_env(t_env *env, char **cmd, char *str, int flag)
 		node->var = cmd[0];
 		node->str = cmd[1];
 		return (0);
-	}
+
 	flag = ft_find_char(cmd[1], '=');
 	env->end->next = node;
 	if (flag == -1) // var
@@ -55,7 +63,7 @@ static int	ft_create_env(t_env *env, char **cmd, char *str, int flag)
 	}
 	node->var = str; // var=
 	node->str = "";
-	return (free(tmp), 1);
+	return (1);
 }
 
 static int	ft_separate_export(t_env *env, t_exec *exec, char *str, int flag)
@@ -70,7 +78,7 @@ static int	ft_separate_export(t_env *env, t_exec *exec, char *str, int flag)
 	else if (flag != F_NONE && !get_env_lst(cmd[0], env->start)) // (var=str && var+=str && var=) Not exist
 		ft_create_env(env, cmd, str, flag);
 	else// (var=str && var+=str && var=) exist
-		ft_add_replace_str_env(env, cmd, str, flag); ////////////// cambiar cmd por exec??////////////////////
+		ft_add_replace_str_env(exec, cmd, flag); ////////////// cambiar cmd por exec??////////////////////
 	if (cmd)
 		ft_free_willy(cmd);
 	return (exec->g_exit);
