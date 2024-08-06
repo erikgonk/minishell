@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 14:37:05 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/06 13:38:27 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/06 15:35:08 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	ft_inni_redirs(t_lex *lex)
 		lex->err = 0;
 		if (i != 0)
 		{
-			ft_printf("minish: %s: Permission denied\n", lex->literal);
+			ft_printf(2, "minish: %s: Permission denied\n", lex->literal);
 			lex->err = -1;
 		}
 		else if (lex->type == T_REDIR_IN || lex->type == T_HEREDOC)

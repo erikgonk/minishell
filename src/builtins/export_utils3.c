@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/2e9f042cbecf8af0c3400cf69b7b34230398ee3i* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   export_utils3.c                                    :+:      :+:    :+:   */
@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 13:44:01 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/03 13:45:00 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/06 15:32:43 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ int	ft_parsing(char *str)
 				i++;
 				continue ;
 			}
-			ft_printf("bash: export: ", 2);
-			ft_printf("`%s': not a valid identifier\n", str, 2);
+			ft_printf(2, "bash: export: ");
+			ft_printf(2, "`%s': not a valid identifier\n", str);
 			ft_free_willy(cmd);
 			return (1);
 		}

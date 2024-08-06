@@ -6,14 +6,14 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 15:20:58 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/03 16:50:53 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/06 15:39:56 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 #include "../../inc/builtins.h"
 
-static char	*ft_change_env_path(t_exec *exec, t_cmds *cmd, char *get)
+static char	*ft_change_env_path(t_exec *exec, char *get)
 {
 	t_node		*aux;
 	t_node		*env;
@@ -29,7 +29,7 @@ static char	*ft_change_env_path(t_exec *exec, t_cmds *cmd, char *get)
 	aux = get_env_lst(get, exec->env_t->start);
 	if (!aux)
 	{
-		ft_printf("mish: cd: HOME not set\n", 2);
+		ft_printf(2, "mish: cd: HOME not set\n");
 		return (NULL);
 	}
 	tmp = aux->str;
@@ -37,8 +37,10 @@ static char	*ft_change_env_path(t_exec *exec, t_cmds *cmd, char *get)
 	return (free(tmp), path);
 }
 
-static char	*ft_cd_normi(t_exec *exec, t_node *tmp, char *path)
+static char	*ft_cd_normi(t_exec *exec, char *path)
 {
+	t_node		*tmp;
+
 	if (!exec->cmd_t->cmd[1] || (exec->cmd_t->cmd[1][0] == '~'
 		&& ft_strlen(exec->cmd_t->cmd[1]) == 1))
 	{
@@ -53,17 +55,16 @@ static char	*ft_cd_normi(t_exec *exec, t_node *tmp, char *path)
 int	ft_cd(t_exec *exec)
 {
 	char		*path;
-	t_node		*tmp;
 
 	if (exec->cmd_t->cmd[2])
 	{
-		ft_printf("minish: cd: too many arguments\n");
+		ft_printf(2, "minish: cd: too many arguments\n");
 		return (1);
 	}
-	path = ft_change_env_path(exec, exec->cmd_t, exec->env_t->oldpwd);
+	path = ft_change_env_path(exec, exec->env_t->oldpwd);
 	if (!path)
 		return (1);
-	path = ft_cd_normi(exec, tmp, path);
+	path = ft_cd_normi(exec, path);
 	if (exec->cmd_t->cmd[1][0] == '-' && !exec->cmd_t->cmd[1][1])
 	{
 		chdir(path);
@@ -71,10 +72,10 @@ int	ft_cd(t_exec *exec)
 	}
 	if (chdir(path) != 1)
 	{
-		ft_printf("minish: cd: %s: No such file or directory\n",
+		ft_printf(2, "minish: cd: %s: No such file or directory\n",
 			exec->cmd_t->cmd[1]);
 		return (1);
 	}
-	ft_change_env_path(exec, exec->cmd_t, exec->env_t->pwd);
+	ft_change_env_path(exec, exec->env_t->pwd);
 	return (0);
 }

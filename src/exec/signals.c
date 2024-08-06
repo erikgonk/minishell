@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:51:03 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/06 13:51:05 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/06 15:34:49 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	ft_sig_c(int sig)
 {
 	if (sig == SIGINT)
 	{
-		printf("\n");
+		ft_printf(1, "\n");
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
@@ -59,7 +59,7 @@ void	ft_sig_c_hdoc(int sig, t_data *data)
 	if (sig == SIGINT)
 	{
 		data->g_exit = 130;
-		ft_printf("\n", 2);
+		ft_printf(1, "\n");
 		exit(1);
 	}
 }

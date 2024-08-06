@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 12:44:20 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/06 13:30:11 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/06 15:32:07 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ static void	ft_printing(char **lst)
 	i = -1;
 	while (lst[++i])
 	{
-		ft_printf("declare -x ", 1);
-		ft_printf("%s\n", lst[i], 1);
+		ft_printf(1, "declare -x ");
+		ft_printf(1, "%s\n", lst[i]);
 	}
 }
 

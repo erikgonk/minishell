@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:48:51 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/02 11:47:47 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/06 15:33:03 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ int	ft_pwd(t_exec *exec)
 		aux = get_env_lst("PWD", exec->env_t->start);
 		if (aux)
 		{
-			ft_printf("%s\n", aux->str, 1);
+			ft_printf(1, "%s\n", aux->str);
 			return (0);
 		}
 		else if (exec->env_t->pwd)
 		{
-			ft_printf("%s\n", exec->env_t->pwd, 1);
+			ft_printf(1, "%s\n", exec->env_t->pwd);
 			return (0);
 		}
 		return (1);

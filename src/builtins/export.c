@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 15:20:13 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/03 13:58:26 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/06 15:31:47 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,8 @@ int	ft_export(t_exec *exec)
 		pos = ft_find_char(exec->cmd_t->cmd[i], '=');
 		if (exec->cmd_t->cmd[i][0] == '=')
 		{
-			ft_printf("mish: export: `%s", exec->cmd_t->cmd[i], 2);
-			ft_printf("': not a valid identifier\n", 2);
+			ft_printf(2, "mish: export: `%s", exec->cmd_t->cmd[i]);
+			ft_printf(2, "': not a valid identifier\n");
 			return (1);
 		}
 		ft_export_normi(exec, i, pos);

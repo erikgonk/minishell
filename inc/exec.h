@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 10:47:58 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/06 13:31:10 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/06 16:06:05 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,12 @@ void			ft_init_exec(t_exec *exec);
 
 // cmd_utils2
 char			*ft_get_cmd(t_data *data, t_cmds *cmd, t_exec *exec);
-static int		ft_get_cmd_help(t_exec *exec, t_cmds *cmd, int i);
 void			ft_close_pipes(int fd[2]);
 
 // Signals
 void			ft_sig_c_hdoc(int sig, t_data *data);
 void			ft_sig_c(int sig);
-int				get_stt(int flag, int val);
+int				ft_get_stt(int flag, int val);
 // int				get_stt(int flag, int val); // do not show ^C, ^\...
 
 #endif

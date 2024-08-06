@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/2e9f042cbecf8af0c3400cf69b7b34230398ee3d* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   cmd_utils2.c                                       :+:      :+:    :+:   */
@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:27:05 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/06 13:37:48 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/06 15:34:11 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	ft_get_cmd_help(t_exec *exec, t_cmds *cmd, int i)
 
 	if (access(cmd->cmd[1], F_OK) != 0)
 	{
-		ft_printf("%s: %s: Permission denied", cmd[0], cmd[i], 2);
+		ft_printf(2, "%s: %s: Permission denied", cmd[0], cmd[i]);
 		exec->g_exit = 1;
 		return (1);
 	}
@@ -51,7 +51,7 @@ char	*ft_get_cmd(t_data *data, t_cmds *cmd, t_exec *exec)
 	lst = get_env_lst("PATH", data->env->start);
 	if (!lst || !lst->str)
 	{
-		ft_printf("minish: %s: No such file or directory\n", cmd->cmd[0], 2);
+		ft_printf(2, "minish: %s: No such file or directory\n", cmd->cmd[0]);
 		exit (127);
 	}
 	exec->path = ft_split(lst->str, ':');
@@ -64,6 +64,6 @@ char	*ft_get_cmd(t_data *data, t_cmds *cmd, t_exec *exec)
 		if (access(exec->path[i], X_OK) == 0)
 			return (exec->path[i]);
 	}
-	ft_printf("minish: %s: No such file or directory\n", cmd->cmd[0], 2);
+	ft_printf(2, "minish: %s: No such file or directory\n", cmd->cmd[0]);
 	exit (127);
 }

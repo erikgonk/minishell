@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:32:56 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/03 11:19:36 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/06 15:29:50 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,13 @@ int	ft_echo(t_exec *exec)
 	flag = 0;
 	if (!exec->cmd_t->cmd[i])
 	{
-		ft_printf("\n", 1);
+		ft_printf(1, "\n");
 		return (0);
 	}
 	ft_n_checker(exec->cmd_t->cmd, i, &flag);
 	while (exec->cmd_t->cmd[i])
-		ft_printf("%s", exec->cmd_t->cmd[i], 1);
+		ft_printf(1, "%s", exec->cmd_t->cmd[i]);
 	if (flag == 0)
-		ft_printf("\n", 1);
+		ft_printf(1, "\n");
 	return (0);
 }
