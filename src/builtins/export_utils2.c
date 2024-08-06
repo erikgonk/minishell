@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 16:08:45 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/03 13:46:35 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/06 13:29:31 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static int	ft_sorted(char **lst)
 	return (0);
 }
 
-char	**ft_sort_list_exp(char **lst, int i, int j, int pos)
+char	**ft_sort_lst_exp(char **lst, int i, int j, int pos)
 {
 	while (lst[++i])
 	{
@@ -83,7 +83,7 @@ char	**ft_sort_list_exp(char **lst, int i, int j, int pos)
 	return (lst);
 }
 
-int	ft_count_list_elems(t_node *lst)
+int	ft_count_lst_elems(t_node *lst)
 {
 	int		i;
 

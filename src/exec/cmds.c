@@ -6,7 +6,7 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 16:06:47 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/05 17:17:04 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/06 13:32:44 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@
 void	ft_middle_cmd(t_data *data, t_cmds *cmd, t_exec *exec)
 {
 	exec->fd = dup(exec->p[0]);// reads info from file before
-	close_pipes(exec->p);
+	ft_close_pipes(exec->p);
 	pipe(exec->p);// creates again p[0] & p[1]
 	dup2(exec->fd, 0);// reads from fd (where the info has been saved)
 	close(exec->fd);
 	dup2(exec->p[1], 1);// writes in the pipe
-	close_pipes(exec->p);
+	ft_close_pipes(exec->p);
 }
 
 int	ft_forking(t_data *data, t_cmds *cmd, t_exec *exec)
@@ -30,14 +30,14 @@ int	ft_forking(t_data *data, t_cmds *cmd, t_exec *exec)
 	if (!cmd->prev)
 	{
 		dup2(exec->p[1], 1);// writes in the pipe
-		close_pipes(exec->p);
+		ft_close_pipes(exec->p);
 	}
 	else if (cmd->next)
 		ft_middle_cmd(data, cmd, exec);
 	else
 	{
 		dup2(exec->p[0], 0);// writes in the terminal
-		close_pipes(exec->p);
+		ft_close_pipes(exec->p);
 	}
 	return (0);
 }
@@ -112,6 +112,6 @@ int	ft_cmds(t_data *data, t_exec *exec, t_cmds *cmd)
 		cmd = cmd->next;
 	}
 	ft_find_exit_status(data, kids, (ft_lst_size(data->cmds) - 1));
-	close_pipes(exec->p);
+	ft_close_pipes(exec->p);
 	return (free(kids), exec->g_exit);
 }

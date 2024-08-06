@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:27:05 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/03 14:30:43 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/06 13:37:48 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	ft_get_cmd_help(t_exec *exec, t_cmds *cmd, int i)
 	exec->path[i] = ft_strjoin(tmp, cmd->cmd[0]);
 	if (!exec->path[i])
 		exit (127);
-	free(tmp);
+	return (free(tmp), 0);
 }
 
 char	*ft_get_cmd(t_data *data, t_cmds *cmd, t_exec *exec)

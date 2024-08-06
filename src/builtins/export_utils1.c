@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 12:44:20 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/05 13:07:52 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/06 13:30:11 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,48 +26,48 @@ static int	ft_lstlen(t_node *env)
 	return (i);
 }
 
-int	ft_small_char(char **list, int i, int j, int k)
+int	ft_small_char(char **lst, int i, int j, int k)
 {
-	while (list[j][k] && list[i][k])
+	while (lst[j][k] && lst[i][k])
 	{
-		if (list[j][k] < list[i][k])
+		if (lst[j][k] < lst[i][k])
 			return (j);
 		k++;
 	}
 	return (i);
 }
 
-static char	**ft_save_lst(t_node *env, char **list, int i)
+static char	**ft_save_lst(t_node *env, char **lst, int i)
 {
 	while (env && env->var)
 	{
-		list[++i] = ft_strdup(env->var);
+		lst[++i] = ft_strdup(env->var);
 		if (env->str)
 		{
-			ft_strjoin(list[i], "=");
-			ft_strjoin(list[i], "\"");
-			ft_strjoin(list[i], env->str);
-			ft_strjoin(list[i], "\"");
+			ft_strjoin(lst[i], "=");
+			ft_strjoin(lst[i], "\"");
+			ft_strjoin(lst[i], env->str);
+			ft_strjoin(lst[i], "\"");
 		}
 		else
 		{
-			ft_strjoin(list[i], "=");
-			ft_strjoin(list[i], "\"\"");
+			ft_strjoin(lst[i], "=");
+			ft_strjoin(lst[i], "\"\"");
 		}
 	}
-	list = ft_sort_lst_exp(list, -1, 0, 0);
-	return (list);
+	lst = ft_sort_lst_exp(lst, -1, 0, 0);
+	return (lst);
 }
 
-static void	ft_printing(char **list)
+static void	ft_printing(char **lst)
 {
 	int		i;
 
 	i = -1;
-	while (list[++i])
+	while (lst[++i])
 	{
 		ft_printf("declare -x ", 1);
-		ft_printf("%s\n", list[i], 1);
+		ft_printf("%s\n", lst[i], 1);
 	}
 }
 
@@ -77,7 +77,7 @@ int	ft_print_export(t_exec *exec)
 	char		**lst;
 
 	i = -1;
-	lst = malloc(sizeof (char *) * ft_count_list_elems(exec->env_t->start));
+	lst = malloc(sizeof (char *) * ft_count_lst_elems(exec->env_t->start));
 	if (!lst)
 		return (1);
 	lst = ft_save_lst(exec->env_t->start, lst, -1);

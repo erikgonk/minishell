@@ -6,7 +6,7 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 16:47:55 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/05 15:29:18 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/06 13:10:50 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ typedef struct s_exec
 	t_lex       *lexer;
 	t_cmds		*cmd_t;
 	t_env		*env_t;
+	t_data		*data_t;
 }	t_exec;
 
 #endif

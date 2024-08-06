@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 14:37:05 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/05 14:31:56 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/06 13:38:27 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,10 @@ void	ft_inni_redirs(t_lex *lex)
 void	ft_middle_redirs(t_data *data, t_cmds *cmd, int *fd, t_exec *exec)
 {
 	exec->fd = dup(exec->p[0]); // reads info from file before
-	close_pipes(exec->p);
+	ft_close_pipes(exec->p);
 	pipe(exec->p); // creates again p[0] & p[1]
 	dup2(*fd, 0);
-	close_pipes(exec->p);
+	ft_close_pipes(exec->p);
 	close(*fd);
 }
 
@@ -53,7 +53,7 @@ void	ft_redir_to_fd(t_data *data, t_cmds *cmd, int *fd, t_exec *exec)
 	if (!cmd->prev)
 	{
 		dup2(*fd, 1); // writes in the pipe
-		close_pipes(exec->p);
+		ft_close_pipes(exec->p);
 		close(*fd);
 	}
 	else if (cmd->next)
@@ -61,7 +61,7 @@ void	ft_redir_to_fd(t_data *data, t_cmds *cmd, int *fd, t_exec *exec)
 	else
 	{
 		dup2(*fd, 0); // writes in the terminal
-		close_pipes(exec->p);
+		ft_close_pipes(exec->p);
 		close(*fd);
 	}
 }
