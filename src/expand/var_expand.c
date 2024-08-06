@@ -29,7 +29,7 @@ char *expand_var(char *var, t_data *data)
         return (ft_itoa(data->g_exit));
     while (tmp) 
     {
-        if (!ft_strcmp(tmp->var, var) && tmp->str) 
+        if (ft_strcmp(tmp->var, var) && tmp->str) 
             return (ft_strdup(tmp->str));
         tmp = tmp->next;
     }
