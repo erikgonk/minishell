@@ -6,7 +6,7 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 16:47:55 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/06 13:10:50 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/06 14:01:57 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ typedef enum e_builtin
 /*--------------Structures----------------*/
 typedef struct s_lex
 {
-	enum e_token	type; //type of token
+	enum e_token	type; //type of toke
 	char			*literal; //the string literal (eg. "cat -e")
 	int				index; //position in the linked list
 	int				in;// < && <<
