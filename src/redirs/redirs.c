@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 14:37:05 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/06 15:35:08 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/06 19:10:57 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	ft_inni_redirs(t_lex *lex)
 	}
 }
 
-void	ft_middle_redirs(t_data *data, t_cmds *cmd, int *fd, t_exec *exec)
+static void	ft_middle_redirs(int *fd, t_exec *exec)
 {
 	exec->fd = dup(exec->p[0]); // reads info from file before
 	ft_close_pipes(exec->p);
@@ -48,7 +48,7 @@ void	ft_middle_redirs(t_data *data, t_cmds *cmd, int *fd, t_exec *exec)
 	close(*fd);
 }
 
-void	ft_redir_to_fd(t_data *data, t_cmds *cmd, int *fd, t_exec *exec)
+static void	ft_redir_to_fd(t_cmds *cmd, int *fd, t_exec *exec)
 {
 	if (!cmd->prev)
 	{
@@ -57,7 +57,7 @@ void	ft_redir_to_fd(t_data *data, t_cmds *cmd, int *fd, t_exec *exec)
 		close(*fd);
 	}
 	else if (cmd->next)
-		ft_middle_redirs(data, cmd, fd, exec);
+		ft_middle_redirs(fd, exec);
 	else
 	{
 		dup2(*fd, 0); // writes in the terminal
@@ -66,7 +66,7 @@ void	ft_redir_to_fd(t_data *data, t_cmds *cmd, int *fd, t_exec *exec)
 	}
 }
 
-void	ft_redirections(t_data *data, t_cmds *cmd, t_exec *exec)
+void	ft_redirections(t_exec *exec)
 {
 	if (exec->cmd_t->redirections)
 		ft_inni_redirs(exec->cmd_t->redirections); // open fds on the cmd lst
@@ -76,11 +76,11 @@ void	ft_redirections(t_data *data, t_cmds *cmd, t_exec *exec)
 			exit(1);
 		if (exec->cmd_t->redirections->type == T_REDIR_IN
 			|| exec->cmd_t->redirections->type == T_HEREDOC)
-			ft_redir_to_fd(data, exec->cmd_t, &exec->cmd_t->redirections->in,
+			ft_redir_to_fd(exec->cmd_t, &exec->cmd_t->redirections->in,
 				exec);
 		else if (exec->cmd_t->redirections->type == T_REDIR_OUT
 			|| exec->cmd_t->redirections->type == T_APPEND)
-			ft_redir_to_fd(data, exec->cmd_t, &exec->cmd_t->redirections->out,
+			ft_redir_to_fd(exec->cmd_t, &exec->cmd_t->redirections->out,
 				exec);
 		if (exec->cmd_t->redirections->next)
 		{

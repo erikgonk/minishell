@@ -6,7 +6,7 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 16:11:36 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/06 15:17:31 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/06 19:12:47 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,17 +91,13 @@ void	ft_lstclear(t_list **lst, void (*del)(void*));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
-//
-//
+
 // printf
 int		ft_printf(int fd, const char *str, ...);
-//
-int		ft_putchar_error(int fd, char c);
-//
-//
+
 // get_next_line
 char	*get_next_line(int fd);
-//
+// utils
 char	*ft_free(char *buffer, char *line);
 int		checker(char *buffer);
 

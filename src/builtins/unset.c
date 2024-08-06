@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 17:46:30 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/03 14:04:38 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/06 18:52:59 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,7 @@ t_node	*get_env_lst(char *to_find, t_node *lst)
 	return (NULL);
 }
 
-static t_node	*ft_get_env_before_lst(char *to_find, t_node *lst,
-		t_node *env, t_exec *exec)
+static t_node	*ft_get_env_before_lst(char *to_find, t_node *lst, t_exec *exec)
 {
 	if (!to_find)
 		return (NULL);
@@ -57,8 +56,7 @@ char	**ft_free_willy(char **split)
 
 static int	ft_extra_unset(t_exec *exec, t_node *node, t_node *node_bef)
 {
-	if (ft_get_env_before_lst(node->var, node_bef,
-			exec->env_t->start, exec)) // edge case being the first variable START
+	if (ft_get_env_before_lst(node->var, node_bef, exec)) // edge case being the first variable START
 	{
 		exec->env_t->start = node->next;
 		if (node->str)
@@ -82,7 +80,7 @@ int	ft_unset(t_exec *exec)
 	t_node		*node_bef;
 
 	node_bef = ft_get_env_before_lst(exec->cmd_t->cmd[1],
-			exec->env_t->start, exec->env_t->start, exec);
+			exec->env_t->start, exec);
 	node = get_env_lst(exec->cmd_t->cmd[1], exec->env_t->start);
 	if (!node_bef || !node)
 		return (1);

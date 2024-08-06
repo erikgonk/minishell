@@ -6,7 +6,7 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 16:06:47 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/06 13:32:44 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/06 19:17:53 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "../../inc/exec.h"
 #include "../../inc/redirs.h"
 
-void	ft_middle_cmd(t_data *data, t_cmds *cmd, t_exec *exec)
+static void	ft_middle_cmd(t_exec *exec)
 {
 	exec->fd = dup(exec->p[0]);// reads info from file before
 	ft_close_pipes(exec->p);
@@ -25,7 +25,7 @@ void	ft_middle_cmd(t_data *data, t_cmds *cmd, t_exec *exec)
 	ft_close_pipes(exec->p);
 }
 
-int	ft_forking(t_data *data, t_cmds *cmd, t_exec *exec)
+static int	ft_forking(t_cmds *cmd, t_exec *exec)
 {
 	if (!cmd->prev)
 	{
@@ -33,7 +33,7 @@ int	ft_forking(t_data *data, t_cmds *cmd, t_exec *exec)
 		ft_close_pipes(exec->p);
 	}
 	else if (cmd->next)
-		ft_middle_cmd(data, cmd, exec);
+		ft_middle_cmd(exec);
 	else
 	{
 		dup2(exec->p[0], 0);// writes in the terminal
@@ -42,7 +42,7 @@ int	ft_forking(t_data *data, t_cmds *cmd, t_exec *exec)
 	return (0);
 }
 
-int	ft_childs(t_data *data, t_cmds *cmd, t_exec *exec)
+static int	ft_childs(t_data *data, t_cmds *cmd, t_exec *exec)
 {
 	pid_t		pid;
 
@@ -54,9 +54,9 @@ int	ft_childs(t_data *data, t_cmds *cmd, t_exec *exec)
 		if (!cmd->cmd[0])
 			exit (0);
 		if (cmd->redirections)
-			ft_redirections(data, cmd, exec);
+			ft_redirections(exec);
 		else if (cmd->next)
-			ft_forking(data, cmd, exec);
+			ft_forking(cmd, exec);
 		if (cmd->builtin)
 		{
 			data->g_exit = ft_builtins(exec);
@@ -69,7 +69,7 @@ int	ft_childs(t_data *data, t_cmds *cmd, t_exec *exec)
 	return (pid);
 }
 
-void	ft_find_exit_status(t_data *data, pid_t *kids, int size)
+static void	ft_find_exit_status(t_data *data, pid_t *kids, int size)
 {
 	int		res;
 	int		status;
@@ -91,7 +91,7 @@ void	ft_find_exit_status(t_data *data, pid_t *kids, int size)
 		data->g_exit = WEXITSTATUS(res);
 }
 
-int	ft_cmds(t_data *data, t_exec *exec, t_cmds *cmd)
+int	ft_cmds(t_data *data, t_exec *exec)
 {
 	int		i;
 	pid_t	*kids; // to look for the exit status
@@ -106,10 +106,10 @@ int	ft_cmds(t_data *data, t_exec *exec, t_cmds *cmd)
 	{
 		exit (1);
 	}
-	while (cmd)
+	while (exec->cmd_t)
 	{
-		kids[++i] = ft_childs(data, cmd, exec);
-		cmd = cmd->next;
+		kids[++i] = ft_childs(data, exec->cmd_t, exec);
+		exec->cmd_t = exec->cmd_t->next;
 	}
 	ft_find_exit_status(data, kids, (ft_lst_size(data->cmds) - 1));
 	ft_close_pipes(exec->p);

@@ -6,7 +6,7 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 13:10:08 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/06 15:21:32 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/06 19:15:24 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	putstr(int fd, char *str, int *len)
 	}
 	while (str[i])
 	{
-		if (ft_putchar_error(fd, str[i]) == -1)
+		if (ft_putchar_fd(fd, str[i]) == -1)
 		{
 			*len = -1;
 			return ;
@@ -51,7 +51,7 @@ static void	unsign(unsigned long n, int *len, unsigned int base, int type)
 		if (*len == -1)
 			return ;
 	}
-	if (ft_putchar_error(1, c[n % base]) == -1)
+	if (ft_putchar_fd(1, c[n % base]) == -1)
 	{
 		*len = -1;
 		return ;
@@ -77,7 +77,7 @@ static void	putnb(long long int n, int base, char *c, int *len)
 		if (*len == -1)
 			return ;
 	}
-	if ((*len)++ != -1 && ft_putchar_error(1, c[n % base]) == -1)
+	if ((*len)++ != -1 && ft_putchar_fd(1, c[n % base]) == -1)
 	{
 		*len = -1;
 		return ;
@@ -94,7 +94,7 @@ static int	printea(int fd, const char str, int len, va_list args)
 	else if (str == 's')
 		putstr(fd, va_arg(args, char *), &len);
 	else if (str == 'c')
-		len += ft_putchar_error(1, va_arg(args, int));
+		len += ft_putchar_fd(1, va_arg(args, int));
 	else if (str == 'd' || str == 'i')
 		putnb(va_arg(args, int), 10, c, &len);
 	else if (str == 'u')
@@ -104,7 +104,7 @@ static int	printea(int fd, const char str, int len, va_list args)
 	else if (str == 'p')
 		unsign(va_arg(args, unsigned long), &len, 16, 112);
 	else if (str == '%')
-		len += ft_putchar_error(1, '%');
+		len += ft_putchar_fd(1, '%');
 	return (len);
 }
 
@@ -123,7 +123,7 @@ int	ft_printf(int fd, const char *str, ...)
 		if (str[j] == '%')
 			error = printea(fd, str[++j], 0, args);
 		else
-			error = ft_putchar_error(1, str[j]);
+			error = ft_putchar_fd(1, str[j]);
 		if (error == -1)
 		{
 			va_end(args);

@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 12:13:37 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/06 13:49:53 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/06 19:06:39 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	ft_executor(t_data *data, t_exec *exec, t_cmds *cmd)
 			ft_inni_redirs(cmd->redirections);
 		cmd = cmd->next;
 	}
-	data->g_exit = ft_cmds(data, exec, cmd);
+	data->g_exit = ft_cmds(data, exec);
 	ft_free_willy(exec->env);
 	ft_free_willy(exec->path);
 	return (data->g_exit);

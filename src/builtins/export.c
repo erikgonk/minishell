@@ -6,35 +6,38 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 15:20:13 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/06 15:31:47 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/06 18:46:36 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 #include "../../inc/builtins.h"
 
-static int	ft_add_replace_str_env(t_exec *exec, char **cmd, int flag)// (var=str && var+=str && var=) exist
+static int	ft_add_replace_str_env(t_exec *exec, char **cmd, int flag) // (var=str && var+=str && var=) exist
 {
 	t_node	*node;
-	int		pos;
 
-	node = get_env_lst(cmd[1], exec->env_t->start);
-	if (!node)
+	node = get_env_lst(cmd[0], exec->env_t->start);
+	if (!cmd[1] && flag == F_CREATE) // var= when !str
 	{
+		if (node->str)
+			free(node->str);
 		node->str = malloc(sizeof(char) + 1);
-		node = exec->env_t->end->next;
-		node->next = NULL;
-	}
-	pos = ft_find_char(cmd[1], '=');
-	if (!cmd[1][pos + 1]) // var=
 		node->str = "";
+	}
+	else if (flag == F_ADD && cmd[1])
+	{
+		free(node);
+		node = get_env_lst(ft_strtrim(cmd[0], "+"), exec->env_t->start);
+		ft_strlcat(node->str, cmd[1], ft_strlen(cmd[1]));
+	}
 	else if (flag == F_CREATE) // var=str
 	{
-		free(node->str);
-		node->str = cmd[1];
+		if (node->str)
+			free(node->str);
+		node->str = ft_strdup(cmd[1]);
 	}
-	else if (flag == F_ADD) // var+=str
-		ft_strlcat(node->str, cmd[1], ft_strlen(cmd[1]));
+	ft_free_willy(cmd);
 	return (0);
 }
 
@@ -52,7 +55,7 @@ static int	ft_create_env(t_env *env, char **cmd, char *str, int flag)
 		node->var = cmd[0];
 		node->str = cmd[1];
 		return (0);
-
+	}
 	flag = ft_find_char(cmd[1], '=');
 	env->end->next = node;
 	if (flag == -1) // var
@@ -78,7 +81,10 @@ static int	ft_separate_export(t_env *env, t_exec *exec, char *str, int flag)
 	else if (flag != F_NONE && !get_env_lst(cmd[0], env->start)) // (var=str && var+=str && var=) Not exist
 		ft_create_env(env, cmd, str, flag);
 	else// (var=str && var+=str && var=) exist
-		ft_add_replace_str_env(exec, cmd, flag); ////////////// cambiar cmd por exec??////////////////////
+	{
+		free(cmd);
+		ft_add_replace_str_env(exec, ft_split(exec->cmd_t->cmd[1], '='), flag);
+	}
 	if (cmd)
 		ft_free_willy(cmd);
 	return (exec->g_exit);
@@ -112,15 +118,11 @@ int	ft_export(t_exec *exec)
 		pos = ft_find_char(exec->cmd_t->cmd[i], '=');
 		if (exec->cmd_t->cmd[i][0] == '=')
 		{
-			ft_printf(2, "mish: export: `%s", exec->cmd_t->cmd[i]);
-			ft_printf(2, "': not a valid identifier\n");
+			ft_printf(2, "mish: export: `%s'", exec->cmd_t->cmd[i]);
+			ft_printf(2, ": not a valid identifier\n");
 			return (1);
 		}
 		ft_export_normi(exec, i, pos);
 	}
 	return (exec->g_exit);
 }
-// DONE export --> show env
-// export Hola --> save hola in env but with no str
-// export Hola=HOLA --> if Hola exists -> change the str of Hola to HOLA || if Hola does not exist -> save Hola in var and HOLA in str
-// export Hola+=aloha --> if Hola exists -> add aloha to Hola || if Hola does not exist -> do Hola=aloha

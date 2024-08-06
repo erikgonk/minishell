@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 13:51:03 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/06 15:34:49 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/06 19:20:25 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	ft_sig_innit(void)
 }
 */
 
-int	get_stt(int flag, int val)
+int	ft_get_stt(int flag, int val)
 {
 	static int	var;
 
@@ -49,7 +49,7 @@ void	ft_sig_c(int sig)
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
-		get_stt(1, 130);
+		ft_get_stt(1, 130);
 	}
 }
 

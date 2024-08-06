@@ -6,13 +6,13 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 11:18:45 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/06 16:08:48 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/06 19:19:02 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-#include "../../inc/builtins.h"
 #include "../../inc/exec.h"
+#include "../../inc/builtins.h"
 
 long long int	ft_atoll(char *str, int i, long long int res, int sign)
 {
