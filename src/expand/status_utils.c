@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../../inc/expander.h"
 
 int get_status(char c, int current) 
 {

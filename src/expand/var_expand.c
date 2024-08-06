@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../../inc/expander.h"
 
 char *find_var(char *str, t_expander *exp) 
 {

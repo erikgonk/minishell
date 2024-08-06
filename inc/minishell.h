@@ -9,7 +9,6 @@
 /*   Updated: 2024/05/26 16:47:58 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -29,8 +28,14 @@
 # include <stdio.h>
 // libft 
 # include "../src/libft/inc/libft.h"
-#include <readline/readline.h> 
-#include <readline/history.h>
+# include "parser.h"
+# include "utils.h"
+# include "expander.h"
+# include "env.h"
+# include "tokenizer.h"
+
+# include <readline/readline.h> 
+# include <readline/history.h>
 
 # define PROMPT "mish> "
 # define C_LESS '<'
@@ -139,96 +144,7 @@ char    *clean_input(char *input);
 char    *get_input(t_data *data);
 int     init_minishell(t_env *env, t_data *data, char **envp);
 
-
-//lex_lst.c
-int lex_lstlen(t_lex *tokens);
-void    lex_free(t_lex **lst);
-t_lex   *lex_lstlast(t_lex *tokens);
-void    lex_addback(t_lex **lst, t_lex *node);
-void    lex_clearone(t_lex **lst);
-void    lex_delfirst(t_lex **lst);
-void    lex_delone(t_lex **lst, int del);
-t_lex   *lex_new(char *str, int token);
-
-//input_check.c
-int input_check(char *input, t_data *data);
-int	arg_count(char *str, char c);
-int	quote_checker(char *str);
-int	quotes(char *input, int *i, int flag, char c);
-int	change_flag(int flag);
-
-//cmd_lst.c
-t_cmds  *cmds_lstnew(char **command);
-t_cmds  *cmds_lstlast(t_cmds *lst);
-void    cmds_addback(t_cmds **lst, t_cmds *node);
-void clean_cmds(t_cmds **cmds);
-
-//tokenize.c
-int  find_type(char *literal);
-int token_length(char *input);
-t_lex *fill_tokens(t_lex *tokens, char *input, int length, t_data *data);
-t_lex	*tokenizer(char *input, t_data *data);
-
-//token_utils.c
-void    add_index(t_lex *tokens);
-int is_hdoc_present(t_lex *tokens);
-int  find_next_redir(char *literal, int i);
-int     check_syntax_and_hdoc(t_data *data, t_lex *tokens, char *input, t_lex *new, int i);
-t_lex *make_token(int length, char *input, t_lex *tokens, t_data *data);
-
-//token_checks.c
-int check_redirs(t_lex **lst, t_data *data);
-int check_pipes(t_lex **lst, t_data *data);
-int    check_tokens(t_data *data, t_lex **lst);
-
-
-/*-----------Parser-------------*/
-int    parser(t_data *data);
-t_cmds  *create_cmd(t_parser *parser);
-t_cmds *new_cmd(char **str, t_parser *parser);
-int get_builtin(char *str);
-
-//parser_utils.c
-void        on_error(char *str, int fd, t_data *data);
-void        count_pipes(t_lex *lexer, t_data *data);
-t_parser    init_parser(t_lex *lexer, t_data *data);
-int         count_arguments(t_lex *lexer);
-
-//parser_redir.c
-void    new_redir(t_lex *tmp, t_parser *parser);
-void    add_redir(t_parser *parser);
-
-//expand.c
-char *expand_filename(char *filename, t_data *data);
-char **expand_cmd(char **cmd, t_data *data);
-void    expand(t_data *data, t_cmds *cmds);
-char *expand_single(char *str, t_data *data);
-
-//status_utils.c
-int get_status(char c, int current);
-void append_to_finished(t_expander *exp, char *str);
-void no_quote_exp(char *str, t_expander *exp, t_data *data);
-void single_quote_exp(char *str, t_expander *exp);
-void double_quote_exp(char *str, t_expander *exp, t_data *data);
-
-//var_expand.c
-char *find_var(char *str, t_expander *exp);
-char *expand_var(char *var, t_data *data);
-
-//env.c
-char    *extract_str(char *envstr);
-char    *extract_var(char *envstr);
-t_node  *init_node(char *var, char *str);
-void    add_to_env(t_node *node, t_env *env);
-int    transform_env(t_env *env, char **envp);
-
-//set_env.c
-int set_standard_env(t_env *env, char *shlvl);
-int set_env(t_env *env, char *var, char *str);
-int     in_env(char *var, t_env env);
-char    *get_env(char *var, t_env env);
-
-void print_cmds(const t_data *data);
+void    print_cmds(const t_data *data);
 void    executor(t_data *data);
 void    clean_shell(t_data *data);
 

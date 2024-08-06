@@ -9,7 +9,7 @@
 /*   Updated: 2024/07/18 12:18:01 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "minishell.h"
+#include "../../inc/tokenizer.h"
 
 static void    print_error(int type, t_data *data)
 {

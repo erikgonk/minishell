@@ -10,8 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
-#include <readline/readline.h>
-#include <readline/history.h>
 
 char    *clean_input(char *input)
 {

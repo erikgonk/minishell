@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../../inc/parser.h"
 
 void    new_redir(t_lex *tmp, t_parser *parser)
 {

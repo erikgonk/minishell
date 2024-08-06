@@ -9,7 +9,7 @@
 /*   Updated: 2024/07/18 12:17:44 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "minishell.h"
+#include "../../inc/tokenizer.h"
 
 int check_redirs(t_lex **lst, t_data *data)
 {

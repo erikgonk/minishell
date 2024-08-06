@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../../inc/utils.h"
 
 int lex_lstlen(t_lex *tokens)
 {

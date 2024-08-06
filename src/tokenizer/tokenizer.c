@@ -9,7 +9,7 @@
 /*   Updated: 2024/07/18 12:17:53 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "minishell.h"
+#include "../../inc/tokenizer.h"
 
 int  find_type(char *literal)
 {
