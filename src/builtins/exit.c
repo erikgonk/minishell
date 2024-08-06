@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 11:18:45 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/06 16:07:41 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/06 16:08:48 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,14 +66,13 @@ int	ft_exit(t_exec *exec)
 {
 	long long int	res;
 
-	res = 0;
 	if (!exec->cmd_t->cmd[1])
 		ft_exit_status(0);
 	ft_check_is_num(exec->cmd_t->cmd[1]);
 	if (exec->cmd_t->cmd[2])
 	{
 		ft_printf(2, "exit\nminish: exit: too many arguments\n");
-		ft_exit_status(res);
+		ft_exit_status(2);
 	}
 	res = ft_atoll(exec->cmd_t->cmd[1], 0, 0, 1);
 	if (res == 1 && exec->cmd_t->cmd[1][1])
