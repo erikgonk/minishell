@@ -6,7 +6,7 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 16:06:47 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/06 19:17:53 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/06 19:52:44 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int	ft_cmds(t_data *data, t_exec *exec)
 	kids = ft_calloc(ft_lst_size(data->cmds), sizeof(pid_t));
 	if (!kids)
 		return (1);
-	ft_init_exec(exec); // initializes t_exec
+	ft_init_exec(exec, data); // initializes t_exec
 	if (ft_env_to_cmd(data->env->start, exec,
 			ft_count_list_elems_str(data->env->start), -1) == 1)
 	{

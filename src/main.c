@@ -6,10 +6,11 @@
 /*   By: vaunevik <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 10:59:03 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/07/15 10:59:08 by vaunevik         ###   ########.fr       */
+/*   Updated: 2024/08/06 19:51:43 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../inc/minishell.h"
+#include "../inc/exec.h"
 
 char    *clean_input(char *input)
 {
@@ -129,10 +130,13 @@ static void    check_exp(t_data *data)
 void    mini_loop(t_data *data)
 {
     char    *input;
+	t_exec	exec;
 
     input = NULL;
     while (1)
     {
+		signal(SIGINT, ft_sig_c);
+		signal(SIGQUIT, SIG_IGN);
         data->printed_error = 0;
         lex_free(&data->lexer);
         clean_cmds(&data->cmds);
@@ -146,6 +150,8 @@ void    mini_loop(t_data *data)
         data->lexer = tokenizer(input, data);
         if (!data->lexer)
             continue ;
+		data->g_exit = ft_executor(data, &exec, exec.cmd_t);
+		data->g_exit = ft_get_stt(0, 0);
         if (check_tokens(data, &data->lexer))
             parser(data);
         check_exp(data);

@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:06:33 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/02 17:05:01 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/06 19:46:30 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,14 @@
 #include "../../inc/exec.h"
 #include "../../inc/builtins.h"
 
-void	ft_init_exec(t_exec *exec)
+void	ft_init_exec(t_exec *exec, t_data *data)
 {
 	exec->p[0] = 0;
 	exec->p[1] = 1;
 	exec->g_exit = 0;
+	exec->lexer = data->cmds->redirections; 
+	exec->cmd_t = data->cmds; 
+	exec->env_t = data->env; 
 }
 
 int	ft_lst_size(t_cmds *cmd)
