@@ -162,7 +162,7 @@ void    free_env(t_env *env);
 
 //for testing + printing tests
 void    print_cmds(const t_data *data);
-void    executor(t_data *data);
+void    check_exp(t_data *data);
 void    clean_shell(t_data *data);
 
 #endif
