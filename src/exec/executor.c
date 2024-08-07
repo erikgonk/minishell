@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 12:13:37 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/06 19:53:35 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/07 12:04:32 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	ft_builtins(t_exec *exec)
 	int				i;
 
 	i = 0;
-	while (bts[i] && ft_strcmp(bts[i], exec->cmd_t->cmd[0]))
+	while (bts[i] && !ft_strcmp(bts[i], exec->cmd_t->cmd[0]))
 		i++;
 	if (bts[i])
 		builtins[i](exec);
@@ -40,7 +40,7 @@ static int	ft_builtin_exists(t_exec *exec)
 	int				i;
 
 	i = 0;
-	while (bts[i] && ft_strcmp(bts[i], exec->cmd_t->cmd[0]))
+	while (bts[i] && !ft_strcmp(bts[i], exec->cmd_t->cmd[0]))
 		i++;
 	if (bts[i])
 		return (0);
@@ -52,13 +52,14 @@ int	ft_executor(t_data *data, t_exec *exec, t_cmds *cmd)
 	ft_init_exec(exec, data); // initializes t_exec
 	if (!exec->cmd_t->cmd)
 		return (exec->g_exit);
-	else if (ft_builtin_exists(exec) == 0
+	if (data->cmds->redirections)
+		exec->lexer = data->cmds->redirections;
+	if (ft_builtin_exists(exec) == 0
 		&& !exec->lexer)
 	{
 		data->g_exit = ft_builtins(exec); // already exits
 		return (data->g_exit);
 	}
-	printf("hola\n");
 //	if (heredoc)
 //		ft_heredoc(exec);
 	while (cmd) // opening all fds

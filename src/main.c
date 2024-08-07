@@ -6,7 +6,7 @@
 /*   By: vaunevik <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 10:59:03 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/08/06 19:51:43 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/07 11:40:48 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../inc/minishell.h"
@@ -150,10 +150,10 @@ void    mini_loop(t_data *data)
         data->lexer = tokenizer(input, data);
         if (!data->lexer)
             continue ;
-		data->g_exit = ft_executor(data, &exec, exec.cmd_t);
-		data->g_exit = ft_get_stt(0, 0);
         if (check_tokens(data, &data->lexer))
             parser(data);
+		data->g_exit = ft_executor(data, &exec, exec.cmd_t);
+		data->g_exit = ft_get_stt(0, 0);
         check_exp(data);
         /*print_cmds(data);*/
         printf("%i\n", data->g_exit);

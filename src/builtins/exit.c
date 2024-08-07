@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 11:18:45 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/06 19:19:02 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/07 12:17:28 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ long long int	ft_atoll(char *str, int i, long long int res, int sign)
 		i++;
 	while (str[i] >= '0' && str[i] <= '9')
 	{
-		ft_printf(1, "%lld\n", res);
 		if (res < 0)
 			return (1);
 		res = (res * 10) + (str[i] - 48);
@@ -42,6 +41,7 @@ long long int	ft_atoll(char *str, int i, long long int res, int sign)
 static void	ft_exit_status(int	err)
 {
 	ft_get_stt(1, err);
+	ft_printf(1, "exit\n");
 	exit (err);
 }
 
@@ -50,6 +50,8 @@ static void	ft_check_is_num(char *str)
 	int		i;
 
 	i = -1;
+	if (str[i + 1] == '-' || str[i + 1] == '+')
+		i++;
 	while (str[++i])
 	{
 		if (!ft_isdigit(str[i]))
