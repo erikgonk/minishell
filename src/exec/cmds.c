@@ -58,7 +58,7 @@ static int	ft_childs(t_data *data, t_cmds *cmd, t_exec *exec)
 			ft_redirections(exec);
 		else if (cmd->next)
 			ft_forking(cmd, exec);
-		if (cmd->builtin)
+		if (ft_builtin_exists(exec) == 0)
 		{
 			data->g_exit = ft_builtins(exec);
 			exit (data->g_exit);

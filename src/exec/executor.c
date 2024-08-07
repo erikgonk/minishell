@@ -33,7 +33,7 @@ int	ft_builtins(t_exec *exec)
 	return (exec->g_exit);
 }
 
-static int	ft_builtin_exists(t_exec *exec)
+int	ft_builtin_exists(t_exec *exec)
 {
 	static char		*bts[] = {"pwd", "echo", "cd", "export",
 		"unset", "env", "exit", NULL};

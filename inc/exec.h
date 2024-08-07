@@ -15,6 +15,7 @@
 
 // exec
 int				ft_builtins(t_exec *exec);
+int				ft_builtin_exists(t_exec *exec);
 int				ft_executor(t_data *data, t_exec *exec, t_cmds *cmd);
 
 // cmd

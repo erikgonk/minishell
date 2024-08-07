@@ -54,28 +54,29 @@ int	ft_count_list_elems_str(t_node *env)
 int	ft_env_to_cmd(t_node *env, t_exec *exec, int size, int i)
 {
 	char		*tmp;
+	t_node		*lst;
 
 //	size = 1000;
-
-	if (!env)
+	(void)env;
+	lst = exec->env_t->start;
+	if (!lst)
 		return (1);
 	exec->env = (char **)malloc(sizeof(char *) * (size + 1));
 	if (!exec->env)
 		return (1);
-	while (env)
+	while (lst)
 	{
-		printf("%s\n", env->str);
-		if (env->str)
+		if (lst->str)
 		{
-			tmp = ft_strjoin(env->var, "=");
+			tmp = ft_strjoin(lst->var, "=");
 			if (!tmp)
 				return (1);
-			exec->env[i] = ft_strjoin(tmp, env->str);
+			exec->env[++i] = ft_strjoin(tmp, lst->str);
 			if (!exec->env[i])
 				return (free(tmp), 1); //free willy of env taken out of here
 			free(tmp);
 		}
-		env = env->next;
+		lst = lst->next;
 	}
 //	printf("hola\n");
 	return (0);
