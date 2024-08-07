@@ -20,11 +20,11 @@ void	ft_close_pipes(int fd[2])
 	close(fd[1]);
 }
 
-static int	ft_get_cmd_help(t_exec *exec, t_cmds *cmd, int i)
+static int	ft_get_cmd_normi(t_exec *exec, t_cmds *cmd, int i)
 {
 	char	*tmp;
 
-	if (access(cmd->cmd[1], F_OK) != 0)
+	if (access(cmd->cmd[1], R_OK) != 0)
 	{
 		ft_printf(2, "%s: %s: Permission denied", cmd[0], cmd[i]);
 		exec->g_exit = 1;
@@ -59,7 +59,7 @@ char	*ft_get_cmd(t_data *data, t_cmds *cmd, t_exec *exec)
 		exit (127);
 	while (exec->path[++i])
 	{
-		if (ft_get_cmd_help(exec, cmd, i) == 1)
+		if (ft_get_cmd_normi(exec, cmd, i) == 1)
 			continue ;
 		if (access(exec->path[i], X_OK) == 0)
 			return (exec->path[i]);
