@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:06:33 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/07 11:51:06 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/07 17:19:13 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,12 @@ int	ft_lst_size(t_cmds *cmd)
 {
 	int		i;
 
-	i = -1;
-	while (cmd && ++i > -42)
+	i = 0;
+	while (cmd)
+	{
+		i++;
 		cmd = cmd->next;
+	}
 	return (i);
 }
 
@@ -52,13 +55,16 @@ int	ft_env_to_cmd(t_node *env, t_exec *exec, int size, int i)
 {
 	char		*tmp;
 
+//	size = 1000;
+
 	if (!env)
 		return (1);
-	exec->env = ft_calloc(size, sizeof(char *));
+	exec->env = (char **)malloc(sizeof(char *) * (size + 1));
 	if (!exec->env)
 		return (1);
 	while (env)
 	{
+		printf("%s\n", env->str);
 		if (env->str)
 		{
 			tmp = ft_strjoin(env->var, "=");
@@ -66,13 +72,11 @@ int	ft_env_to_cmd(t_node *env, t_exec *exec, int size, int i)
 				return (1);
 			exec->env[i] = ft_strjoin(tmp, env->str);
 			if (!exec->env[i])
-			{
-				ft_free_willy(exec->env);
-				return (free(tmp), 1);
-			}
+				return (free(tmp), 1); //free willy of env taken out of here
 			free(tmp);
 		}
 		env = env->next;
 	}
+//	printf("hola\n");
 	return (0);
 }

@@ -1,6 +1,6 @@
 # Compiler and flags
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -I./inc -I./src/libft/inc -I/opt/homebrew/opt/readline/include
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address -I./inc -I./src/libft/inc -I/opt/homebrew/opt/readline/include
 
 # Directories
 SRC_DIR = ./src

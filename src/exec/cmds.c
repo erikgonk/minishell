@@ -6,13 +6,14 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 16:06:47 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/06 19:52:44 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/07 16:45:16 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 #include "../../inc/exec.h"
 #include "../../inc/redirs.h"
+#include "../../inc/builtins.h"
 
 static void	ft_middle_cmd(t_exec *exec)
 {
@@ -85,8 +86,6 @@ static void	ft_find_exit_status(t_data *data, pid_t *kids, int size)
 		if (process == kids[size])
 			res = status;
 	}
-	if (kids)
-		free(kids);
 	if (WEXITSTATUS(res))
 		data->g_exit = WEXITSTATUS(res);
 }
@@ -100,11 +99,10 @@ int	ft_cmds(t_data *data, t_exec *exec)
 	kids = ft_calloc(ft_lst_size(data->cmds), sizeof(pid_t));
 	if (!kids)
 		return (1);
-	ft_init_exec(exec, data); // initializes t_exec
-	if (ft_env_to_cmd(data->env->start, exec,
+	else if (ft_env_to_cmd(data->env->start, exec,
 			ft_count_list_elems_str(data->env->start), -1) == 1)
 	{
-		exit (1);
+		return (1);
 	}
 	while (exec->cmd_t)
 	{
@@ -113,5 +111,9 @@ int	ft_cmds(t_data *data, t_exec *exec)
 	}
 	ft_find_exit_status(data, kids, (ft_lst_size(data->cmds) - 1));
 	ft_close_pipes(exec->p);
+	if (exec->env)
+		ft_free_willy(exec->env);
+	if (exec->path)
+		ft_free_willy(exec->path);
 	return (free(kids), exec->g_exit);
 }

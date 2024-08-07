@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 12:13:37 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/07 13:19:31 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/07 16:29:51 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,7 @@ static int	ft_builtin_exists(t_exec *exec)
 
 int	ft_executor(t_data *data, t_exec *exec, t_cmds *cmd)
 {
-	ft_init_exec(exec, data); // initializes t_exec
-	if (data->cmds->redirections)
+	if (exec->cmd_t->redirections)
 		exec->lexer = data->cmds->redirections;
 	if (!exec->cmd_t->cmd)
 		return (exec->g_exit);
@@ -62,15 +61,19 @@ int	ft_executor(t_data *data, t_exec *exec, t_cmds *cmd)
 	}
 //	if (heredoc)
 //		ft_heredoc(exec);
-	while (cmd) // opening all fds
+	while (cmd && cmd->redirections) // opening all fds
 	{
-		exec->lexer = data->cmds->redirections;
 		if (cmd->redirections)
 			ft_inni_redirs(cmd->redirections);
 		cmd = cmd->next;
+		data->cmds = data->cmds->next; 
+		if (!cmd)
+			break ;
+		if (data->cmds->redirections)
+			exec->lexer = data->cmds->redirections;
+		else
+			cmd->redirections = NULL;
 	}
 	data->g_exit = ft_cmds(data, exec);
-	ft_free_willy(exec->env);
-	ft_free_willy(exec->path);
 	return (data->g_exit);
 }

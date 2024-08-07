@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 14:37:05 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/06 19:10:57 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/07 16:19:27 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,11 @@ void	ft_inni_redirs(t_lex *lex)
 
 	lex->in = 0;
 	lex->out = 1;
+	i = 0;
 	while (lex)
 	{
-		i = access(lex->literal, R_OK);
+		if (!access(lex->literal, F_OK))
+			i = access(lex->literal, R_OK);
 		lex->err = 0;
 		if (i != 0)
 		{
