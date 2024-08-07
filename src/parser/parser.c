@@ -89,19 +89,19 @@ t_cmds *new_cmd(char **str, t_parser *parser)
 
 int get_builtin(char *str)
 {
-    if (ft_strcmp(str, "cd") == 0)
+    if (my_strcmp(str, "cd") == 0)
 		return (CD);
-	else if (ft_strcmp(str, "pwd") == 0)
+	else if (my_strcmp(str, "pwd") == 0)
 		return (PWD);
-	else if (ft_strcmp(str, "export") == 0)
+	else if (my_strcmp(str, "export") == 0)
 		return (EXPORT);
-	else if (ft_strcmp(str, "unset") == 0)
+	else if (my_strcmp(str, "unset") == 0)
 		return (UNSET);
-	else if (ft_strcmp(str, "env") == 0)
+	else if (my_strcmp(str, "env") == 0)
 		return (ENV);
-    else if (ft_strcmp(str, "echo") == 0)
+    else if (my_strcmp(str, "echo") == 0)
         return (ECHO);
-	else if (ft_strcmp(str, "exit") == 0)
+	else if (my_strcmp(str, "exit") == 0)
 		return (EXIT);
 	else
 		return (NO_BUILTIN);

@@ -6,132 +6,128 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 13:10:08 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/06 19:15:24 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/05/24 18:39:41 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/libft.h"
 
-static void	putstr(int fd, char *str, int *len)
+static void	putstr(int fd, char *str, t_libft *l)
 {
 	int		i;
 
 	i = 0;
 	if (!str)
 	{
-		*len += write(fd, "(null)", 6);
+		l->len += write(fd, "(null)", 6);
 		return ;
 	}
 	while (str[i])
 	{
 		if (ft_putchar_fd(fd, str[i]) == -1)
 		{
-			*len = -1;
+			l->len = -1;
 			return ;
 		}
-		(*len)++;
+		l->len++;
 		i++;
 	}
 }
 
-static void	unsign(unsigned long n, int *len, unsigned int base, int type)
+static void	unsign(unsigned long n, t_libft *l, unsigned int base, int type)
 {
-	char	*c;
-
-	if (*len == -1)
+	if (l->len == -1)
 		return ;
-	c = "0123456789abcdef";
 	if (type == 88)
-		c = "0123456789ABCDEF";
+		l->c = "0123456789ABCDEF";
 	if (type == 112)
-		putstr(1, "0x", len);
-	if (n >= base && *len != -1)
+		putstr(1, "0x", l);
+	if (n >= base && l->len != -1)
 	{
-		unsign(n / base, len, base, type);
-		if (*len == -1)
+		unsign(n / base, l, base, type);
+		if (l->len == -1)
 			return ;
 	}
-	if (ft_putchar_fd(1, c[n % base]) == -1)
+	if (ft_putchar_fd(l->fd, l->c[n % base]) == -1)
 	{
-		*len = -1;
+		l->len = -1;
 		return ;
 	}
 	else
-		(*len)++;
+		l->len++;
 }
 
-static void	putnb(long long int n, int base, char *c, int *len)
+static void	putnb(long long int n, int base, t_libft *l)
 {
 	if (base == 10 && (n > 2147483647 || n < -2147483648))
 		return ;
 	if (n < 0)
 	{
-		putstr(1, "-", len);
-		if (*len == -1)
+		putstr(l->fd, "-", l);
+		if (l->len == -1)
 			return ;
 		n = -n;
 	}
-	if (n >= base && *len != -1)
+	if (n >= base && l->len != -1)
 	{
-		putnb(n / base, base, c, len);
-		if (*len == -1)
+		putnb(n / base, base, l);
+		if (l->len == -1)
 			return ;
 	}
-	if ((*len)++ != -1 && ft_putchar_fd(1, c[n % base]) == -1)
+	if (l->len++ != -1 && ft_putchar_fd(l->fd, l->c[n % base]) == -1)
 	{
-		*len = -1;
+		l->len = -1;
 		return ;
 	}
 }
 
-static int	printea(int fd, const char str, int len, va_list args)
+static int	printea(t_libft *l, const char str, va_list args)
 {
-	char	*c;
-
-	c = "0123456789abcdef";
-	if (len == -1)
+	l->c = "0123456789abcdef";
+	l->len = 0;
+	if (l->len == -1)
 		return (-1);
 	else if (str == 's')
-		putstr(fd, va_arg(args, char *), &len);
+		putstr(l->fd, va_arg(args, char *), l);
 	else if (str == 'c')
-		len += ft_putchar_fd(1, va_arg(args, int));
+		l->len += ft_putchar_fd(l->fd, va_arg(args, int));
 	else if (str == 'd' || str == 'i')
-		putnb(va_arg(args, int), 10, c, &len);
+		putnb(va_arg(args, int), 10, l);
 	else if (str == 'u')
-		unsign(va_arg(args, unsigned int), &len, 10, 0);
+		unsign(va_arg(args, unsigned int), l, 10, 0);
 	else if (str == 'x' || str == 'X')
-		unsign(va_arg(args, unsigned int), &len, 16, str);
+		unsign(va_arg(args, unsigned int), l, 16, str);
 	else if (str == 'p')
-		unsign(va_arg(args, unsigned long), &len, 16, 112);
+		unsign(va_arg(args, unsigned long), l, 16, 112);
 	else if (str == '%')
-		len += ft_putchar_fd(1, '%');
-	return (len);
+		l->len += write(l->fd, "%", 1);
+	return (l->len);
 }
 
-int	ft_printf(int fd, const char *str, ...)
+int	fd_printf(int fd, const char *str, ...)
 {
-	int		count;
-	va_list	args;
-	int		j;
-	int		error;
+	int					count;
+	t_libft				l;
+	va_list				args;
 
+	l.fd = fd;
 	count = 0;
 	va_start(args, str);
-	j = 0;
-	while (str[j])
+	l.i = 0;
+	while (str[l.i])
 	{
-		if (str[j] == '%')
-			error = printea(fd, str[++j], 0, args);
+		if (str[l.i] == '%')
+			l.error = printea(&l, str[++l.i], args);
 		else
-			error = ft_putchar_fd(1, str[j]);
-		if (error == -1)
+			l.error = ft_putchar_fd(l.fd, str[l.i]);
+		if (l.error == -1)
 		{
 			va_end(args);
 			return (-1);
 		}
-		count += error;
-		if (str[j])
-			++j;
+		count += l.error;
+		if (str[l.i])
+			++l.i;
 	}
 	va_end(args);
 	return (count);

@@ -142,7 +142,7 @@ void    mini_loop(t_data *data)
         clean_cmds(&data->cmds);
         input = clean_input(input);
         input = get_input(data);
-        if (input[0] == '\0')
+        if (input == NULL || input[0] == '\0')
         {
             printf("%i\n", data->g_exit);
             continue ;

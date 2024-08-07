@@ -76,7 +76,7 @@ int  find_next_redir(char *literal, int i)
 
 int     check_syntax_and_hdoc(t_data *data, t_lex *tokens, char *input, t_lex *new, int i)
 {
-    if (input[i] == ' ' || (input[i] >= 8 && input[i] <= 13))
+    if (ft_isspace(input[i]))
         i++;
     if (input[i] == '>' || input[i] == '<' || input[i] == '|' || !input[i])
     {
