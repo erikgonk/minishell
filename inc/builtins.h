@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:33:44 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/06 15:46:44 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/07 14:45:23 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ int					ft_parsing(char *str);
 
 // UNSET
 int					ft_unset(t_exec *exec);
-char				**ft_free_willy(char **split);
 
 t_node				*get_env_lst(char *to_find, t_node *lst);
 
@@ -55,5 +54,8 @@ int					ft_pwd(t_exec *exec);
 int					ft_exit(t_exec *exec);
 long long int		ft_atoll(char *str, int i,
 		long long int res, int sign);
+
+// UITLS
+char				**ft_free_willy(char **split);
 
 #endif

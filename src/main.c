@@ -6,7 +6,11 @@
 /*   By: vaunevik <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 10:59:03 by vaunevik          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/08/07 13:00:07 by erigonza         ###   ########.fr       */
+=======
+/*   Updated: 2024/08/07 14:40:52 by erigonza         ###   ########.fr       */
+>>>>>>> erik
 /*                                                                            */
 /* ************************************************************************** */
 #include "../inc/minishell.h"
@@ -123,7 +127,11 @@ static void    check_exp(t_data *data)
         expand(data, tmp);
         tmp = tmp->next;
     }
+<<<<<<< HEAD
 //	 print_cmds(data);
+=======
+//    print_cmds(data);
+>>>>>>> erik
 }
 
 
