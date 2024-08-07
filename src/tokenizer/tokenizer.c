@@ -90,6 +90,13 @@ t_lex	*tokenizer(char *input, t_data *data)
 	tokens = NULL;
 	while (*input)
 	{
+        if (*input == '|' && ft_strlen(input) == 1)
+        {
+            printf("Mish: unexpected error near token '|'\n");
+            data->printed_error = 1;
+            data->g_exit = 2;
+            return (NULL);
+        }
 		if (*input == ' ' || (*input >= 8 && *input <= 13))
 			input++;
 		else

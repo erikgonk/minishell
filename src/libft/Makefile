@@ -18,7 +18,7 @@ SRCS = ft_atoi.c ft_itoa.c ft_putchar.c ft_putstr.c ft_putnbr.c ft_putchar_fd.c 
 	   ft_bzero.c ft_memcmp.c ft_memmove.c ft_memchr.c ft_memcpy.c ft_calloc.c \
 	   ft_strlen.c ft_strdup.c ft_strlcpy.c ft_strlcat.c ft_strchr.c ft_strrchr.c \
 	   ft_strnstr.c ft_strncmp.c ft_substr.c ft_strjoin.c ft_strtrim.c ft_split.c \
-	   ft_strmapi.c ft_striteri.c ft_strcmp.c \
+	   ft_strmapi.c ft_striteri.c ft_strcmp.c ft_isspace.c\
 	   ft_printf.c \
 	   get_next_line.c get_next_line_utils.c \
 	   ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c ft_lstadd_back.c \

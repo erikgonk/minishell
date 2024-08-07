@@ -1,5 +1,9 @@
 #include "../../inc/utils.h"
 
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
 int	change_flag(int flag)
 {
 	if (flag == 0)
