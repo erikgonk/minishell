@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:33:44 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/07 14:45:23 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/08 10:09:07 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ int					ft_cd(t_exec *exec);
 
 // ECHO
 int					ft_echo(t_exec *exec);
-void				ft_n_checker(char **cmd, int i, int *flag);
 
 // ENV
 int					ft_env(t_exec *exec);
