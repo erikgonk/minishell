@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 14:37:05 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/08 16:40:38 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/08 16:48:57 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ void	ft_innit_redirs(t_cmds *cmd, t_lex *lex)
 		}
 		if (cmd->hdoc && cmd->in == 0)
 			cmd->in = cmd->hdoc;
-		printf("out -> %d\nin -> %d\n\n\n", cmd->out, cmd->in);
 		cmd = cmd->next;
 	}
 }

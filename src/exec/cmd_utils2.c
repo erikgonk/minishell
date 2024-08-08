@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:27:05 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/08 16:45:58 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/08 16:50:55 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,8 @@
 
 void	ft_close_pipes(int fd[2])
 {
-	printf("Pipe : %d %d\n\n\n", fd[0], fd[1]);
-	if (fd[0])
-		close(fd[0]);
-	if (fd[1])
-		close(fd[1]);
+	close(fd[0]);
+	close(fd[1]);
 }
 
 static void	ft_get_cmd_normi(t_exec *exec, t_cmds *cmd, int i)

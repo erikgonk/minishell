@@ -6,7 +6,7 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 16:06:47 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/08 16:46:06 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/08 16:49:06 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ static int	ft_childs(t_data *data, t_cmds *cmd, t_exec *exec)
 	{
 		signal(SIGINT, exit);
 		signal(SIGQUIT, exit);
-//		printf("Pipe: %d %d\n", exec->p[0], exec->p[1]);
 		if (!cmd->cmd[0])
 			exit (0);
 		if (cmd->redirections)
