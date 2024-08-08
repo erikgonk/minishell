@@ -16,28 +16,22 @@
 
 void	ft_close_pipes(int fd[2])
 {
-	close(fd[0]);
-	close(fd[1]);
+	if (fd[0])
+		close(fd[0]);
+	if (fd[0])
+		close(fd[1]);
 }
 
-static int	ft_get_cmd_normi(t_exec *exec, t_cmds *cmd, int i)
+static void	ft_get_cmd_normi(t_exec *exec, t_cmds *cmd, int i)
 {
 	char	*tmp;
 
-	if (access(cmd->cmd[1], R_OK) != 0)
-	{
-		ft_printf(2, "%s: %s: Permission denied", cmd[0], cmd[i]);
-		exec->g_exit = 1;
-		return (1);
-	}
 	tmp = ft_strjoin(exec->path[i], "/");
 	if (!tmp)
 		exit (127);
 	free(exec->path[i]);
 	exec->path[i] = ft_strjoin(tmp, cmd->cmd[0]);
-	if (!exec->path[i])
-		exit (127);
-	return (free(tmp), 0);
+	free(tmp);
 }
 
 char	*ft_get_cmd(t_data *data, t_cmds *cmd, t_exec *exec)
@@ -59,8 +53,7 @@ char	*ft_get_cmd(t_data *data, t_cmds *cmd, t_exec *exec)
 		exit (127);
 	while (exec->path[++i])
 	{
-		if (ft_get_cmd_normi(exec, cmd, i) == 1)
-			continue ;
+		ft_get_cmd_normi(exec, cmd, i);
 		if (access(exec->path[i], X_OK) == 0)
 			return (exec->path[i]);
 	}

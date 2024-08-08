@@ -65,6 +65,7 @@ static int	ft_childs(t_data *data, t_cmds *cmd, t_exec *exec)
 		}
 		exec->cmd = ft_get_cmd(data, cmd, exec); // error controled in the function
 		execve(exec->cmd, cmd->cmd, exec->env);
+// control if an arg does not have permission
 		exit (1);
 	}
 	return (pid);
@@ -113,7 +114,7 @@ int	ft_cmds(t_data *data, t_exec *exec)
 	ft_close_pipes(exec->p);
 	if (exec->env)
 		ft_free_willy(exec->env);
-	if (exec->path)
-		ft_free_willy(exec->path);
+//	if (exec->path)
+//		ft_free_willy(exec->path);
 	return (free(kids), exec->g_exit);
 }
