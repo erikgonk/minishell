@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 12:13:37 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/08 16:43:41 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/08 18:00:23 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	ft_executor(t_data *data, t_exec *exec, t_cmds *cmd)
 		exec->lexer = data->cmds->redirections;
 	if (!exec->cmd_t->cmd)
 		return (exec->g_exit);
-	if (ft_builtin_exists(exec) == 0 && !exec->lexer)
+	if (ft_builtin_exists(exec) == 0 && !exec->lexer && !exec->cmd_t->next)
 	{
 		data->g_exit = ft_builtins(exec); // already exits
 		return (data->g_exit);

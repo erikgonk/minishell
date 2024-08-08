@@ -1,7 +1,7 @@
 # Compiler and flags
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -fsanitize=leak -I./inc -I./src/libft/inc -I/opt/homebrew/opt/readline/include
-#  
+# 
 # Directories
 SRC_DIR = ./src
 OBJ_DIR = ./obj
@@ -58,7 +58,7 @@ all: $(TARGET)
 $(TARGET): $(OBJ_FILES) $(LIBFT) $(INC)
 	$(CC) $(CFLAGS) $(OBJ_FILES) $(LIBS) -o $(TARGET)
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c Makefile
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 

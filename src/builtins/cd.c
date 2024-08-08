@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 15:20:58 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/07 14:54:34 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/08 18:06:20 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ int	ft_cd(t_exec *exec)
 
 	if (exec->cmd_t->cmd[2])
 	{
+		printf("%p\n", exec->cmd_t->cmd[2]);
 		ft_printf(2, "minish: cd: too many arguments\n");
 		return (1);
 	}
