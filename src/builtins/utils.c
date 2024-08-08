@@ -6,23 +6,23 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 14:44:23 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/07 14:44:47 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/08 11:53:32 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 #include "../../inc/builtins.h"
 
-char	**ft_free_willy(char **split)
+char	**ft_free_willy(char **cmd)
 {
 	int		i;
 
 	i = -1;
-	if (!split)
+	if (!cmd)
 		return (NULL);
-	while (split[++i])
-		free(split[i]);
-	free(split);
+	while (cmd[++i])
+		free(cmd[i]);
+	free(cmd);
 	return (0);
 }
 

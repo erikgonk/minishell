@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:06:33 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/07 17:19:13 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/08 16:03:41 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 
 void	ft_init_exec(t_exec *exec, t_data *data)
 {
-	exec->p[0] = 0;
-	exec->p[1] = 1;
+	pipe(exec->p);
 	exec->g_exit = 0;
+	exec->fd = 0;
 	exec->lexer = data->cmds->redirections; 
 	exec->cmd_t = data->cmds; 
 	exec->env_t = data->env; 
@@ -51,13 +51,11 @@ int	ft_count_list_elems_str(t_node *env)
 	return (i);
 }
 
-int	ft_env_to_cmd(t_node *env, t_exec *exec, int size, int i)
+int	ft_env_to_cmd(t_exec *exec, int size, int i)
 {
 	char		*tmp;
 	t_node		*lst;
 
-//	size = 1000;
-	(void)env;
 	lst = exec->env_t->start;
 	if (!lst)
 		return (1);

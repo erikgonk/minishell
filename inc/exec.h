@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 10:47:58 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/07 15:37:49 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/08 11:57:03 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int				ft_executor(t_data *data, t_exec *exec, t_cmds *cmd);
 int				ft_cmds(t_data *data, t_exec *exec);
 
 //cmd_utils1
-int				ft_env_to_cmd(t_node *env, t_exec *exec, int size, int i);
+int				ft_env_to_cmd(t_exec *exec, int size, int i);
 int				ft_count_list_elems_str(t_node *env);
 int				ft_lst_size(t_cmds *cmd);
 void			ft_init_exec(t_exec *exec, t_data *data);

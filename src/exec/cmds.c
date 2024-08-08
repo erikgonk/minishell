@@ -6,7 +6,7 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 16:06:47 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/07 16:45:16 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/08 16:46:06 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,26 +20,28 @@ static void	ft_middle_cmd(t_exec *exec)
 	exec->fd = dup(exec->p[0]);// reads info from file before
 	ft_close_pipes(exec->p);
 	pipe(exec->p);// creates again p[0] & p[1]
-	dup2(exec->fd, 0);// reads from fd (where the info has been saved)
-	close(exec->fd);
-	dup2(exec->p[1], 1);// writes in the pipe
-	ft_close_pipes(exec->p);
+//	dup2(exec->fd, 0);// reads from fd (where the info has been saved)
+//	close(exec->fd);
+//	dup2(exec->p[1], 1);// writes in the pipe
+//	ft_close_pipes(exec->p);
 }
 
 static int	ft_forking(t_cmds *cmd, t_exec *exec)
 {
-	if (!cmd->prev)
-	{
-		dup2(exec->p[1], 1);// writes in the pipe
-		ft_close_pipes(exec->p);
-	}
-	else if (cmd->next)
+	if (cmd->prev && cmd->next)
 		ft_middle_cmd(exec);
-	else
+	if (cmd->prev && cmd->in == 0)
 	{
-		dup2(exec->p[0], 0);// writes in the terminal
-		ft_close_pipes(exec->p);
+		if (cmd->next)
+			dup2(exec->fd, 0);
+		else
+			dup2(exec->p[0], 0);// writes in the pipe
 	}
+	if (cmd->next && cmd->out == 1)
+		dup2(exec->p[1], 1);// writes in the terminal
+	ft_close_pipes(exec->p);
+	if (exec->fd)
+		close (exec->fd);
 	return (0);
 }
 
@@ -52,12 +54,12 @@ static int	ft_childs(t_data *data, t_cmds *cmd, t_exec *exec)
 	{
 		signal(SIGINT, exit);
 		signal(SIGQUIT, exit);
+//		printf("Pipe: %d %d\n", exec->p[0], exec->p[1]);
 		if (!cmd->cmd[0])
 			exit (0);
 		if (cmd->redirections)
-			ft_redirections(exec);
-		else if (cmd->next)
-			ft_forking(cmd, exec);
+			ft_redirections(cmd);
+		ft_forking(cmd, exec);
 		if (ft_builtin_exists(exec) == 0)
 		{
 			data->g_exit = ft_builtins(exec);
@@ -100,7 +102,7 @@ int	ft_cmds(t_data *data, t_exec *exec)
 	kids = ft_calloc(ft_lst_size(data->cmds), sizeof(pid_t));
 	if (!kids)
 		return (1);
-	else if (ft_env_to_cmd(data->env->start, exec,
+	else if (ft_env_to_cmd(exec,
 			ft_count_list_elems_str(data->env->start), -1) == 1)
 	{
 		return (1);
@@ -110,11 +112,8 @@ int	ft_cmds(t_data *data, t_exec *exec)
 		kids[++i] = ft_childs(data, exec->cmd_t, exec);
 		exec->cmd_t = exec->cmd_t->next;
 	}
-	ft_find_exit_status(data, kids, (ft_lst_size(data->cmds) - 1));
 	ft_close_pipes(exec->p);
-	if (exec->env)
-		ft_free_willy(exec->env);
-//	if (exec->path)
-//		ft_free_willy(exec->path);
+	ft_free_willy(exec->env);
+	ft_find_exit_status(data, kids, (ft_lst_size(data->cmds) - 1));
 	return (free(kids), exec->g_exit);
 }

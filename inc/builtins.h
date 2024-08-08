@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:33:44 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/08 10:09:07 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/08 11:53:48 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,6 @@ long long int		ft_atoll(char *str, int i,
 		long long int res, int sign);
 
 // UITLS
-char				**ft_free_willy(char **split);
+char				**ft_free_willy(char **cmd);
 
 #endif

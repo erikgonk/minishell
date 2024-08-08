@@ -6,89 +6,70 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 14:37:05 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/07 16:19:27 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/08 16:40:38 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 #include "../../inc/exec.h"
 
-void	ft_inni_redirs(t_lex *lex)
+static int	ft_redirs_err(t_cmds *cmd, int i)
 {
-	int	i;
-
-	lex->in = 0;
-	lex->out = 1;
-	i = 0;
-	while (lex)
+	if (cmd->redirections->type != T_HEREDOC &&
+			!access(cmd->redirections->literal, F_OK))
+		i = access(cmd->redirections->literal, R_OK);
+	if (i != 0)
 	{
-		if (!access(lex->literal, F_OK))
-			i = access(lex->literal, R_OK);
-		lex->err = 0;
-		if (i != 0)
+		ft_printf(2, "minish: %s: Permission denied\n", cmd->redirections->literal);
+		close (cmd->in);
+		close (cmd->out);
+		cmd->in = -1;
+		cmd->out = -1;
+		return (-1);
+	}
+	return (0);
+}
+
+void	ft_innit_redirs(t_cmds *cmd, t_lex *lex)
+{
+	while (cmd)
+	{
+		lex = cmd->redirections;
+		cmd->in = 0;
+		cmd->out = 1;
+		while (lex)
 		{
-			ft_printf(2, "minish: %s: Permission denied\n", lex->literal);
-			lex->err = -1;
+			ft_redirs_err(cmd, 0);
+			if (cmd->in != -1 && cmd->redirections->type == T_REDIR_IN)
+				cmd->in = open(cmd->redirections->literal, O_RDONLY);
+			else if (cmd->out != -1 && cmd->redirections->type == T_APPEND)
+				cmd->out = open(cmd->redirections->literal, O_WRONLY | O_APPEND | O_CREAT, 0644);
+			else if (cmd->out != -1 && cmd->redirections->type == T_REDIR_OUT)
+				cmd->out = open(cmd->redirections->literal, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+			else if (cmd->redirections->type == T_HEREDOC)
+			{
+				close (cmd->in);
+				cmd->in = 0;
+			}
+			lex = lex->next;
 		}
-		else if (lex->type == T_REDIR_IN || lex->type == T_HEREDOC)
-			lex->in = open(lex->literal, O_RDONLY);
-		else if (lex->type == T_APPEND)
-			lex->out = open(lex->literal, O_WRONLY | O_APPEND | O_CREAT, 0644);
-		else if (lex->type == T_REDIR_OUT)
-			lex->out = open(lex->literal, O_WRONLY | O_TRUNC | O_CREAT, 0644);
-		lex = lex->next;
+		if (cmd->hdoc && cmd->in == 0)
+			cmd->in = cmd->hdoc;
+		printf("out -> %d\nin -> %d\n\n\n", cmd->out, cmd->in);
+		cmd = cmd->next;
 	}
 }
 
-static void	ft_middle_redirs(int *fd, t_exec *exec)
+void	ft_redirections(t_cmds *cmd)
 {
-	exec->fd = dup(exec->p[0]); // reads info from file before
-	ft_close_pipes(exec->p);
-	pipe(exec->p); // creates again p[0] & p[1]
-	dup2(*fd, 0);
-	ft_close_pipes(exec->p);
-	close(*fd);
-}
-
-static void	ft_redir_to_fd(t_cmds *cmd, int *fd, t_exec *exec)
-{
-	if (!cmd->prev)
+	if (cmd->in != 0)
 	{
-		dup2(*fd, 1); // writes in the pipe
-		ft_close_pipes(exec->p);
-		close(*fd);
+		dup2(cmd->in, 0);
+		close (cmd->in);
 	}
-	else if (cmd->next)
-		ft_middle_redirs(fd, exec);
-	else
+	if (cmd->out != 1)
 	{
-		dup2(*fd, 0); // writes in the terminal
-		ft_close_pipes(exec->p);
-		close(*fd);
-	}
-}
-
-void	ft_redirections(t_exec *exec)
-{
-	if (exec->cmd_t->redirections)
-		ft_inni_redirs(exec->cmd_t->redirections); // open fds on the cmd lst
-	while (exec->cmd_t->redirections)
-	{
-		if (exec->cmd_t->redirections->err == -1)
-			exit(1);
-		if (exec->cmd_t->redirections->type == T_REDIR_IN
-			|| exec->cmd_t->redirections->type == T_HEREDOC)
-			ft_redir_to_fd(exec->cmd_t, &exec->cmd_t->redirections->in,
-				exec);
-		else if (exec->cmd_t->redirections->type == T_REDIR_OUT
-			|| exec->cmd_t->redirections->type == T_APPEND)
-			ft_redir_to_fd(exec->cmd_t, &exec->cmd_t->redirections->out,
-				exec);
-		if (exec->cmd_t->redirections->next)
-		{
-			close(exec->cmd_t->redirections->in);
-			close(exec->cmd_t->redirections->out);
-		}
-		exec->cmd_t->redirections = exec->cmd_t->redirections->next;
+		dup2(cmd->out, 1);
+		close (cmd->out);
 	}
 }

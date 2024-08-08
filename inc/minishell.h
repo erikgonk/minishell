@@ -6,7 +6,7 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 16:47:55 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/06 19:51:58 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/08 14:27:11 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
@@ -104,6 +104,9 @@ typedef struct s_cmds
 {
     char            **cmd; //the full command with its flags
     enum e_builtin  builtin; //builtin spesification 
+	int				in;
+	int				out;
+	int				hdoc;
     t_lex           *redirections; //structure with redirection information (type of redir and the corresponding file name)
     struct s_cmds   *next;
     struct s_cmds   *prev;
