@@ -26,6 +26,8 @@ SRC_FILES = $(SRC_DIR)/main.c \
             $(SRC_DIR)/utils/input_checks.c \
             $(SRC_DIR)/utils/lex_lst.c \
             $(SRC_DIR)/utils/remove_whitespace.c \
+            $(SRC_DIR)/parser/here_doc.c \
+            $(SRC_DIR)/parser/signals.c \
 
 OBJ_FILES = $(SRC_FILES:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 

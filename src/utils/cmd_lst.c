@@ -18,6 +18,9 @@ t_cmds  *cmds_lstnew(char **command)
     if (!new)
         return (NULL);
     new->cmd = command;
+    new->hdoc = 0;
+    new->in = 0;
+    new->out = 0;
     new->next = NULL;
     return (new);
 }

@@ -21,6 +21,11 @@ int    parser(t_data *data)
             cmds_addback(&data->cmds, node);
         data->lexer = parser.lexer;
     }
+    if (execute_hdoc(data->cmds, data))
+    {
+        data->g_exit = 130;
+        return (0);
+    }
     return (1);
 }
 

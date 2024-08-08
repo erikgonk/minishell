@@ -11,54 +11,14 @@
 /* ************************************************************************** */
 #include "../inc/minishell.h"
 
+int	g_signal = 0;
+
 char    *clean_input(char *input)
 {
     if (input)
         free(input);
     return (NULL);
 }
-
-/*void    mini_loop(t_data *data)
-{
-    char    *input;
-
-    input = NULL;
-    while (1)
-    {
-        data->printed_error = 0;
-        lex_free(&data->lexer);
-        clean_cmds(&data->cmds);
-        input = clean_input(input);
-        handle_signals();
-        input = get_input(data);
-        if (input[0] == '\0')
-            continue ;
-        data->lexer = tokenizer(input, data);
-        if (!data->lexer)
-            continue ;
-        if (check_tokens(data, &data->lexer))
-            parser(data);
-    }
-    rl_clear_history();
-}
-*/
-
-/*
-int	main(int argc, char **argv, char **envp)
-{
-	t_data	data;
-    t_env   env;
-
-    if (argc != 1 ||argv[1])
-    {
-        printf("This program does not take arguments\n");
-        exit(0);
-    }
-	init_minishell(&env, &data, envp);
-	mini_loop(&data);
-	return (0);
-} 
-*/
 
 void print_cmds(const t_data *data) 
 {
@@ -122,7 +82,7 @@ static void    check_exp(t_data *data)
         expand(data, tmp);
         tmp = tmp->next;
     }
-    print_cmds(data);
+    /*print_cmds(data);*/
 }
 
 
@@ -133,14 +93,17 @@ void    mini_loop(t_data *data)
     input = NULL;
     while (1)
     {
+        data->g_exit = get_stt(0, 0);
         data->printed_error = 0;
         lex_free(&data->lexer);
         clean_cmds(&data->cmds);
         input = clean_input(input);
+        signal(SIGINT, &ft_sig_c);
         input = get_input(data);
+        signal(SIGINT, SIG_IGN);
         if (input == NULL || input[0] == '\0')
         {
-            printf("%i\n", data->g_exit);
+            //printf("%i\n", data->g_exit);
             continue ;
         }
         data->lexer = tokenizer(input, data);
@@ -150,7 +113,7 @@ void    mini_loop(t_data *data)
             parser(data);
         check_exp(data);
         /*print_cmds(data);*/
-        printf("%i\n", data->g_exit);
+        //printf("%i\n", data->g_exit);
     }
     rl_clear_history();
 }
@@ -175,7 +138,9 @@ int	main(int argc, char **argv, char **envp)
         printf("This program does not take arguments\n");
         exit(0);
     }
+    signal(SIGQUIT, SIG_IGN);
 	init_minishell(&env, &data, envp);
 	mini_loop(&data);
+    clean_shell(&data);
 	return (0);
 }
