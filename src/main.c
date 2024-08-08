@@ -135,16 +135,16 @@ void    mini_loop(t_data *data)
     input = NULL;
     while (1)
     {
-		signal(SIGINT, ft_sig_c);
-		signal(SIGQUIT, SIG_IGN);
         data->printed_error = 0;
         lex_free(&data->lexer);
         clean_cmds(&data->cmds);
         input = clean_input(input);
+        signal(SIGINT, ft_sig_c);
         input = get_input(data);
-        if (input[0] == '\0')
+        signal(SIGQUIT, SIG_IGN);
+        if (input == NULL ||input[0] == '\0')
         {
-            printf("%i\n", data->g_exit);
+            //printf("%i\n", data->g_exit);
             continue ;
         }
         data->lexer = tokenizer(input, data);
@@ -152,10 +152,10 @@ void    mini_loop(t_data *data)
             continue ;
         if (check_tokens(data, &data->lexer))
             parser(data);
+        check_exp(data);
 		ft_init_exec(&exec, data); // initializes t_exec
 		data->g_exit = ft_executor(data, &exec, exec.cmd_t);
 		data->g_exit = ft_get_stt(0, 0);
-        check_exp(data);
         /*print_cmds(data);*/
 //        printf("%i\n", data->g_exit);
     }

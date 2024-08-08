@@ -1,6 +1,6 @@
 # Compiler and flags
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=leak -I./inc -I./src/libft/inc -I/opt/homebrew/opt/readline/include
+CFLAGS = -Wall -Wextra -Werror -I./inc -I./src/libft/inc -I/opt/homebrew/opt/readline/include
 # 
 # Directories
 SRC_DIR = ./src
@@ -25,6 +25,7 @@ SRC_FILES = $(SRC_DIR)/main.c \
 			$(SRC_DIR)/utils/cmd_lst.c \
 			$(SRC_DIR)/utils/input_checks.c \
 			$(SRC_DIR)/utils/lex_lst.c \
+			$(SRC_DIR)/utils/remove_whitespace.c \
 			$(SRC_DIR)/builtins/cd.c \
 			$(SRC_DIR)/builtins/echo.c \
 			$(SRC_DIR)/builtins/env.c \

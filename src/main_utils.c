@@ -58,11 +58,15 @@ char    *get_input(t_data *data)
         free_env(data->env);
         exit(EXIT_SUCCESS);
     }
-    else if (data->input)
+    if (data->input)
     {
-        add_history(data->input);
-        if (input_check(data->input, data))
-            data->input[0] = '\0';
+        skip_whitespace(data);
+        if (data->input)
+        {
+            add_history(data->input);
+            if (input_check(data->input, data))
+                data->input[0] = '\0';
+        }
     }
     return (data->input);
 }

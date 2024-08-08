@@ -46,7 +46,7 @@ int set_env(t_env *env, char *var, char *str)
     tmp = env->start;
     while (tmp)
     {
-        if (ft_strcmp(tmp->var, var))
+        if (!my_strcmp(tmp->var, var))
         {
             free(tmp->str);
             tmp->str = str;
@@ -76,7 +76,7 @@ char    *get_env(char *var, t_env env)
 {
     while (env.start)
     {
-        if (ft_strcmp(var, env.start->var) == 0)
+        if (!my_strcmp(var, env.start->var))
             return (env.start->str);
         env.start = env.start->next;
     }

@@ -59,7 +59,7 @@ int	ft_cd(t_exec *exec)
 	if (exec->cmd_t->cmd[2])
 	{
 		printf("%p\n", exec->cmd_t->cmd[2]);
-		ft_printf(2, "minish: cd: too many arguments\n");
+		printf("minish: cd: too many arguments\n");
 		return (1);
 	}
 	path = ft_change_env_path(exec, exec->env_t->oldpwd);

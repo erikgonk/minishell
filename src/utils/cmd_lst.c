@@ -1,5 +1,15 @@
 #include "../../inc/utils.h"
 
+int     my_strcmp(char *str1, const char *str2)
+{
+        while (*str1 && *str2 && *str1 == *str2)
+        {
+                str1++;
+                str2++;
+        }
+        return (*str1 - *str2);
+}
+
 t_cmds  *cmds_lstnew(char **command)
 {
     t_cmds  *new;
@@ -8,6 +18,9 @@ t_cmds  *cmds_lstnew(char **command)
     if (!new)
         return (NULL);
     new->cmd = command;
+    new->hdoc = 0;
+    new->in = 0;
+    new->out = 0;
     new->next = NULL;
     return (new);
 }
