@@ -6,7 +6,7 @@
 /*   By: vaunevik <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 10:59:03 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/08/07 15:42:01 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/09 13:49:44 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../inc/minishell.h"
@@ -154,7 +154,7 @@ void    mini_loop(t_data *data)
             parser(data);
         check_exp(data);
 		ft_init_exec(&exec, data); // initializes t_exec
-		data->g_exit = ft_executor(data, &exec, exec.cmd_t);
+		data->g_exit = ft_executor(data, &exec);
 		data->g_exit = ft_get_stt(0, 0);
         /*print_cmds(data);*/
 //        printf("%i\n", data->g_exit);

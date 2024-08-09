@@ -6,23 +6,12 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 17:46:30 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/07 14:49:40 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/09 12:34:05 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 #include "../../inc/builtins.h"
-
-t_node	*get_env_lst(char *to_find, t_node *lst)
-{
-	while (lst)
-	{
-		if (ft_strcmp(to_find, lst->var) != 0)
-			return (lst);
-		lst = lst->next;
-	}
-	return (NULL);
-}
 
 static t_node	*ft_get_env_before_lst(char *to_find, t_node *lst, t_exec *exec)
 {
@@ -84,7 +73,7 @@ int	ft_unset(t_exec *exec)
 	{
 		node_bef = ft_get_env_before_lst(exec->cmd_t->cmd[i],
 					exec->env_t->start, exec);
-		node = get_env_lst(exec->cmd_t->cmd[i], exec->env_t->start);
+		node = ft_get_env_lst(exec->cmd_t->cmd[i], exec->env_t->start);
 		if (!node_bef || !node)
 			continue ;
 		else if (ft_extra_unset(exec, node, node_bef) == 0)

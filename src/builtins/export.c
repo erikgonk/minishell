@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 15:20:13 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/06 18:46:36 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/09 12:29:07 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	ft_add_replace_str_env(t_exec *exec, char **cmd, int flag) // (var=st
 {
 	t_node	*node;
 
-	node = get_env_lst(cmd[0], exec->env_t->start);
+	node = ft_get_env_lst(cmd[0], exec->env_t->start);
 	if (!cmd[1] && flag == F_CREATE) // var= when !str
 	{
 		if (node->str)
@@ -28,7 +28,7 @@ static int	ft_add_replace_str_env(t_exec *exec, char **cmd, int flag) // (var=st
 	else if (flag == F_ADD && cmd[1])
 	{
 		free(node);
-		node = get_env_lst(ft_strtrim(cmd[0], "+"), exec->env_t->start);
+		node = ft_get_env_lst(ft_strtrim(cmd[0], "+"), exec->env_t->start);
 		ft_strlcat(node->str, cmd[1], ft_strlen(cmd[1]));
 	}
 	else if (flag == F_CREATE) // var=str
@@ -74,11 +74,11 @@ static int	ft_separate_export(t_env *env, t_exec *exec, char *str, int flag)
 	char	**cmd;
 
 	cmd = ft_split(exec->cmd_t->cmd[1], '+');
-	if (flag == F_NONE && !get_env_lst(str, env->start)) // var NOT exist
+	if (flag == F_NONE && !ft_get_env_lst(str, env->start)) // var NOT exist
 		ft_create_env(env, NULL, str, flag);
 	else if (flag == F_NONE) // var exist
 		return (0);
-	else if (flag != F_NONE && !get_env_lst(cmd[0], env->start)) // (var=str && var+=str && var=) Not exist
+	else if (flag != F_NONE && !ft_get_env_lst(cmd[0], env->start)) // (var=str && var+=str && var=) Not exist
 		ft_create_env(env, cmd, str, flag);
 	else// (var=str && var+=str && var=) exist
 	{

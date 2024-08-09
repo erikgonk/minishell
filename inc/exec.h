@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 10:47:58 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/08 11:57:03 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/09 13:49:57 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 // exec
 int				ft_builtins(t_exec *exec);
 int				ft_builtin_exists(t_exec *exec);
-int				ft_executor(t_data *data, t_exec *exec, t_cmds *cmd);
+int				ft_executor(t_data *data, t_exec *exec);
 
 // cmd
 int				ft_cmds(t_data *data, t_exec *exec);

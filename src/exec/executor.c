@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 12:13:37 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/08 18:00:23 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/09 13:52:43 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,10 @@ int	ft_builtin_exists(t_exec *exec)
 	return (1);
 }
 
-int	ft_executor(t_data *data, t_exec *exec, t_cmds *cmd)
+int	ft_executor(t_data *data, t_exec *exec)
 {
-	(void)cmd;
+	if (!exec->cmd_t->cmd[0])
+		return (1);
 	if (exec->cmd_t->redirections)
 		exec->lexer = data->cmds->redirections;
 	if (!exec->cmd_t->cmd)

@@ -6,7 +6,7 @@
 #    By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/12 11:21:29 by erigonza          #+#    #+#              #
-#    Updated: 2024/08/09 11:54:15 by erigonza         ###   ########.fr        #
+#    Updated: 2024/08/09 12:15:06 by erigonza         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,7 @@ $(DIR_OBJ):
 
 $(DIR_OBJ)/%.o: $(DIR_SRC)/%.c Makefile ./inc/libft.h
 				@printf "\033[0;33m\r🔨 $< ✅ \033[0m"
-				@$(CC) $(CFLAGS) -c $< -o $@
+				@$(CC) $(CFLAGS) -c $< -o $@ 
 
 $(NAME): $(OBJS)
 				@$(AR) $(NAME) $(OBJS)
