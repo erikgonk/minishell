@@ -78,8 +78,22 @@ static int	ft_get_old_pwd(t_exec *exec, int flag)
 		exec->env_t->oldpwd = old_pwd;
 	}
 	if (flag == 1)
+		return (free(old_pwd), 1);
+	return (free(tmp), 0);
+}
+
+static int	ft_cd_user(t_exec *exec)
+{
+	t_node		*tmp;
+
+	if (!chdir(exec->env_t->homedir))
 		return (1);
-	return (0);
+	tmp = ft_get_env_lst("PWD", exec->env_t->start);
+	if (tmp->str)
+		free(tmp->str);
+	tmp->str = exec->env_t->homedir;
+	exec->env_t->pwd = exec->env_t->homedir;
+	return (1);
 }
 
 int	ft_cd(t_exec *exec)
@@ -93,11 +107,20 @@ int	ft_cd(t_exec *exec)
 		return (1);
 	}
 */
-	if (ft_get_old_pwd(exec, 0) == 1) // handles cd -
+// handles cd - & oldpwd
+	if (ft_get_old_pwd(exec, 0)) 
 		return (0);
-	if (!exec->cmd_t->cmd[1])
+// cd && cd ~
+	else if ((!exec->cmd_t->cmd[1] && ft_cd_user(exec)) || ft_strcmp(exec->cmd_t->cmd[1], "~"))
+		return (0);
+	pwd = getcwd(NULL, 0);
+// unset PWD && they are in a 
+	if (!ft_get_env_lst("PWD", exec->env_t->start) || !chdir(exec->cmd_t->cmd[1]))
 	{
-		if ()
+		if (pwd)
+			free(pwd);
+		ft_printf(2, "cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory");
+		return (1);// ver el error de esto
 	}
 	chdir(exec->cmd_t->cmd[1]);
 	return (0);
