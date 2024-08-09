@@ -58,6 +58,7 @@ all: $(TARGET)
 
 $(TARGET): $(OBJ_FILES) $(LIBFT) $(INC)
 	$(CC) $(CFLAGS) $(OBJ_FILES) $(LIBS) -o $(TARGET)
+	clear
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c Makefile
 	@mkdir -p $(dir $@)
@@ -69,11 +70,16 @@ $(LIBFT):
 clean:
 	$(MAKE) -C $(LIBFT_DIR) clean
 	rm -rf $(OBJ_DIR)
+	clear
 
 fclean: clean
 	$(MAKE) -C $(LIBFT_DIR) fclean
 	rm -rf $(TARGET)
+	clear
+
+f: fclean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.SILENT:
+.PHONY: all clean fclean re f

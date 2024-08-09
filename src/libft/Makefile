@@ -6,7 +6,7 @@
 #    By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/12 11:21:29 by erigonza          #+#    #+#              #
-#    Updated: 2024/04/17 12:05:12 by erigonza         ###   ########.fr        #
+#    Updated: 2024/08/09 11:54:15 by erigonza         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,15 +43,12 @@ $(DIR_OBJ)/%.o: $(DIR_SRC)/%.c Makefile ./inc/libft.h
 
 $(NAME): $(OBJS)
 				@$(AR) $(NAME) $(OBJS)
-				clear
 
 clean:
 				${RM} ${OBJS}
-				clear
 
 fclean:		clean
 				${RM} ${NAME} ${DIR_OBJ}
-				clear
 
 re:			fclean all
 
