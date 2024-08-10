@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:06:33 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/10 16:05:22 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/10 17:41:54 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ int	ft_count_list_elems_str(t_node *env)
 	int		i;
 
 	i = 0;
+	if (!env || !env->var)
+		return (0);
 	while (env)
 	{
 		if (env->str)
