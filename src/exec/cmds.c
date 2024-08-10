@@ -81,7 +81,7 @@ static void	ft_find_exit_status(t_data *data, pid_t *kids, int size)
 	res = 0;
 	status = 0;
 	i = 0;
-	while (i++ < size)
+	while (i++ <= size)
 	{
 		process = waitpid(-1, &status, 0);
 		if (process == kids[size])

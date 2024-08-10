@@ -79,6 +79,7 @@ int	ft_env_to_cmd(t_exec *exec, int size, int i)
 		}
 		lst = lst->next;
 	}
+	exec->env[size] = NULL;
 //	printf("hola\n");
 	return (0);
 }
