@@ -18,11 +18,11 @@ static int	ft_get_old_pwd(t_exec *exec, int flag)
 	char		*old_pwd;
 	t_node		*tmp;
 
-	if (ft_strcmp(exec->cmd_t->cmd[1], "-") && exec->env_t->oldpwd)
+	/*if (ft_strcmp(exec->cmd_t->cmd[1], "-") && exec->env_t->oldpwd)
 	{
 		chdir(exec->env_t->oldpwd);
 		flag = 1;
-	}
+	}*/
 	old_pwd = getcwd(NULL, 0);
 	if (old_pwd)
 	{
@@ -95,7 +95,7 @@ int	ft_cd(t_exec *exec)
 	if (ft_get_old_pwd(exec, 0)) 
 		return (0);
 // cd && cd ~
-	else if ((!exec->cmd_t->cmd[1] && ft_cd_user(exec)) || ft_strcmp(exec->cmd_t->cmd[1], "~"))
+	else if ((!exec->cmd_t->cmd[1] && ft_cd_user(exec)))
 		return (0);
 	pwd = getcwd(NULL, 0);
 // unset PWD && they are in a 

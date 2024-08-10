@@ -35,26 +35,12 @@ int	init_minishell(t_env *env, t_data *data, char **envp)
 	return (0);
 }
 
-/*static int  is_empty(char *str)
-{
-    int i;
-    
-    i = 0;
-    while (str[i])
-    {
-        if (str[i] != ' ' || !(str[i] <= 13 && str[i] >= 9))
-            return (1);
-        i++;
-    }
-    return (0);
-}*/
-
 char    *get_input(t_data *data)
 {
     data->input = readline("Mish> ");
     if (data->input == NULL)
     {
-        ft_putendl_fd("exit", STDOUT_FILENO);
+        ft_putstr_fd("exit\n", STDOUT_FILENO);
         free_env(data->env);
         exit(EXIT_SUCCESS);
     }

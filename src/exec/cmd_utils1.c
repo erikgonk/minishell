@@ -15,12 +15,15 @@
 #include "../../inc/builtins.h"
 
 void	ft_init_exec(t_exec *exec, t_data *data)
-{
+{	
 	pipe(exec->p);
 	exec->g_exit = 0;
 	exec->fd = 0;
-	exec->lexer = data->cmds->redirections; 
-	exec->cmd_t = data->cmds; 
+	if (data->cmds)
+		exec->lexer = data->cmds->redirections;
+	else
+		exec->lexer = NULL;
+	exec->cmd_t = data->cmds;
 	exec->env_t = data->env; 
 }
 
@@ -76,6 +79,7 @@ int	ft_env_to_cmd(t_exec *exec, int size, int i)
 		}
 		lst = lst->next;
 	}
+	exec->env[size] = NULL;
 //	printf("hola\n");
 	return (0);
 }

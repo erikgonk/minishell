@@ -9,10 +9,7 @@
 /*   Updated: 2024/08/09 11:57:46 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "../../inc/minishell.h"
-#include "../../inc/exec.h"
-#include "../../inc/redirs.h"
 #include <signal.h>
 
 /*
@@ -47,7 +44,6 @@ void	ft_sig_c(int sig)
 	{
 		ft_printf(1, "\n");
 		rl_replace_line("", 0);
-		rl_on_new_line();
 		rl_redisplay();
 		ft_get_stt(1, 130);
 	}

@@ -81,7 +81,7 @@ static void	ft_find_exit_status(t_data *data, pid_t *kids, int size)
 	res = 0;
 	status = 0;
 	i = 0;
-	while (i++ < size)
+	while (i++ <= size)
 	{
 		process = waitpid(-1, &status, 0);
 		if (process == kids[size])
@@ -111,7 +111,7 @@ int	ft_cmds(t_data *data, t_exec *exec)
 		exec->cmd_t = exec->cmd_t->next;
 	}
 	ft_close_pipes(exec->p);
-	ft_free_willy(exec->env);
+	//ft_free_willy(exec->env);
 	ft_find_exit_status(data, kids, (ft_lst_size(data->cmds) - 1));
 	return (free(kids), exec->g_exit);
 }

@@ -1,15 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   here_doc.c                                         :+:      :+:    :+:   */
+/*   ft_putchar.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/25 16:07:41 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/02 11:44:33 by erigonza         ###   ########.fr       */
+/*   Created: 2024/01/09 16:07:27 by erigonza          #+#    #+#             */
+/*   Updated: 2024/04/14 13:04:11 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
+#include "../inc/libft.h"
 
-int	ft_here_doc(t_data *data);
+int	ft_putchar_error(int fd, char c)
+{
+	return (write(fd, &c, 1));
+}

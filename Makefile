@@ -19,6 +19,7 @@ SRC_FILES = $(SRC_DIR)/main.c \
 			$(SRC_DIR)/parser/parser.c \
 			$(SRC_DIR)/parser/parser_redir.c \
 			$(SRC_DIR)/parser/parser_utils.c \
+			$(SRC_DIR)/parser/here_doc.c \
 			$(SRC_DIR)/tokenizer/token_checks.c \
 			$(SRC_DIR)/tokenizer/token_utils.c \
 			$(SRC_DIR)/tokenizer/tokenizer.c \

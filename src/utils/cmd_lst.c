@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cmd_lst.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vaunevik <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/08/10 14:18:38 by vaunevik          #+#    #+#             */
+/*   Updated: 2024/08/10 14:18:43 by vaunevik         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "../../inc/utils.h"
 
 int     my_strcmp(char *str1, const char *str2)
@@ -20,7 +31,7 @@ t_cmds  *cmds_lstnew(char **command)
     new->cmd = command;
     new->hdoc = 0;
     new->in = 0;
-    new->out = 0;
+    new->out = 1;
     new->next = NULL;
     return (new);
 }

@@ -46,9 +46,17 @@ char **expand_cmd(char **cmd, t_data *data)
     i = 0;
     while (cmd[i]) 
     {
-        char *expanded = expand_single(cmd[i], data);
-        free(cmd[i]);
-        cmd[i] = expanded;
+        if (ft_strcmp("\"\"", cmd[i]) || ft_strcmp("\'\'", cmd[i]))
+        {
+            free(cmd[i]);
+            cmd[i] = ft_strdup("");
+        }
+        else
+        {
+            char *expanded = expand_single(cmd[i], data);
+            free(cmd[i]);
+            cmd[i] = expanded;
+        }
         i++;
     }
     return (cmd);

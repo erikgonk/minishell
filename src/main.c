@@ -19,48 +19,6 @@ char    *clean_input(char *input)
     return (NULL);
 }
 
-/*void    mini_loop(t_data *data)
-{
-    char    *input;
-
-    input = NULL;
-    while (1)
-    {
-        data->printed_error = 0;
-        lex_free(&data->lexer);
-        clean_cmds(&data->cmds);
-        input = clean_input(input);
-        handle_signals();
-        input = get_input(data);
-        if (input[0] == '\0')
-            continue ;
-        data->lexer = tokenizer(input, data);
-        if (!data->lexer)
-            continue ;
-        if (check_tokens(data, &data->lexer))
-            parser(data);
-    }
-    rl_clear_history();
-}
-*/
-
-/*
-int	main(int argc, char **argv, char **envp)
-{
-	t_data	data;
-    t_env   env;
-
-    if (argc != 1 ||argv[1])
-    {
-        printf("This program does not take arguments\n");
-        exit(0);
-    }
-	init_minishell(&env, &data, envp);
-	mini_loop(&data);
-	return (0);
-} 
-*/
-
 void print_cmds(const t_data *data) 
 {
     t_cmds *tmp_cmd;
@@ -123,7 +81,7 @@ static void    check_exp(t_data *data)
         expand(data, tmp);
         tmp = tmp->next;
     }
-//    print_cmds(data);
+    print_cmds(data);
 }
 
 
@@ -135,6 +93,7 @@ void    mini_loop(t_data *data)
     input = NULL;
     while (1)
     {
+        data->g_exit = ft_get_stt(0, 0);
         data->printed_error = 0;
         lex_free(&data->lexer);
         clean_cmds(&data->cmds);
@@ -143,19 +102,19 @@ void    mini_loop(t_data *data)
         input = get_input(data);
         signal(SIGQUIT, SIG_IGN);
         if (input == NULL ||input[0] == '\0')
-        {
-            //printf("%i\n", data->g_exit);
             continue ;
-        }
         data->lexer = tokenizer(input, data);
         if (!data->lexer)
             continue ;
         if (check_tokens(data, &data->lexer))
-            parser(data);
-        check_exp(data);
-		ft_init_exec(&exec, data); // initializes t_exec
-		data->g_exit = ft_executor(data, &exec);
-		data->g_exit = ft_get_stt(0, 0);
+        parser(data);
+        if (data->cmds && data->printed_error == 0)
+        {
+            check_exp(data);
+            ft_init_exec(&exec, data); // initializes t_exec
+            data->g_exit = ft_executor(data, &exec);
+            data->g_exit = ft_get_stt(0, 0);
+        }
         /*print_cmds(data);*/
 //        printf("%i\n", data->g_exit);
     }
@@ -182,7 +141,9 @@ int	main(int argc, char **argv, char **envp)
         printf("This program does not take arguments\n");
         exit(0);
     }
+    signal(SIGQUIT, SIG_IGN);
 	init_minishell(&env, &data, envp);
 	mini_loop(&data);
+    clean_shell(&data);
 	return (0);
 }

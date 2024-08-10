@@ -157,6 +157,8 @@ typedef struct s_exec
 }	t_exec;
 
 /*---------main + main utils----------*/
+extern int g_signal;
+
 void    mini_loop(t_data *data);
 char    *clean_input(char *input);
 char    *get_input(t_data *data);
@@ -166,5 +168,11 @@ void    free_env(t_env *env);
 //for testing + printing tests
 void    print_cmds(const t_data *data);
 void    clean_shell(t_data *data);
+
+int     execute_hdoc(t_cmds *cmds, t_data *data);
+void    ctrlc_hdoc(int signum);
+
+int     ft_get_stt(int flag, int val);
+void	ft_sig_c(int sig);
 
 #endif
