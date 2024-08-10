@@ -39,6 +39,7 @@ void	ft_innit_redirs(t_cmds *cmd, t_lex *lex)
 		cmd->out = 1;
 		while (lex)
 		{
+			printf("counter");
 			ft_redirs_err(cmd, 0);
 			if (cmd->in != -1 && cmd->redirections->type == T_REDIR_IN)
 				cmd->in = open(cmd->redirections->literal, O_RDONLY);
@@ -64,6 +65,7 @@ void	ft_innit_redirs(t_cmds *cmd, t_lex *lex)
 
 void	ft_redirections(t_cmds *cmd)
 {
+	// printf("%s\n%d\n%d\n", cmd->redirections->literal, cmd->in, cmd->out);
 	if (cmd->in != 0)
 	{
 		dup2(cmd->in, 0);
