@@ -81,7 +81,7 @@ static void    check_exp(t_data *data)
         expand(data, tmp);
         tmp = tmp->next;
     }
-    print_cmds(data);
+    //print_cmds(data);
 }
 
 
@@ -115,8 +115,6 @@ void    mini_loop(t_data *data)
             data->g_exit = ft_executor(data, &exec);
             data->g_exit = ft_get_stt(0, 0);
         }
-        /*print_cmds(data);*/
-//        printf("%i\n", data->g_exit);
     }
     rl_clear_history();
 }

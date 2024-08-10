@@ -54,7 +54,7 @@ static void     child_hdoc(int fd[2], char *lim, t_data *data)
         while (my_strcmp(input, lim))
         {
             expand_single(input, data);
-            write(fd[1], &input, ft_strlen(input));
+            write(fd[1], input, ft_strlen(input));
             write(fd[1], "\n", 1);
             free(input);
             input = readline("> ");

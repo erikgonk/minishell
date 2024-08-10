@@ -48,8 +48,11 @@ void	ft_innit_redirs(t_cmds *cmd, t_lex *lex)
 				cmd->out = open(cmd->redirections->literal, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 			else if (cmd->redirections->type == T_HEREDOC)
 			{
-				close (cmd->in);
-				cmd->in = 0;
+				if (cmd->in != 0)
+				{
+					close (cmd->in);
+					cmd->in = 0;
+				}
 			}
 			lex = lex->next;
 		}
