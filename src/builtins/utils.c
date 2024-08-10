@@ -34,7 +34,8 @@ char	**ft_free_willy(char **cmd)
 
 t_node	*ft_get_env_lst(char *to_find, t_node *lst)
 {
-	if (!lst || !to_find)
+	printf("entra\n");
+	if (!to_find || !lst)
 		return (NULL);
 	while (lst)
 	{
