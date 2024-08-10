@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 14:44:23 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/10 15:39:40 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/10 16:06:21 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ char	**ft_free_willy(char **cmd)
 	{
 		free(cmd[i]);
 		i++;
-		if (!cmd[i + 1])
-			break ;
 	}
 	free(cmd);
 	cmd = NULL;
