@@ -20,7 +20,7 @@ t_cmds  *cmds_lstnew(char **command)
     new->cmd = command;
     new->hdoc = 0;
     new->in = 0;
-    new->out = 0;
+    new->out = 1;
     new->next = NULL;
     return (new);
 }
