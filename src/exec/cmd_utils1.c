@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd_utils.c                                        :+:      :+:    :+:   */
+/*   cmd_utils1.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:06:33 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/02 17:05:01 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/08 16:03:41 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,29 @@
 #include "../../inc/exec.h"
 #include "../../inc/builtins.h"
 
-void	ft_init_exec(t_exec *exec)
-{
-	exec->p[0] = 0;
-	exec->p[1] = 1;
+void	ft_init_exec(t_exec *exec, t_data *data)
+{	
+	pipe(exec->p);
 	exec->g_exit = 0;
+	exec->fd = 0;
+	if (data->cmds)
+		exec->lexer = data->cmds->redirections;
+	else
+		exec->lexer = NULL;
+	exec->cmd_t = data->cmds;
+	exec->env_t = data->env; 
 }
 
 int	ft_lst_size(t_cmds *cmd)
 {
 	int		i;
 
-	i = -1;
-	while (cmd && ++i > -42)
+	i = 0;
+	while (cmd)
+	{
+		i++;
 		cmd = cmd->next;
+	}
 	return (i);
 }
 
@@ -45,31 +54,31 @@ int	ft_count_list_elems_str(t_node *env)
 	return (i);
 }
 
-int	ft_env_to_cmd(t_node *env, t_exec *exec, int size, int i)
+int	ft_env_to_cmd(t_exec *exec, int size, int i)
 {
 	char		*tmp;
+	t_node		*lst;
 
-	if (!env)
+	lst = exec->env_t->start;
+	if (!lst)
 		return (1);
-	exec->env = ft_calloc(size, sizeof(char *));
+	exec->env = (char **)malloc(sizeof(char *) * (size + 1));
 	if (!exec->env)
 		return (1);
-	while (env)
+	while (lst)
 	{
-		if (env->str)
+		if (lst->str)
 		{
-			tmp = ft_strjoin(env->var, "=");
+			tmp = ft_strjoin(lst->var, "=");
 			if (!tmp)
 				return (1);
-			exec->env[i] = ft_strjoin(tmp, env->str);
+			exec->env[++i] = ft_strjoin(tmp, lst->str);
 			if (!exec->env[i])
-			{
-				ft_free_willy(exec->env);
-				return (free(tmp), 1);
-			}
+				return (free(tmp), 1); //free willy of env taken out of here
 			free(tmp);
 		}
-		env = env->next;
+		lst = lst->next;
 	}
+//	printf("hola\n");
 	return (0);
 }

@@ -6,11 +6,12 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 11:18:45 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/03 15:57:02 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/07 12:17:28 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+#include "../../inc/exec.h"
 #include "../../inc/builtins.h"
 
 long long int	ft_atoll(char *str, int i, long long int res, int sign)
@@ -26,7 +27,6 @@ long long int	ft_atoll(char *str, int i, long long int res, int sign)
 		i++;
 	while (str[i] >= '0' && str[i] <= '9')
 	{
-		printf("%lld\n", res);
 		if (res < 0)
 			return (1);
 		res = (res * 10) + (str[i] - 48);
@@ -38,44 +38,53 @@ long long int	ft_atoll(char *str, int i, long long int res, int sign)
 	return (res);
 }
 
+static void	ft_exit_status(int	err)
+{
+	ft_get_stt(1, err);
+	ft_printf(1, "exit\n");
+	exit (err);
+}
+
 static void	ft_check_is_num(char *str)
 {
 	int		i;
 
 	i = -1;
+	if (str[i + 1] == '-' || str[i + 1] == '+')
+		i++;
 	while (str[++i])
 	{
 		if (!ft_isdigit(str[i]))
 		{
-			ft_printf("exit\n", 2);
-			ft_printf("minish: exit: ", 2);
-			ft_printf("%s: numeric argument required\n", str, 2);
-			exit (2);
+			ft_printf(2, "exit\n");
+			ft_printf(2, "minish: exit: ");
+			ft_printf(2, "%s: numeric argument required\n", str);
+			ft_exit_status(2);
 		}
 	}
 }
 
 int	ft_exit(t_exec *exec)
 {
-	t_data			*data;
 	long long int	res;
 
 	if (!exec->cmd_t->cmd[1])
-		exit (data->g_exit);
+		ft_exit_status(0);
 	ft_check_is_num(exec->cmd_t->cmd[1]);
 	if (exec->cmd_t->cmd[2])
 	{
-		ft_printf("exit\nminish: exit: too many arguments\n", 2);
-		exit (1);
+		ft_printf(2, "exit\nminish: exit: too many arguments\n");
+		ft_exit_status(2);
 	}
 	res = ft_atoll(exec->cmd_t->cmd[1], 0, 0, 1);
 	if (res == 1 && exec->cmd_t->cmd[1][1])
 	{
-		ft_printf("exit\n", 2);
-		ft_printf("minish: exit: ", 2);
-		ft_printf("%s: ", exec->cmd_t->cmd[1], 2);
-		ft_printf("numeric argument required\n", 2);
+		ft_printf(2, "exit\n");
+		ft_printf(2, "minish: exit: ");
+		ft_printf(2, "%s: ", exec->cmd_t->cmd[1]);
+		ft_printf(2, "numeric argument required\n");
 		exit (2);
 	}
-	exit (res);
+	ft_exit_status(res);
+	return (0);
 }

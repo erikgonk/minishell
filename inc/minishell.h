@@ -6,7 +6,7 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 16:47:55 by erigonza          #+#    #+#             */
-/*   Updated: 2024/05/26 16:47:58 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/08 14:27:11 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
@@ -104,10 +104,10 @@ typedef struct s_cmds
 {
     char            **cmd; //the full command with its flags
     enum e_builtin  builtin; //builtin spesification 
+	int				in;
+	int				out;
+	int				hdoc;
     t_lex           *redirections; //structure with redirection information (type of redir and the corresponding file name)
-    int             hdoc; //fd[0]
-    int             in;
-    int             out;
     struct s_cmds   *next;
     struct s_cmds   *prev;
 }   t_cmds;
@@ -169,10 +169,10 @@ void    free_env(t_env *env);
 void    print_cmds(const t_data *data);
 void    clean_shell(t_data *data);
 
-int execute_hdoc(t_cmds *cmds, t_data *data);
-void     ctrlc_hdoc(int signum);
+int     execute_hdoc(t_cmds *cmds, t_data *data);
+void    ctrlc_hdoc(int signum);
 
-int	get_stt(int flag, int val);
+int     ft_get_stt(int flag, int val);
 void	ft_sig_c(int sig);
 
 #endif

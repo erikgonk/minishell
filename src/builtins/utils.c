@@ -1,39 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/16 16:48:51 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/09 12:30:19 by erigonza         ###   ########.fr       */
+/*   Created: 2024/08/07 14:44:23 by erigonza          #+#    #+#             */
+/*   Updated: 2024/08/09 14:12:29 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 #include "../../inc/builtins.h"
 
-int	ft_pwd(t_exec *exec)
+char	**ft_free_willy(char **cmd)
 {
-	char		*pwd;
-	t_node		*aux;
+	int		i;
 
-	pwd = getcwd(NULL, 0);
-	if (!pwd)
+	i = 0;
+	if (!cmd)
+		return (NULL);
+	while (cmd[i])
 	{
-		aux = ft_get_env_lst("PWD", exec->env_t->start);
-		if (aux)
-		{
-			ft_printf(1, "%s\n", aux->str);
-			return (0);
-		}
-		else if (exec->env_t->pwd)
-		{
-			ft_printf(1, "%s\n", exec->env_t->pwd);
-			return (0);
-		}
-		return (1);
+		free(cmd[i]);
+		i++;
+		if (!cmd[i + 1])
+			break ;
 	}
-	printf("%s\n", pwd);
-	return (free(pwd), 0);
+	free(cmd);
+	cmd = NULL;
+	return (0);
+}
+
+t_node	*ft_get_env_lst(char *to_find, t_node *lst)
+{
+	printf("entra\n");
+	if (!to_find || !lst)
+		return (NULL);
+	while (lst)
+	{
+		if (ft_strcmp(to_find, lst->var) != 0)
+			return (lst);
+		lst = lst->next;
+	}
+	return (NULL);
 }

@@ -76,7 +76,7 @@ char    *get_env(char *var, t_env env)
 {
     while (env.start)
     {
-        if (!my_strcmp(var, env.start->var) == 0)
+        if (!my_strcmp(var, env.start->var))
             return (env.start->str);
         env.start = env.start->next;
     }

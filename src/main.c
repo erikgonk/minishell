@@ -6,12 +6,11 @@
 /*   By: vaunevik <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 10:59:03 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/07/15 10:59:08 by vaunevik         ###   ########.fr       */
+/*   Updated: 2024/08/09 13:49:44 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../inc/minishell.h"
-
-int	g_signal = 0;
+#include "../inc/exec.h"
 
 char    *clean_input(char *input)
 {
@@ -82,38 +81,42 @@ static void    check_exp(t_data *data)
         expand(data, tmp);
         tmp = tmp->next;
     }
-    /*print_cmds(data);*/
+    print_cmds(data);
 }
 
 
 void    mini_loop(t_data *data)
 {
     char    *input;
+	t_exec	exec;
 
     input = NULL;
     while (1)
     {
-        data->g_exit = get_stt(0, 0);
+        data->g_exit = ft_get_stt(0, 0);
         data->printed_error = 0;
         lex_free(&data->lexer);
         clean_cmds(&data->cmds);
         input = clean_input(input);
-        signal(SIGINT, &ft_sig_c);
+        signal(SIGINT, ft_sig_c);
         input = get_input(data);
-        signal(SIGINT, SIG_IGN);
-        if (input == NULL || input[0] == '\0')
-        {
-            //printf("%i\n", data->g_exit);
+        signal(SIGQUIT, SIG_IGN);
+        if (input == NULL ||input[0] == '\0')
             continue ;
-        }
         data->lexer = tokenizer(input, data);
         if (!data->lexer)
             continue ;
         if (check_tokens(data, &data->lexer))
-            parser(data);
-        check_exp(data);
+        parser(data);
+        if (data->cmds && data->printed_error == 0)
+        {
+            check_exp(data);
+            ft_init_exec(&exec, data); // initializes t_exec
+            data->g_exit = ft_executor(data, &exec);
+            data->g_exit = ft_get_stt(0, 0);
+        }
         /*print_cmds(data);*/
-        //printf("%i\n", data->g_exit);
+//        printf("%i\n", data->g_exit);
     }
     rl_clear_history();
 }

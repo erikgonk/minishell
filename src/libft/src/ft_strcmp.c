@@ -6,13 +6,13 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 16:10:23 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/06 13:50:50 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/09 14:47:36 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/libft.h"
 
-int	ft_strcmp(char *s1, const char *s2)
+int	ft_strcmp(char *s1, char *s2)
 {
 	unsigned int	i;
 	unsigned int	j;

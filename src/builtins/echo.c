@@ -6,32 +6,41 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:32:56 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/03 11:19:36 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/08 11:29:03 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 #include "../../inc/builtins.h"
 
-void	ft_n_checker(char **cmd, int i, int *flag)
+static int	ft_n_checker(char *str)
 {
-	int		j;
+	int		i;
 
-	j = 0;
-	while (cmd[i] && cmd[i][0] == '-' && cmd[i][++j] == 'n')
+	i = -1;
+	if (!str || !str[++i])
+		return (0);
+	while (str[++i] && str[i] == 'n')
 	{
-		*flag = 1;
-		if (!cmd[i][j + 1])
-		{
-			j = 0;
-			i++;
-		}
-		else if (cmd[1][j + 1] != 'n')
-		{
-			*flag = 0;
-			return ;
-		}
+		if (!str[i + 1])
+			return (1);
+		else if (str[i + 1] != 'n')
+			return (0);
 	}
+	return (0);
+}
+
+static int	ft_n(char **cmd, int i, int *flag)
+{
+	if (cmd[i] && cmd[i][0] == '-' && ft_n_checker(cmd[i]) == 1)
+		*flag = 1;
+	else
+		return (1);
+	if (*flag == 1 && (cmd[i + 1] && ft_n_checker(cmd[i + 1]) == 0))
+		return (++i);
+	while (ft_n_checker(cmd[i + 1]) == 1)
+		i++;
+	return (++i);
 }
 
 int	ft_echo(t_exec *exec)
@@ -43,13 +52,17 @@ int	ft_echo(t_exec *exec)
 	flag = 0;
 	if (!exec->cmd_t->cmd[i])
 	{
-		ft_printf("\n", 1);
+		ft_printf(1, "\n");
 		return (0);
 	}
-	ft_n_checker(exec->cmd_t->cmd, i, &flag);
+	i = ft_n(exec->cmd_t->cmd, i, &flag);
 	while (exec->cmd_t->cmd[i])
-		ft_printf("%s", exec->cmd_t->cmd[i], 1);
+	{
+		ft_printf(1, "%s", exec->cmd_t->cmd[i++]);
+		if (exec->cmd_t->cmd[i])
+			ft_printf(1, " ");
+	}
 	if (flag == 0)
-		ft_printf("\n", 1);
+		ft_printf(1, "\n");
 	return (0);
 }

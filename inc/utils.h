@@ -34,4 +34,7 @@ int     my_strcmp(char *str1, const char *str2);
 //remove whitespace
 void     skip_whitespace(t_data *data);
 
+void skip_whitespace(t_data *data);
+int     my_strcmp(char *str1, const char *str2);
+
 #endif

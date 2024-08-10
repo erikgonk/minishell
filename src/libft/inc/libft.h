@@ -6,7 +6,7 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 16:11:36 by erigonza          #+#    #+#             */
-/*   Updated: 2024/05/24 18:39:12 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/09 14:47:56 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ char	*ft_strtrim(char const *s1, char const *set);
 char	**ft_split(char const *s, char c);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 void	ft_striteri(char *s, void (*f)(unsigned int, char *));
-int		ft_strcmp(char *s1, const char *s2);
+int		ft_strcmp(char *s1, char *s2);
 // bonus
 t_list	*ft_lstnew(void *content);
 void	ft_lstadd_front(t_list **lst, t_list *new);
@@ -92,17 +92,13 @@ void	ft_lstclear(t_list **lst, void (*del)(void*));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
-//
-//
+
 // printf
-int		fd_printf(int fd, const char *str, ...);
-//
-int		ft_putchar_error(int fd, char c);
-//
-//
+int		ft_printf(int fd, const char *str, ...);
+
 // get_next_line
 char	*get_next_line(int fd);
-//
+// utils
 char	*ft_free(char *buffer, char *line);
 int		checker(char *buffer);
 

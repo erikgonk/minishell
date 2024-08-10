@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 #include "../../inc/env.h"
 
+#include "../../inc/env.h"
+
 char    *extract_str(char *envstr)
 {
     int     i;
@@ -105,6 +107,6 @@ int    transform_env(t_env *env, char **envp)
         i++;
     }
     if (set_standard_env(env, get_env("SHLVL", *env)))
-		return (1);
-	return (0);
+                return (1);
+        return (0);
 }

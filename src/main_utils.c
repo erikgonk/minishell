@@ -40,7 +40,7 @@ char    *get_input(t_data *data)
     data->input = readline("Mish> ");
     if (data->input == NULL)
     {
-        ft_putendl_fd("exit", STDOUT_FILENO);
+        ft_putstr_fd("exit\n", STDOUT_FILENO);
         free_env(data->env);
         exit(EXIT_SUCCESS);
     }

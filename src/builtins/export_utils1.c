@@ -6,13 +6,14 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 12:44:20 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/06 13:30:11 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/06 18:48:39 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 #include "../../inc/builtins.h"
 
+/*
 static int	ft_lstlen(t_node *env)
 {
 	int		i;
@@ -25,6 +26,7 @@ static int	ft_lstlen(t_node *env)
 	}
 	return (i);
 }
+*/
 
 int	ft_small_char(char **lst, int i, int j, int k)
 {
@@ -66,17 +68,15 @@ static void	ft_printing(char **lst)
 	i = -1;
 	while (lst[++i])
 	{
-		ft_printf("declare -x ", 1);
-		ft_printf("%s\n", lst[i], 1);
+		ft_printf(1, "declare -x ");
+		ft_printf(1, "%s\n", lst[i]);
 	}
 }
 
 int	ft_print_export(t_exec *exec)
 {
-	int			i;
 	char		**lst;
 
-	i = -1;
 	lst = malloc(sizeof (char *) * ft_count_lst_elems(exec->env_t->start));
 	if (!lst)
 		return (1);
