@@ -111,12 +111,10 @@ void    mini_loop(t_data *data)
         if (data->cmds && data->printed_error == 0)
         {
             check_exp(data);
-            ft_init_exec(&exec, data); // initializes t_exec
+            ft_init_exec(&exec, data);
             data->g_exit = ft_executor(data, &exec);
             data->g_exit = ft_get_stt(0, 0);
         }
-        /*print_cmds(data);*/
-//        printf("%i\n", data->g_exit);
     }
     rl_clear_history();
 }

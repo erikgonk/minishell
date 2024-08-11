@@ -135,7 +135,7 @@ int input_check(char *input, t_data *data)
         data->g_exit = 1;
         return (1);
     }
-    if (arg_count(input, ' ') > 100) //idk how many arguments should be limit here 
+    if (arg_count(input, ' ') > 100)
     {
         printf("mish: don't be crazy: too many arguments\n");
         data->g_exit = 1;

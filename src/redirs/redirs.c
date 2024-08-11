@@ -30,8 +30,10 @@ static int	ft_redirs_err(t_cmds *cmd, int i)
 	return (0);
 }
 
-void	ft_innit_redirs(t_cmds *cmd, t_lex *lex)
+void	ft_innit_redirs(t_cmds *cmd)
 {
+	t_lex	*lex;
+
 	while (cmd)
 	{
 		lex = cmd->redirections;
@@ -39,15 +41,14 @@ void	ft_innit_redirs(t_cmds *cmd, t_lex *lex)
 		cmd->out = 1;
 		while (lex)
 		{
-			printf("counter");
 			ft_redirs_err(cmd, 0);
-			if (cmd->in != -1 && cmd->redirections->type == T_REDIR_IN)
-				cmd->in = open(cmd->redirections->literal, O_RDONLY);
-			else if (cmd->out != -1 && cmd->redirections->type == T_APPEND)
-				cmd->out = open(cmd->redirections->literal, O_WRONLY | O_APPEND | O_CREAT, 0644);
-			else if (cmd->out != -1 && cmd->redirections->type == T_REDIR_OUT)
-				cmd->out = open(cmd->redirections->literal, O_WRONLY | O_TRUNC | O_CREAT, 0644);
-			else if (cmd->redirections->type == T_HEREDOC)
+			if (cmd->in != -1 && lex->type == T_REDIR_IN)
+				cmd->in = open(lex->literal, O_RDONLY);
+			else if (cmd->out != -1 && lex->type == T_APPEND)
+				cmd->out = open(lex->literal, O_WRONLY | O_APPEND | O_CREAT, 0644);
+			else if (cmd->out != -1 && lex->type == T_REDIR_OUT)
+				cmd->out = open(lex->literal, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+			else if (lex->type == T_HEREDOC)
 			{
 				if (cmd->in != 0)
 				{

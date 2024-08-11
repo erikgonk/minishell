@@ -60,7 +60,7 @@ int	ft_executor(t_data *data, t_exec *exec)
 		data->g_exit = ft_builtins(exec); // already exits
 		return (data->g_exit);
 	}
-	ft_innit_redirs(exec->cmd_t, exec->cmd_t->redirections);
+	ft_innit_redirs(exec->cmd_t);
 	//printf("%s\n%d\n%d\n", exec->cmd_t->redirections->literal, exec->cmd_t->in, exec->cmd_t->out);
 	data->g_exit = ft_cmds(data, exec);
 	return (data->g_exit);
