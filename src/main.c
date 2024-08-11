@@ -81,7 +81,7 @@ static void    check_exp(t_data *data)
         expand(data, tmp);
         tmp = tmp->next;
     }
-	print_cmds(data);
+	//print_cmds(data);
 }
 
 
