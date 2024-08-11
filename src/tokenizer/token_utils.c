@@ -13,7 +13,7 @@
 
 static void    print_error(int type, t_data *data)
 {
-    if (!data->printed_error)
+    if (data->printed_error == 0)
     {
         if (type == T_PIPE)
             printf("Syntax error near unexpected token '|'\n");
@@ -78,7 +78,7 @@ int     check_syntax_and_hdoc(t_data *data, t_lex *tokens, char *input, t_lex *n
 {
     if (ft_isspace(input[i]))
         i++;
-    if (input[i] == '>' || input[i] == '<' || input[i] == '|' || !input[i])
+    if (input[i] == '>' || input[i] == '<' ||input[i] == '|' ||!input[i])
     {
 		if (is_hdoc_present(tokens))
 			new->index = -1; //raising flag for spesific error
@@ -112,7 +112,7 @@ t_lex *make_token(int length, char *input, t_lex *tokens, t_data *data)
     new->literal[i] = '\0';
     new->next = NULL;
     new->type = find_type(new->literal);
-    if (new->type <= T_APPEND && new->type >= T_PIPE)
+    if (new->type <= T_APPEND && new->type > T_PIPE)
         check_syntax_and_hdoc(data, tokens, input, new, i);
     return (new);
 }
