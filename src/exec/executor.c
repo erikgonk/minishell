@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 12:13:37 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/10 17:03:13 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/11 13:36:10 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	ft_builtins(t_exec *exec)
 	int				i;
 
 	i = 0;
-	while (bts[i] && !ft_strcmp(bts[i], exec->cmd_t->cmd[0]))
+	while (bts[i] && ft_strcmp_bi(bts[i], exec->cmd_t->cmd[0]) != 0)
 		i++;
 	if (bts[i])
 		builtins[i](exec);
@@ -40,8 +40,12 @@ int	ft_builtin_exists(t_exec *exec)
 	int				i;
 
 	i = 0;
-	while (bts[i] && !ft_strcmp(bts[i], exec->cmd_t->cmd[0]))
+	while (bts[i] && ft_strcmp_bi(bts[i], exec->cmd_t->cmd[0]) != 0)
 		i++;
+/*	if (bts[i])
+		printf("%s\n", bts[i]);
+	else
+		printf("no entra\n\n");*/
 	if (bts[i])
 		return (0);
 	return (1);
