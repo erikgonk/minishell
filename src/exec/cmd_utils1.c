@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:06:33 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/08 16:03:41 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/10 17:41:54 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ int	ft_count_list_elems_str(t_node *env)
 	int		i;
 
 	i = 0;
+	if (!env || !env->var)
+		return (0);
 	while (env)
 	{
 		if (env->str)
@@ -74,12 +76,11 @@ int	ft_env_to_cmd(t_exec *exec, int size, int i)
 				return (1);
 			exec->env[++i] = ft_strjoin(tmp, lst->str);
 			if (!exec->env[i])
-				return (free(tmp), 1); //free willy of env taken out of here
+				return (free(tmp), 1);
 			free(tmp);
 		}
 		lst = lst->next;
 	}
 	exec->env[size] = NULL;
-//	printf("hola\n");
 	return (0);
 }

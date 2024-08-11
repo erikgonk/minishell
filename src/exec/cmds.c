@@ -6,7 +6,7 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 16:06:47 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/09 14:07:01 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/10 16:02:28 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,6 @@ static void	ft_middle_cmd(t_exec *exec)
 	exec->fd = dup(exec->p[0]);// reads info from file before
 	ft_close_pipes(exec->p);
 	pipe(exec->p);// creates again p[0] & p[1]
-//	dup2(exec->fd, 0);// reads from fd (where the info has been saved)
-//	close(exec->fd);
-//	dup2(exec->p[1], 1);// writes in the pipe
-//	ft_close_pipes(exec->p);
 }
 
 static int	ft_forking(t_cmds *cmd, t_exec *exec)

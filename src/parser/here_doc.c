@@ -40,7 +40,7 @@ static int      parent_hdoc(int fd[2])
     return (-1);
 }
 
-static void     child_hdoc(int fd[2], char *lim, t_data *data)
+static void     child_hdoc(int fd[2], char *lim)
 {
     char    *input;
 
@@ -50,10 +50,8 @@ static void     child_hdoc(int fd[2], char *lim, t_data *data)
         printf("mish: warning: here-document delimited by end-of-file (wanted '%s')\n", lim);
     else
     {
-        expand_single(input, data); //things are expanded even inside the hdoc, so we call expander for every line
         while (my_strcmp(input, lim))
         {
-            expand_single(input, data);
             write(fd[1], input, ft_strlen(input));
             write(fd[1], "\n", 1);
             free(input);
@@ -70,7 +68,7 @@ static void     child_hdoc(int fd[2], char *lim, t_data *data)
     exit (0);
 }
 
-static int     fork_hdoc(t_cmds *cmd, t_lex *redirs, t_data *data)
+static int     fork_hdoc(t_cmds *cmd, t_lex *redirs)
 {
     int fd[2];
     int pid;
@@ -83,7 +81,7 @@ static int     fork_hdoc(t_cmds *cmd, t_lex *redirs, t_data *data)
     if (pid < 0)
         exit(print_error("fork", 1));
     else if (pid == 0)
-        child_hdoc(fd, redirs->literal, data);
+        child_hdoc(fd, redirs->literal);
     else
         cmd->hdoc = parent_hdoc(fd);
     if (cmd->hdoc < 0)
@@ -97,7 +95,7 @@ static int     fork_hdoc(t_cmds *cmd, t_lex *redirs, t_data *data)
  * If hdoc is found, it calls to create a pipe which we can write to.
  * The command will only read the input from the last hdoc.
 */
-int execute_hdoc(t_cmds *cmds, t_data *data)
+int execute_hdoc(t_cmds *cmds)
 {
 	t_lex *redirs;
 	
@@ -108,7 +106,7 @@ int execute_hdoc(t_cmds *cmds, t_data *data)
 		{
 			if (redirs->type == T_HEREDOC)
 			{
-				if (fork_hdoc(cmds, redirs, data))
+				if (fork_hdoc(cmds, redirs))
 					return (1);
 			}
 		redirs = redirs->next;

@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 12:13:37 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/09 13:52:43 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/10 17:03:13 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,12 @@ int	ft_builtin_exists(t_exec *exec)
 
 int	ft_executor(t_data *data, t_exec *exec)
 {
-	if (!exec->cmd_t->cmd[0])
-		return (1);
-	if (exec->cmd_t->redirections)
-		exec->lexer = data->cmds->redirections;
 	if (!exec->cmd_t->cmd)
 		return (exec->g_exit);
+	else if (exec->cmd_t->cmd && !exec->cmd_t->cmd[0])
+		return (1);
+	else if (exec->cmd_t->redirections)
+		exec->lexer = data->cmds->redirections;
 	if (ft_builtin_exists(exec) == 0 && !exec->lexer && !exec->cmd_t->next)
 	{
 		data->g_exit = ft_builtins(exec); // already exits
