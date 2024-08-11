@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 16:08:45 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/11 12:54:55 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/11 14:45:22 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ static char	**ft_swap(char **lst, int pos, int i)
 
 	while (lst[++i])
 	{
-		printf("%s\n", lst[i]);
 		if (lst[i] > lst[pos])
 		{
 			tmp = lst[i];
@@ -65,7 +64,7 @@ char	**ft_sort_lst_exp(char **lst, int i, int j, int pos)
 		j = 0;
 		while (lst[++j])
 		{
-			if (lst[j][0] < lst[i][0])
+			if (lst[i] && lst[j][0] < lst[i][0])
 			{
 				pos = j;
 				break ;

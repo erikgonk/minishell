@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 12:44:20 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/11 12:34:40 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/11 14:46:05 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ int	ft_print_export(t_exec *exec)
 		return (1);
 	lst = ft_save_lst(exec->env_t->start, lst, -1);
 	ft_printing(lst);
-	ft_free_willy(lst);
+	if (lst)
+		ft_free_willy(lst);
 	return (0);
 }
