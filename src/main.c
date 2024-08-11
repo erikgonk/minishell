@@ -127,6 +127,8 @@ void    clean_shell(t_data *data)
         clean_input(data->input);
     if (data->cmds)
         clean_cmds(&data->cmds);
+    if (data->env)
+        free_env(data->env);
 }
 
 int	main(int argc, char **argv, char **envp)

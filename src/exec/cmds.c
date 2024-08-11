@@ -105,7 +105,7 @@ int	ft_cmds(t_data *data, t_exec *exec)
 		exec->cmd_t = exec->cmd_t->next;
 	}
 	ft_close_pipes(exec->p);
-	//ft_free_willy(exec->env);
+	ft_free_willy(exec->env);
 	ft_find_exit_status(data, kids, (ft_lst_size(data->cmds) - 1));
 	return (free(kids), exec->g_exit);
 }

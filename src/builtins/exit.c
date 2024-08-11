@@ -85,6 +85,7 @@ int	ft_exit(t_exec *exec)
 		ft_printf(2, "numeric argument required\n");
 		exit (2);
 	}
+	clean_shell(exec->data_t);
 	ft_exit_status(res);
 	return (0);
 }
