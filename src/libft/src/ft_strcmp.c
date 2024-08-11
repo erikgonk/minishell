@@ -6,7 +6,7 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 16:10:23 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/11 10:57:11 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/11 13:35:00 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,16 @@ int	ft_strcmp(char *s1, char *s2)
 			return (-1);
 	}
 	return (i - j);
+}
+
+int	ft_strcmp_bi(char *s1, char *s2)
+{
+	unsigned int	i;
+
+	i = 0;
+	if (!s1 || !s2)
+		return (-1);
+	while (s1[i] && s2[i] && s1[i] == s2[i])
+		i++;
+	return (s1[i] - s2[i]);
 }
