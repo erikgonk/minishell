@@ -1,6 +1,6 @@
 # Compiler and flags
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=leak -I./inc -I./src/libft/inc -I/opt/homebrew/opt/readline/include
+CFLAGS = -Wall -Wextra -Werror -g -I./inc -I./src/libft/inc -I/opt/homebrew/opt/readline/include
 # -fsanitize=leak 
 # Directories
 SRC_DIR = ./src
@@ -74,12 +74,10 @@ clean:
 	rm -rf $(OBJ_DIR)
 	clear
 
-fclean: clean
+f fclean: clean
 	$(MAKE) -C $(LIBFT_DIR) fclean
 	rm -rf $(TARGET)
 	clear
-
-f: fclean
 
 re: fclean all
 

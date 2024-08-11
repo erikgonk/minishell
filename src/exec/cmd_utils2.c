@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:27:05 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/09 12:31:01 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/11 11:40:16 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ char	*ft_get_cmd(t_data *data, t_cmds *cmd, t_exec *exec)
 {
 	int			i;
 	t_node		*lst;
+	char		*tmp;
 
 	i = -1;
 	if (access(cmd->cmd[0], X_OK) == 0)
@@ -53,7 +54,11 @@ char	*ft_get_cmd(t_data *data, t_cmds *cmd, t_exec *exec)
 	{
 		ft_get_cmd_normi(exec, cmd, i);
 		if (access(exec->path[i], X_OK) == 0)
-			return (exec->path[i]);
+		{
+			tmp = ft_strdup(exec->path[i]);
+			ft_free_willy(exec->path);
+			return (tmp);
+		}
 	}
 	ft_printf(2, "minish: %s: No such file or directory\n", cmd->cmd[0]);
 	exit (127);

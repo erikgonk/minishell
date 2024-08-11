@@ -6,7 +6,7 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 16:06:47 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/10 16:02:28 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/11 11:35:01 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,7 @@ int	ft_cmds(t_data *data, t_exec *exec)
 		return (1);
 	else if (ft_env_to_cmd(exec,
 			ft_count_list_elems_str(data->env->start), -1) == 1)
-	{
-		return (1);
-	}
+		return (free(kids), 1);
 	while (exec->cmd_t)
 	{
 		kids[++i] = ft_childs(data, exec->cmd_t, exec);
