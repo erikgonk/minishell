@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 15:20:58 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/10 17:58:21 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/11 11:53:03 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ static int	ft_get_old_pwd(t_exec *exec, int flag)
 	if ((exec->cmd_t->cmd[1] && ft_strcmp(exec->cmd_t->cmd[1], "-")) &&
 			exec->env_t->oldpwd)
 	{
-		printf("enters in -\n");
 		chdir(exec->env_t->oldpwd);
 		flag = 1;
 	}
@@ -33,15 +32,13 @@ static int	ft_get_old_pwd(t_exec *exec, int flag)
 		{
 			if (tmp->str)
 				free(tmp->str);
-			tmp->str = old_pwd;
+			tmp->str = ft_strdup(old_pwd);
 		}
 		if (exec->env_t->oldpwd)
 			free(exec->env_t->oldpwd);
-		exec->env_t->oldpwd = old_pwd;
+		exec->env_t->oldpwd = ft_strdup(old_pwd);
 	}
-	if (flag == 1)
-		return (free(old_pwd), 1);
-	return (free(tmp), 0);
+	return (free(old_pwd), flag);
 }
 
 static int	ft_cd_user(t_exec *exec)
@@ -53,30 +50,31 @@ static int	ft_cd_user(t_exec *exec)
 	tmp = ft_get_env_lst("PWD", exec->env_t->start);
 	if (tmp->str)
 		free(tmp->str);
-	tmp->str = exec->env_t->homedir;
-	exec->env_t->pwd = exec->env_t->homedir;
+	tmp->str = ft_strdup(exec->env_t->homedir);
+	exec->env_t->pwd = ft_strdup(exec->env_t->homedir);
 	return (1);
 }
 
-static int	ft_cd_normi(t_exec *exec, char *pwd)
+static int	ft_cd_normi(t_exec *exec)
 {
 	t_node		*tmp;
+	char		*pwd;
 
 	if (exec->cmd_t->cmd && chdir(exec->cmd_t->cmd[1]) == -1)
 	{
 		ft_printf(2, "minish: cd: %s: No such file or directory\n",
-		exec->cmd_t->cmd[1]);
+			exec->cmd_t->cmd[1]);
 		return (0);
 	}
 	pwd = getcwd(NULL, 0);
 	if (exec->env_t->pwd)
 		free(exec->env_t->pwd);
-	exec->env_t->pwd = pwd;
+	exec->env_t->pwd = ft_strdup(pwd);
 	tmp = ft_get_env_lst("PWD", exec->env_t->start);
 	if (tmp->str)
 		free(tmp->str);
-	tmp->str = pwd;
-	return (1);
+	tmp->str = ft_strdup(pwd);
+	return (free(pwd), 1);
 }
 
 static int	ft_cmd_length(t_cmds *cmd)
@@ -100,7 +98,7 @@ int	ft_cd(t_exec *exec)
 	}
 	if (ft_get_old_pwd(exec, 0)) // cd - & oldpwd
 		return (0);
-	if (!exec->cmd_t->cmd[1] ||(exec->cmd_t->cmd[1] && ft_strcmp(exec->cmd_t->cmd[1], "~")))// cd && cd ~
+	if (!exec->cmd_t->cmd[1] || (exec->cmd_t->cmd && exec->cmd_t->cmd[1] && ft_strcmp(exec->cmd_t->cmd[1], "~")))// cd && cd ~
 	{
 		ft_cd_user(exec);
 		return (0);
@@ -111,7 +109,8 @@ int	ft_cd(t_exec *exec)
 		ft_printf(2, "cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n");
 		return (1);// ver el error de esto
 	}
-	if (ft_cd_normi(exec, pwd))// normal cd
+	free(pwd);
+	if (ft_cd_normi(exec))// normal cd
 		return (0);
 	return (1);
 }
