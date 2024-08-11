@@ -33,16 +33,23 @@ long long int	ft_atoll(char *str, int i, long long int res, int sign)
 		i++;
 	}
 	if (res < 0)
-		return (1);
+		return (-1);
 	res *= sign;
 	return (res);
 }
 
-static void	ft_exit_status(int	err)
+static void	ft_exit_status(int err)
 {
 	ft_get_stt(1, err);
 	ft_printf(1, "exit\n");
 	exit (err);
+}
+
+static void	ft_print_err(char *str)
+{
+	ft_printf(2, "minish: exit: ");
+	ft_printf(2, "%s: numeric argument required\n", str);
+	ft_exit_status(2);
 }
 
 static void	ft_check_is_num(char *str)
@@ -50,17 +57,15 @@ static void	ft_check_is_num(char *str)
 	int		i;
 
 	i = -1;
-	if (str[i + 1] == '-' || str[i + 1] == '+')
-		i++;
+	if (str[0] == '-' || str[0] == '+')
+	{
+		if (!str[++i + 1])
+			ft_print_err(str);
+	}
 	while (str[++i])
 	{
 		if (!ft_isdigit(str[i]))
-		{
-			ft_printf(2, "exit\n");
-			ft_printf(2, "minish: exit: ");
-			ft_printf(2, "%s: numeric argument required\n", str);
-			ft_exit_status(2);
-		}
+			ft_print_err(str);
 	}
 }
 
@@ -77,8 +82,11 @@ int	ft_exit(t_exec *exec)
 		ft_exit_status(2);
 	}
 	res = ft_atoll(exec->cmd_t->cmd[1], 0, 0, 1);
-	if (res == 1 && exec->cmd_t->cmd[1][1])
+	if (res == -1 && exec->cmd_t->cmd[1][1])
 	{
+		if (exec->cmd_t->cmd[1][0] == '-' && exec->cmd_t->cmd[1][1] == '1')
+			ft_exit_status(res);
+		printf("hola\n");
 		ft_printf(2, "exit\n");
 		ft_printf(2, "minish: exit: ");
 		ft_printf(2, "%s: ", exec->cmd_t->cmd[1]);

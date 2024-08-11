@@ -72,7 +72,7 @@ int	ft_unset(t_exec *exec)
 	while (exec->cmd_t->cmd[++i])
 	{
 		node_bef = ft_get_env_before_lst(exec->cmd_t->cmd[i],
-					exec->env_t->start, exec);
+				exec->env_t->start, exec);
 		node = ft_get_env_lst(exec->cmd_t->cmd[i], exec->env_t->start);
 		if (!node_bef || !node)
 			continue ;
