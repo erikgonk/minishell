@@ -57,11 +57,10 @@ int	ft_executor(t_data *data, t_exec *exec)
 		exec->lexer = data->cmds->redirections;
 	if (ft_builtin_exists(exec) == 0 && !exec->lexer && !exec->cmd_t->next)
 	{
-		data->g_exit = ft_builtins(exec); // already exits
+		data->g_exit = ft_builtins(exec);
 		return (data->g_exit);
 	}
 	ft_innit_redirs(exec->cmd_t);
-	//printf("%s\n%d\n%d\n", exec->cmd_t->redirections->literal, exec->cmd_t->in, exec->cmd_t->out);
 	data->g_exit = ft_cmds(data, exec);
 	return (data->g_exit);
 }

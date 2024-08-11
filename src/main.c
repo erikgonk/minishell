@@ -81,7 +81,7 @@ static void    check_exp(t_data *data)
         expand(data, tmp);
         tmp = tmp->next;
     }
-	//print_cmds(data);
+	print_cmds(data);
 }
 
 
@@ -93,7 +93,7 @@ void    mini_loop(t_data *data)
     input = NULL;
     while (1)
     {
-        //data->g_exit = ft_get_stt(0, 0);
+        data->g_exit = ft_get_stt(0, 0);
         data->printed_error = 0;
         lex_free(&data->lexer);
         clean_cmds(&data->cmds);

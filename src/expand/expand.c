@@ -20,6 +20,7 @@ char *expand_single(char *str, t_data *data)
             single_quote_exp(str, &exp);
         if (exp.status == 2) 
             double_quote_exp(str, &exp, data);
+        get_status(str[exp.pos], exp.status);
     }
     return (exp.finished);
 }
@@ -46,7 +47,7 @@ char **expand_cmd(char **cmd, t_data *data)
     i = 0;
     while (cmd[i]) 
     {
-        if (ft_strcmp("\"\"", cmd[i]) || ft_strcmp("\'\'", cmd[i]))
+        if (!my_strcmp("\"\"", cmd[i]) || !my_strcmp("\'\'", cmd[i]))
         {
             free(cmd[i]);
             cmd[i] = ft_strdup("");
