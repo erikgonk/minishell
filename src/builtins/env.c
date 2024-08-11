@@ -18,9 +18,9 @@ void	ft_print_env(t_node *env)
 	while (env)
 	{
 		if (env->var && env->str)
-			ft_printf(2, "%s=%s\n", env->var, env->str);
+			ft_printf(1, "%s=%s\n", env->var, env->str);
 		if (env->var && !env->str)
-			ft_printf(2, "%s=\n", env->var);
+			ft_printf(1, "%s=\n", env->var);
 		env = env->next;
 	}
 }
