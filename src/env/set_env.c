@@ -83,3 +83,4 @@ char	*get_env(char *var, t_env env)
 	}
 	return (NULL);
 }
+

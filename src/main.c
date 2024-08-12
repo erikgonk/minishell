@@ -9,8 +9,8 @@
 /*   Updated: 2024/08/12 16:34:29 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include "minishell.h"
 #include "../inc/exec.h"
-#include "../inc/minishell.h"
 
 char	*clean_input(char *input)
 {
