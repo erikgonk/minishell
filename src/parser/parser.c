@@ -23,7 +23,7 @@ int	parser(t_data *data)
 		if (data->lexer && data->lexer->type == T_PIPE)
 			lex_delone(&data->lexer, data->lexer->index);
 		parser = init_parser(data->lexer, data);
-		node = create_cmd(&parser);
+		node = create_cmd(&parser, 0);
 		if (!node)
 			return (0);
 		if (!data->cmds)
@@ -40,12 +40,10 @@ int	parser(t_data *data)
 	return (1);
 }
 
-//this function is too log rip
-t_cmds	*create_cmd(t_parser *parser)
+t_cmds	*create_cmd(t_parser *parser, int i)
 {
 	char	**str;
 	int		arg_count;
-	int		i;
 	t_lex	*tmp;
 
 	add_redir(parser);
@@ -53,7 +51,6 @@ t_cmds	*create_cmd(t_parser *parser)
 	str = (char **)malloc(sizeof(char *) * (arg_count + 1));
 	if (!str)
 		return (NULL);
-	i = 0;
 	tmp = parser->lexer;
 	while (i < arg_count)
 	{

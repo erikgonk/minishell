@@ -26,6 +26,7 @@ SRC_FILES = $(SRC_DIR)/main.c \
 			$(SRC_DIR)/utils/cmd_lst.c \
 			$(SRC_DIR)/utils/input_checks.c \
 			$(SRC_DIR)/utils/lex_lst.c \
+			$(SRC_DIR)/utils/lex_lst2.c \
 			$(SRC_DIR)/utils/remove_whitespace.c \
 			$(SRC_DIR)/builtins/cd.c \
 			$(SRC_DIR)/builtins/echo.c \

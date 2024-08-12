@@ -103,7 +103,7 @@ void    mini_loop(t_data *data)
         signal(SIGQUIT, SIG_IGN);
         if (input == NULL ||input[0] == '\0')
             continue ;
-        data->lexer = tokenizer(input, data);
+        data->lexer = tokenizer(input, data, 0);
         if (!data->lexer)
             continue ;
         if (check_tokens(data, &data->lexer))
@@ -121,6 +121,8 @@ void    mini_loop(t_data *data)
 
 void    clean_shell(t_data *data)
 {
+    if (!data)
+        return ;
     if (data->lexer)
         lex_free(&data->lexer);
     if (data->input)

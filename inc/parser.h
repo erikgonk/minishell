@@ -10,7 +10,7 @@ typedef struct s_cmds       t_cmds;
 
 /*-----------Parser-------------*/
 int     parser(t_data *data);
-t_cmds  *create_cmd(t_parser *parser);
+t_cmds  *create_cmd(t_parser *parser, int i);
 t_cmds  *new_cmd(char **str, t_parser *parser);
 int     get_builtin(char *str);
 

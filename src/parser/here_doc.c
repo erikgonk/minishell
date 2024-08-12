@@ -17,15 +17,6 @@ static int	print_error(char *str, int exit)
 	return (exit);
 }
 
-void	ctrlc_hdoc(int signum)
-{
-	(void)signum;
-	write(2, "\n", 1);
-	if (signal(SIGINT, SIG_DFL) == SIG_ERR)
-		exit(1);
-	kill(0, SIGINT);
-}
-
 static int	parent_hdoc(int fd[2])
 {
 	int	child;

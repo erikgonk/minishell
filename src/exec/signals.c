@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "../../inc/minishell.h"
+#include "../../inc/parser.h"
 #include <signal.h>
 
 /*
@@ -23,6 +24,15 @@ void	ft_sig_innit(void)
 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 }
 */
+
+void	ctrlc_hdoc(int signum)
+{
+	(void)signum;
+	write(2, "\n", 1);
+	if (signal(SIGINT, SIG_DFL) == SIG_ERR)
+		exit(1);
+	kill(0, SIGINT);
+}
 
 int	ft_get_stt(int flag, int val)
 {
