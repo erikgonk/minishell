@@ -6,6 +6,7 @@
 /*   By: vaunevik <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 10:59:03 by vaunevik          #+#    #+#             */
+/*   Updated: 2024/08/12 15:59:59 by erigonza         ###   ########.fr       */
 /*   Updated: 2024/08/12 16:34:29 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
@@ -85,37 +86,42 @@ static void	check_exp(t_data *data)
 	//print_cmds(data);
 }
 
+static void    refresh_command(t_data *data)
+{
+    data->printed_error = 0;
+    lex_free(&data->lexer);
+    clean_cmds(&data->cmds);
+    signal(SIGINT, ft_sig_c);
+}
+
+
 //this function is 30 lines
 void	mini_loop(t_data *data)
 {
 	char	*input;
 	t_exec	exec;
 
-	input = NULL;
-	while (1)
-	{
-		data->g_exit = ft_get_stt(0, 0);
-		data->printed_error = 0;
-		lex_free(&data->lexer);
-		clean_cmds(&data->cmds);
-		input = clean_input(input);
-		signal(SIGINT, ft_sig_c);
-		input = get_input(data);
-		signal(SIGQUIT, SIG_IGN);
-		if (input == NULL || input[0] == '\0')
-			continue ;
-		data->lexer = tokenizer(input, data, 0);
-		if (!data->lexer)
-			continue ;
-		if (check_tokens(data, &data->lexer))
-			parser(data);
-		if (data->cmds && data->printed_error == 0)
-		{
-			check_exp(data);
-			ft_init_exec(&exec, data);
-			data->g_exit = ft_executor(data, &exec);
-		}
-	}
+    input = NULL;
+    while (1)
+    {
+        refresh_command(data);
+        input = clean_input(input);
+        input = get_input(data);
+        signal(SIGQUIT, SIG_IGN);
+        if (input == NULL ||input[0] == '\0')
+            continue ;
+        data->lexer = tokenizer(input, data, 0);
+        if (!data->lexer)
+            continue ;
+        if (check_tokens(data, &data->lexer))
+            parser(data);
+        if (data->cmds && data->printed_error == 0)
+        {
+            check_exp(data);
+            ft_init_exec(&exec, data);
+            data->g_exit = ft_executor(data, &exec);
+        }
+    }
 	rl_clear_history();
 }
 

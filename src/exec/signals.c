@@ -13,18 +13,6 @@
 #include "../../inc/parser.h"
 #include <signal.h>
 
-/*
-// avoid ^C ^D...
-void	ft_sig_innit(void)
-{
-	struct termios		term;
-
-	tcgetattr(STDIN_FILENO, &term);
-	term.c_lflag &= ~ECHOCTL;
-	tcsetattr(STDIN_FILENO, TCSANOW, &term);
-}
-*/
-
 void	ctrlc_hdoc(int signum)
 {
 	(void)signum;
@@ -53,19 +41,9 @@ void	ft_sig_c(int sig)
 	if (sig == SIGINT)
 	{
 		ft_printf(1, "\n");
+		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
 		ft_get_stt(1, 130);
-	}
-}
-
-// controls Control + C in here doc
-void	ft_sig_c_hdoc(int sig, t_data *data)
-{
-	if (sig == SIGINT)
-	{
-		data->g_exit = 130;
-		ft_printf(1, "\n");
-		exit(1);
 	}
 }
