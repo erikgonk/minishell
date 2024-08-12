@@ -11,6 +11,13 @@
 /* ************************************************************************** */
 #include "../../inc/tokenizer.h"
 
+void	first_ispipe(t_data *data)
+{
+	printf("Mish: unexpected error near token '|'\n");
+	data->printed_error = 1;
+	data->g_exit = 2;
+}
+
 int	check_redirs(t_lex **lst, t_data *data)
 {
 	if (((*lst)->type >= T_REDIR_IN && (*lst)->type <= T_APPEND)
@@ -20,6 +27,19 @@ int	check_redirs(t_lex **lst, t_data *data)
 		return (0);
 	}
 	return (1);
+}
+
+void	add_index(t_lex *tokens)
+{
+	int	i;
+
+	i = 0;
+	while (tokens)
+	{
+		tokens->index = i;
+		tokens = tokens->next;
+		i++;
+	}
 }
 
 int	check_pipes(t_lex **lst, t_data *data)

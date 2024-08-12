@@ -66,59 +66,51 @@ int	token_length(char *input)
 	return (length);
 }
 
-t_lex	*fill_tokens(t_lex *tokens, char *input, int length, t_data *data)
+t_lex	*fill_tokens(char *input, int length, t_data *data)
 {
 	t_lex	*last;
 	t_lex	*new;
 
-	new = make_token(length, input, tokens, data);
+	new = make_token(length, input, data);
 	if (!new)
 		return (NULL);
-	if (tokens == NULL)
-		tokens = new;
+	if (data->lexer == NULL)
+		data->lexer = new;
 	else
 	{
-		last = tokens;
+		last = data->lexer;
 		while (last->next != NULL)
 			last = last->next;
 		last->next = new;
 	}
-	return (tokens);
+	return (data->lexer);
 }
 
-t_lex	*tokenizer(char *input, t_data *data)
+t_lex	*tokenizer(char *input, t_data *data, int length)
 {
-	t_lex	*tokens;
-	int		length;
 	t_lex	*last;
 
-	length = 0;
-	tokens = NULL;
+	if ((*input == '|') && data->printed_error == 0)
+	{
+		first_ispipe(data);
+		return (NULL);
+	}
 	while (*input)
 	{
-		if ((*input == '|' && ft_strlen(input) == 1)
-			&& data->printed_error == 0)
-		{
-			printf("Mish: unexpected error near token '|'\n");
-			data->printed_error = 1;
-			data->g_exit = 2;
-			return (NULL);
-		}
 		if (*input == ' ' || (*input >= 8 && *input <= 13))
 			input++;
 		else
 		{
 			length = token_length(input);
-			tokens = fill_tokens(tokens, input, length, data);
-			last = lex_lstlast(tokens);
+			fill_tokens(input, length, data);
+			last = lex_lstlast(data->lexer);
 			if (last->index == -1)
 			{
-				lex_delone(&tokens, -1);
+				lex_delone(&data->lexer, -1);
 				break ;
 			}
 			input += length;
 		}
 	}
-	add_index(tokens);
-	return (tokens);
+	return (add_index(data->lexer), data->lexer);
 }

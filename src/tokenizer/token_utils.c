@@ -32,19 +32,6 @@ static void	print_error(int type, t_data *data)
 	return ;
 }
 
-void	add_index(t_lex *tokens)
-{
-	int	i;
-
-	i = 0;
-	while (tokens)
-	{
-		tokens->index = i;
-		tokens = tokens->next;
-		i++;
-	}
-}
-
 int	is_hdoc_present(t_lex *tokens)
 {
 	if (lex_lstlen(tokens) > 1)
@@ -74,14 +61,13 @@ int	find_next_redir(char *literal, int i)
 	return (10);
 }
 
-int	check_syntax_and_hdoc(t_data *data, t_lex *tokens, char *input, t_lex *new,
-		int i)
+int	check_syntax_and_hdoc(t_data *data, char *input, t_lex *new, int i)
 {
 	if (ft_isspace(input[i]))
 		i++;
 	if (input[i] == '>' || input[i] == '<' || input[i] == '|' || !input[i])
 	{
-		if (is_hdoc_present(tokens))
+		if (is_hdoc_present(data->lexer))
 			new->index = -1;
 		print_error(find_next_redir(input, i), data);
 		data->g_exit = 2;
@@ -89,7 +75,7 @@ int	check_syntax_and_hdoc(t_data *data, t_lex *tokens, char *input, t_lex *new,
 	return (0);
 }
 
-t_lex	*make_token(int length, char *input, t_lex *tokens, t_data *data)
+t_lex	*make_token(int length, char *input, t_data *data)
 {
 	int		i;
 	t_lex	*new;
@@ -113,7 +99,7 @@ t_lex	*make_token(int length, char *input, t_lex *tokens, t_data *data)
 	new->literal[i] = '\0';
 	new->next = NULL;
 	new->type = find_type(new->literal);
-	if (new->type <= T_APPEND &&new->type > T_PIPE)
-		check_syntax_and_hdoc(data, tokens, input, new, i);
+	if (new->type <= T_APPEND && new->type > T_PIPE)
+		check_syntax_and_hdoc(data, input, new, i);
 	return (new);
 }
