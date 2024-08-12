@@ -14,78 +14,78 @@
 int	init_minishell(t_env *env, t_data *data, char **envp)
 {
 	data->g_exit = 0;
-    data->lexer = NULL;
-    data->pipes = 0;
-    data->input = NULL;
-    data->hdoc_count = 0;
-    data->printed_error = 0;
-    data->cmds = NULL;
-    data->env = NULL;
-    data->parser = NULL;
-    data->pipes = 0;
-    data->pid = NULL;
-    env->start = NULL;
-    env->end = NULL;
-    env->homedir = NULL;
-    env->oldpwd = NULL;
-    env->pwd = NULL;
-    if (transform_env(env, envp))
+	data->lexer = NULL;
+	data->pipes = 0;
+	data->input = NULL;
+	data->hdoc_count = 0;
+	data->printed_error = 0;
+	data->cmds = NULL;
+	data->env = NULL;
+	data->parser = NULL;
+	data->pipes = 0;
+	data->pid = NULL;
+	env->start = NULL;
+	env->end = NULL;
+	env->homedir = NULL;
+	env->oldpwd = NULL;
+	env->pwd = NULL;
+	if (transform_env(env, envp))
 		exit(1);
-    data->env = env;
+	data->env = env;
 	return (0);
 }
 
-char    *get_input(t_data *data)
+char	*get_input(t_data *data)
 {
-    data->input = readline("Mish> ");
-    if (data->input == NULL)
-    {
-        ft_putstr_fd("exit\n", STDOUT_FILENO);
-        clean_shell(data);
-        exit(EXIT_SUCCESS);
-    }
-    if (data->input)
-    {
-        skip_whitespace(data);
-        if (data->input)
-        {
-            add_history(data->input);
-            if (input_check(data->input, data))
-                data->input[0] = '\0';
-        }
-    }
-    return (data->input);
+	data->input = readline("Mish> ");
+	if (data->input == NULL)
+	{
+		ft_putstr_fd("exit\n", STDOUT_FILENO);
+		clean_shell(data);
+		exit(EXIT_SUCCESS);
+	}
+	if (data->input)
+	{
+		skip_whitespace(data);
+		if (data->input)
+		{
+			add_history(data->input);
+			if (input_check(data->input, data))
+				data->input[0] = '\0';
+		}
+	}
+	return (data->input);
 }
 
-static void free_nodes(t_node **node)
+static void	free_nodes(t_node **node)
 {
-    t_node  *tmp;
-    t_node  *next;
+	t_node	*tmp;
+	t_node	*next;
 
-    tmp = (*node);
-    while (tmp)
-    {
-        next = tmp->next;
-        if (tmp->str)
-            free(tmp->str);
-        if (tmp->var)
-            free(tmp->var);
-        free(tmp);
-        tmp = next;
-    }
+	tmp = (*node);
+	while (tmp)
+	{
+		next = tmp->next;
+		if (tmp->str)
+			free(tmp->str);
+		if (tmp->var)
+			free(tmp->var);
+		free(tmp);
+		tmp = next;
+	}
 }
 
-void free_env(t_env *env)
+void	free_env(t_env *env)
 {
-    if (!env)
-        return;
-    if (env->start)
-        free_nodes(&env->start);
-    if (env->homedir)
-        free(env->homedir);
-    if (env->oldpwd)
-        free(env->oldpwd);
-    if (env->pwd)
-        free(env->pwd);
-    env->end = NULL;
+	if (!env)
+		return ;
+	if (env->start)
+		free_nodes(&env->start);
+	if (env->homedir)
+		free(env->homedir);
+	if (env->oldpwd)
+		free(env->oldpwd);
+	if (env->pwd)
+		free(env->pwd);
+	env->end = NULL;
 }
