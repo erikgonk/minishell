@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 14:37:05 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/09 14:00:47 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/12 16:22:23 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,30 @@ static int	ft_redirs_err(t_cmds *cmd, int i)
 	return (0);
 }
 
+static void	ft_innit_redirs_normi(t_cmds *cmd, t_lex *lex)
+{
+	while (lex)
+	{
+		ft_redirs_err(cmd, 0);
+		if (cmd->in != -1 && lex->type == T_REDIR_IN)
+			cmd->in = open(lex->literal, O_RDONLY);
+		else if (cmd->out != -1 && lex->type == T_APPEND)
+			cmd->out = open(lex->literal, O_WRONLY | O_APPEND | O_CREAT, 0644);
+		else if (cmd->out != -1 && lex->type == T_REDIR_OUT)
+			cmd->out = open(lex->literal, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+		else if (lex->type == T_HEREDOC)
+		{
+			if (cmd->in != 0)
+			{
+				close (cmd->in);
+				cmd->in = 0;
+			}
+		}
+		lex = lex->next;
+	}
+	
+}
+
 void	ft_innit_redirs(t_cmds *cmd)
 {
 	t_lex	*lex;
@@ -39,25 +63,13 @@ void	ft_innit_redirs(t_cmds *cmd)
 		lex = cmd->redirections;
 		cmd->in = 0;
 		cmd->out = 1;
-		while (lex)
+		if (!cmd->cmd && lex->type == T_REDIR_IN)
 		{
-			ft_redirs_err(cmd, 0);
-			if (cmd->in != -1 && lex->type == T_REDIR_IN)
-				cmd->in = open(lex->literal, O_RDONLY);
-			else if (cmd->out != -1 && lex->type == T_APPEND)
-				cmd->out = open(lex->literal, O_WRONLY | O_APPEND | O_CREAT, 0644);
-			else if (cmd->out != -1 && lex->type == T_REDIR_OUT)
-				cmd->out = open(lex->literal, O_WRONLY | O_TRUNC | O_CREAT, 0644);
-			else if (lex->type == T_HEREDOC)
-			{
-				if (cmd->in != 0)
-				{
-					close (cmd->in);
-					cmd->in = 0;
-				}
-			}
-			lex = lex->next;
+			ft_printf(2, "bash: %s: No such file or directory\n", lex->literal);
+			cmd->in = -1;
+			cmd->out = -1;
 		}
+		ft_innit_redirs_normi(cmd, lex);
 		if (cmd->hdoc && cmd->in == 0)
 			cmd->in = cmd->hdoc;
 		cmd = cmd->next;
@@ -66,7 +78,6 @@ void	ft_innit_redirs(t_cmds *cmd)
 
 void	ft_redirections(t_cmds *cmd)
 {
-	// printf("%s\n%d\n%d\n", cmd->redirections->literal, cmd->in, cmd->out);
 	if (cmd->in != 0)
 	{
 		dup2(cmd->in, 0);

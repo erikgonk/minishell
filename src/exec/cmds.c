@@ -6,7 +6,7 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 16:06:47 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/11 12:55:39 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/12 16:09:52 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,5 +107,5 @@ int	ft_cmds(t_data *data, t_exec *exec)
 	ft_close_pipes(exec->p);
 	ft_free_willy(exec->env);
 	ft_find_exit_status(data, kids, (ft_lst_size(data->cmds) - 1));
-	return (free(kids), exec->g_exit);
+	return (free(kids), data->g_exit);
 }

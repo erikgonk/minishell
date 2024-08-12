@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 12:13:37 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/11 13:36:10 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/12 16:12:52 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	ft_builtins(t_exec *exec)
 	while (bts[i] && ft_strcmp_bi(bts[i], exec->cmd_t->cmd[0]) != 0)
 		i++;
 	if (bts[i])
-		builtins[i](exec);
+		exec->g_exit = builtins[i](exec);
 	else
 		return (127);
 	return (exec->g_exit);
@@ -42,10 +42,6 @@ int	ft_builtin_exists(t_exec *exec)
 	i = 0;
 	while (bts[i] && ft_strcmp_bi(bts[i], exec->cmd_t->cmd[0]) != 0)
 		i++;
-/*	if (bts[i])
-		printf("%s\n", bts[i]);
-	else
-		printf("no entra\n\n");*/
 	if (bts[i])
 		return (0);
 	return (1);
@@ -53,6 +49,7 @@ int	ft_builtin_exists(t_exec *exec)
 
 int	ft_executor(t_data *data, t_exec *exec)
 {
+	ft_innit_redirs(exec->cmd_t);
 	if (!exec->cmd_t->cmd)
 		return (exec->g_exit);
 	else if (exec->cmd_t->cmd && !exec->cmd_t->cmd[0])
@@ -62,9 +59,10 @@ int	ft_executor(t_data *data, t_exec *exec)
 	if (ft_builtin_exists(exec) == 0 && !exec->lexer && !exec->cmd_t->next)
 	{
 		data->g_exit = ft_builtins(exec);
+        data->g_exit = ft_get_stt(1, data->g_exit);
 		return (data->g_exit);
 	}
-	ft_innit_redirs(exec->cmd_t);
 	data->g_exit = ft_cmds(data, exec);
+    data->g_exit = ft_get_stt(1, data->g_exit);
 	return (data->g_exit);
 }

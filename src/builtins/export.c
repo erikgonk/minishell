@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 15:20:13 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/09 12:29:07 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/12 17:09:31 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,19 @@ static int	ft_create_env(t_env *env, char **cmd, char *str, int flag)
 	node = malloc(sizeof(t_node));
 	if (!node)
 		return (1);
+	env->end->next = node;
 	node->next = NULL;
+		printf("antes\n");
 	if (cmd) // var=str && var+=str
 	{
+		printf("entra\n");
 		node->var = cmd[0];
 		node->str = cmd[1];
+		printf("%s\n", env->end->next->str);
 		return (0);
 	}
-	flag = ft_find_char(cmd[1], '=');
+	if (cmd && cmd[1])
+		flag = ft_find_char(cmd[1], '=');
 	env->end->next = node;
 	if (flag == -1) // var
 	{
@@ -78,6 +83,19 @@ static int	ft_separate_export(t_env *env, t_exec *exec, char *str, int flag)
 		ft_create_env(env, NULL, str, flag);
 	else if (flag == F_NONE) // var exist
 		return (0);
+	else if (flag != F_NONE)
+	{
+		if (!ft_get_env_lst(cmd[0], env->start)) // (var+=str) Not exist
+			ft_create_env(env, cmd, str, flag);
+		else
+		{
+			if (cmd)
+				ft_free_willy(cmd);
+			cmd = ft_split(exec->cmd_t->cmd[1], '=');
+			if (!ft_get_env_lst(cmd[0], env->start)) // (var=str && var=) Not exist
+				ft_create_env(env, cmd, str, flag);
+		}
+	}
 	else if (flag != F_NONE && !ft_get_env_lst(cmd[0], env->start)) // (var=str && var+=str && var=) Not exist
 		ft_create_env(env, cmd, str, flag);
 	else// (var=str && var+=str && var=) exist
@@ -110,7 +128,7 @@ int	ft_export(t_exec *exec)
 
 	i = 0;
 	if (!exec->cmd_t->cmd[1])
-		return (ft_print_export(exec));
+		return (ft_print_export(exec->env_t->start));
 	while (exec->cmd_t->cmd[++i])
 	{
 		if (ft_parsing(exec->cmd_t->cmd[i]) == 1)

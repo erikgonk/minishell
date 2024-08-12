@@ -6,7 +6,7 @@
 /*   By: vaunevik <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 10:59:03 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/08/10 15:39:06 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/12 15:59:59 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../inc/minishell.h"
@@ -113,7 +113,7 @@ void    mini_loop(t_data *data)
             check_exp(data);
             ft_init_exec(&exec, data);
             data->g_exit = ft_executor(data, &exec);
-            //data->g_exit = ft_get_stt(0, 0);
+            data->g_exit = ft_get_stt(0, 0);
         }
     }
     rl_clear_history();

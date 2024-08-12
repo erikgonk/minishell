@@ -6,7 +6,7 @@
 /*   By: vaunevik <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/18 11:58:53 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/08/12 14:11:31 by vaunevik         ###   ########.fr       */
+/*   Updated: 2024/08/12 16:38:10 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../../inc/env.h"
@@ -35,7 +35,7 @@ int set_standard_env(t_env *env, char *shlvl)
         i = set_env(env, ft_strdup("SHLVL"), "1");
     }
     else
-        i = set_env(env, ft_strdup("SHLVL"), ft_itoa(ft_atoi(get_env("SHLVL", *env)) + 1)); //increase current shlvl with one
+        i = set_env(env, "SHLVL", ft_itoa(ft_atoi(get_env("SHLVL", *env)) + 1)); //increase current shlvl with one
     return (i);
 }
 
