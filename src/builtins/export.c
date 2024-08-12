@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 15:20:13 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/12 18:55:06 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/12 19:59:54 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	ft_add_replace_str_env(t_exec *exec, char **cmd, int flag) // (var=st
 		if (node->str)
 			free(node->str);
 		node->str = malloc(sizeof(char) + 1);
-		node->str = "";
+		node->str = ft_strdup("");
 	}
 	else if (flag == F_ADD && cmd[1])
 	{
@@ -61,22 +61,23 @@ static int	ft_create_env(t_exec *exec, char **cmd, char *str, int flag)
 	if (!node)
 		return (1);
 	ft_add_one(exec, exec->env_t->start, node);
+	if (!cmd && flag == F_NONE) // var
+	{
+		node->var = ft_strdup(str);
+		node->str = NULL;
+		return (0);
+
+	}
 	if (cmd) // var=str && var+=str
 	{
-		node->var = cmd[0];
-		node->str = cmd[1];
+		node->var = ft_strdup(cmd[0]);
+		node->str = ft_strdup(cmd[1]);
 		return (0);
 	}
 	if (cmd && cmd[1])
 		flag = ft_find_char(cmd[1], '=');
-	if (flag == -1) // var
-	{
-		node->var = str;
-		node->str = NULL;
-		return (0);
-	}
-	node->var = str; // var=
-	node->str = "";
+	node->var = ft_strdup(str); // var=
+	node->str = ft_strdup("");
 	return (1);
 }
 
@@ -100,15 +101,17 @@ static int	ft_separate_export(t_env *env, t_exec *exec, char *str, int flag)
 		return (0);
 	else if (flag != F_NONE)
 	{
-		if (!ft_get_env_lst(cmd[0], env->start)) // (var+=str) Not exist
+		if (cmd && !ft_get_env_lst(cmd[0], env->start) && cmd[1]) // (var+=str) Not exist
 			ft_create_env(exec, cmd, str, flag);
 	}
-	else if (cmd && flag != F_NONE && !ft_get_env_lst(cmd[0], env->start)) // (var=str && var+=str && var=) Not exist
+	printf("cmd -> %s\n", cmd[0]);
+	if (cmd && flag != F_NONE && !ft_get_env_lst(cmd[0], env->start)) // (var=str && var+=str && var=) Not exist
 		ft_create_env(exec, cmd, str, flag);
-	else// (var=str && var+=str && var=) exist
+	else // (var=str && var+=str && var=) exist
 		ft_add_replace_str_env(exec, cmd, flag);
 	if (cmd)
 		ft_free_willy(cmd);
+	printf("%s\n", str);
 	return (0);
 }
 
@@ -123,7 +126,6 @@ static void	ft_export_normi(t_exec *exec, int i, int pos)
 	else
 		exec->g_exit = ft_separate_export(exec->env_t, exec,
 				exec->cmd_t->cmd[i], F_CREATE); // var=str & var
-	printf("aaaaa\n");
 }
 
 int	ft_export(t_exec *exec)

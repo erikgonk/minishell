@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 12:44:20 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/12 16:35:04 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/12 20:00:01 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,7 @@ int	ft_print_export(t_node *node)
 	{
 		ft_printf(1, "declare -x ");
 		if (node->var)
-		{
-			ft_printf(1, "%s", node->var);
+		{ ft_printf(1, "%s", node->var);
 			if (node->str)
 				ft_printf(1, "=\"%s\"", node->str);
 			printf("\n");
