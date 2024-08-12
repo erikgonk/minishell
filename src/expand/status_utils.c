@@ -43,8 +43,6 @@ void	append_to_finished(t_expander *exp, char *str)
 
 void	no_quote_exp(char *str, t_expander *exp, t_data *data)
 {
-	/*if (str[exp->pos] == '\"' ||str[exp->pos] == '\'')
-    exp->pos++;*/
 	exp->start = exp->pos;
 	while (str[exp->pos] && exp->status == 0)
 	{
