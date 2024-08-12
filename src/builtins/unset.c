@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 17:46:30 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/12 14:04:44 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/12 14:13:42 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ static int	ft_extra_unset(t_exec *exec, t_node *node, t_node *node_bef)
 		return (1);
 	if (ft_get_env_before_lst(node->var, node_bef, exec)) // edge case being the first variable START
 	{
-		printf("OLDPWD\n\n");
 		if (node->next)
 			exec->env_t->start = node->next;
 		ft_extra_extra_unset(exec, node, node_bef);
@@ -63,7 +62,6 @@ static int	ft_extra_unset(t_exec *exec, t_node *node, t_node *node_bef)
 	}
 	if (!node->next) // edge case being the last variable END
 	{
-		printf("SHLVL\n\n");
 		exec->env_t->end = node_bef;
 		node_bef->next = NULL;
 		if (node && node->str)
@@ -75,14 +73,8 @@ static int	ft_extra_unset(t_exec *exec, t_node *node, t_node *node_bef)
 
 static void	ft_freeing(t_node *node)
 {
-	printf("HOLA\n");
-	printf("%s\n", node->str);
 	if (node->str)
-	{
 		free(node->str);
-	printf("ADIOS\n");
-
-	}
 	if (node->var)
 		free(node->var);
 	free(node);
