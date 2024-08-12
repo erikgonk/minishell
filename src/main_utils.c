@@ -41,7 +41,7 @@ char    *get_input(t_data *data)
     if (data->input == NULL)
     {
         ft_putstr_fd("exit\n", STDOUT_FILENO);
-        free_env(data->env);
+        clean_shell(data);
         exit(EXIT_SUCCESS);
     }
     if (data->input)

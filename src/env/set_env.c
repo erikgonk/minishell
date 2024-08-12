@@ -35,8 +35,7 @@ int	set_standard_env(t_env *env, char *shlvl)
 		i = set_env(env, ft_strdup("SHLVL"), ft_strdup("1"));
 	}
 	else
-		i = set_env(env, ft_strdup("SHLVL"), ft_itoa(ft_atoi(get_env("SHLVL", *env)) + 1));
-	printf("%p\n", env->oldpwd);
+		i = set_env(env, "SHLVL", ft_itoa(ft_atoi(get_env("SHLVL", *env)) + 1));
 	return (i);
 }
 
@@ -49,7 +48,8 @@ int	set_env(t_env *env, char *var, char *str)
 	{
 		if (!my_strcmp(tmp->var, var))
 		{
-			free(tmp->str);
+			if (tmp->str)
+				free(tmp->str);
 			tmp->str = str;
 			return (0);
 		}
