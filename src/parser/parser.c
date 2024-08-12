@@ -40,7 +40,7 @@ int	parser(t_data *data)
 	return (1);
 }
 
-t_cmds	*create_cmd(t_parser *parser, int i)
+/*t_cmds	*create_cmd(t_parser *parser, int i)
 {
 	char	**str;
 	int		arg_count;
@@ -64,6 +64,47 @@ t_cmds	*create_cmd(t_parser *parser, int i)
 	}
 	str[i] = NULL;
 	if (i == 0)
+	{
+		free(str);
+		str = NULL;
+	}
+	return (new_cmd(str, parser));
+}*/
+
+/*had to shorten this function down to the following 2:*/
+static char	**extract_arguments(t_parser *parser, int arg_count)
+{
+	char	**str;
+	t_lex	*tmp;
+	int		i;
+
+	str = (char **)malloc(sizeof(char *) * (arg_count + 1));
+	if (!str)
+		return (NULL);
+	tmp = parser->lexer;
+	i = 0;
+	while (i < arg_count)
+	{
+		if (tmp->type == T_WORD && tmp->literal)
+		{
+			str[i++] = ft_strdup(tmp->literal);
+			lex_delone(&parser->lexer, tmp->index);
+			tmp = parser->lexer;
+		}
+	}
+	str[i] = NULL;
+	return (str);
+}
+
+t_cmds	*create_cmd(t_parser *parser, int i)
+{
+	char	**str;
+	int		arg_count;
+
+	add_redir(parser);
+	arg_count = count_arguments(parser->lexer);
+	str = extract_arguments(parser, arg_count);
+	if (i == 0 && !str[0])
 	{
 		free(str);
 		str = NULL;
