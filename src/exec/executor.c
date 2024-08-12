@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 12:13:37 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/12 16:12:52 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/12 17:35:51 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,6 @@ int	ft_executor(t_data *data, t_exec *exec)
 	}
 	data->g_exit = ft_cmds(data, exec);
     data->g_exit = ft_get_stt(1, data->g_exit);
+    exec->g_exit = exec->g_exit;
 	return (data->g_exit);
 }

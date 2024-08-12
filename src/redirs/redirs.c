@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 14:37:05 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/12 16:22:23 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/12 17:39:56 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,10 @@ static int	ft_redirs_err(t_cmds *cmd, int i)
 	if (i != 0)
 	{
 		ft_printf(2, "minish: %s: Permission denied\n", cmd->redirections->literal);
-		close (cmd->in);
-		close (cmd->out);
+		if (cmd->in != 0)
+			close (cmd->in);
+		if (cmd->out != 1)
+			close (cmd->out);
 		cmd->in = -1;
 		cmd->out = -1;
 		return (-1);
@@ -34,7 +36,8 @@ static void	ft_innit_redirs_normi(t_cmds *cmd, t_lex *lex)
 {
 	while (lex)
 	{
-		ft_redirs_err(cmd, 0);
+		if (ft_redirs_err(cmd, 0) == -1)
+			return ;
 		if (cmd->in != -1 && lex->type == T_REDIR_IN)
 			cmd->in = open(lex->literal, O_RDONLY);
 		else if (cmd->out != -1 && lex->type == T_APPEND)
@@ -51,7 +54,6 @@ static void	ft_innit_redirs_normi(t_cmds *cmd, t_lex *lex)
 		}
 		lex = lex->next;
 	}
-	
 }
 
 void	ft_innit_redirs(t_cmds *cmd)
