@@ -38,7 +38,7 @@ static int	parent_hdoc(int fd[2])
 	return (-1);
 }
 
-static void	child_hdoc(int fd[2], char *lim)
+static void	child_hdoc(int fd[2], char *lim, t_data *data)
 {
 	char	*input;
 
@@ -63,10 +63,11 @@ static void	child_hdoc(int fd[2], char *lim)
 		free(input);
 	}
 	close(fd[1]);
+	clean_shell(data);
 	exit(0);
 }
 
-static int	fork_hdoc(t_cmds *cmd, t_lex *redirs)
+static int	fork_hdoc(t_cmds *cmd, t_lex *redirs, t_data *data)
 {
 	int	fd[2];
 	int	pid;
@@ -79,7 +80,7 @@ static int	fork_hdoc(t_cmds *cmd, t_lex *redirs)
 	if (pid < 0)
 		exit(print_error("fork", 1));
 	else if (pid == 0)
-		child_hdoc(fd, redirs->literal);
+		child_hdoc(fd, redirs->literal, data);
 	else
 		cmd->hdoc = parent_hdoc(fd);
 	if (cmd->hdoc < 0)
@@ -87,7 +88,7 @@ static int	fork_hdoc(t_cmds *cmd, t_lex *redirs)
 	return (0);
 }
 
-int	execute_hdoc(t_cmds *cmds)
+int	execute_hdoc(t_cmds *cmds, t_data *data)
 {
 	t_lex	*redirs;
 
@@ -98,7 +99,7 @@ int	execute_hdoc(t_cmds *cmds)
 		{
 			if (redirs->type == T_HEREDOC)
 			{
-				if (fork_hdoc(cmds, redirs))
+				if (fork_hdoc(cmds, redirs, data))
 					return (1);
 			}
 			redirs = redirs->next;

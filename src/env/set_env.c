@@ -25,17 +25,18 @@ int	set_standard_env(t_env *env, char *shlvl)
 	if (in_env("HOME", *env) && get_env("HOME", *env))
 		env->homedir = ft_strdup(get_env("HOME", *env));
 	if (!shlvl || shlvl[0] == '-')
-		i = set_env(env, "SHLVL", "0");
+		i = set_env(env, ft_strdup("SHLVL"), ft_strdup("0"));
 	else if (ft_atoi(shlvl) >= 1000)
 	{
 		ft_putstr_fd("mish: warning: shell level (", 2);
 		shlvl = ft_itoa(ft_atoi(shlvl) + 1);
 		ft_putstr_fd(shlvl, 2);
 		ft_putstr_fd(") too high, resetting to 1\n", 2);
-		i = set_env(env, "SHLVL", "1");
+		i = set_env(env, ft_strdup("SHLVL"), ft_strdup("1"));
 	}
 	else
-		i = set_env(env, "SHLVL", ft_itoa(ft_atoi(get_env("SHLVL", *env)) + 1));
+		i = set_env(env, ft_strdup("SHLVL"), ft_itoa(ft_atoi(get_env("SHLVL", *env)) + 1));
+	printf("%p\n", env->oldpwd);
 	return (i);
 }
 

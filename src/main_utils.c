@@ -29,7 +29,7 @@ int	init_minishell(t_env *env, t_data *data, char **envp)
     env->homedir = NULL;
     env->oldpwd = NULL;
     env->pwd = NULL;
-    if (transform_env(env, envp)) //should not exit if environment is not found, shell should still be working (?)
+    if (transform_env(env, envp))
 		exit(1);
     data->env = env;
 	return (0);
@@ -65,19 +65,20 @@ static void free_nodes(t_node **node)
     tmp = (*node);
     while (tmp)
     {
-        next = tmp->next;  // Save the next node
+        next = tmp->next;
         if (tmp->str)
             free(tmp->str);
         if (tmp->var)
             free(tmp->var);
-        free(tmp);  // Free the current node
-        tmp = next;  // Move to the next node
+        free(tmp);
+        tmp = next;
     }
-    *node = NULL;  // Set the pointer to NULL to avoid dangling pointer
 }
 
 void free_env(t_env *env)
 {
+    if (!env)
+        return;
     if (env->start)
         free_nodes(&env->start);
     if (env->homedir)
@@ -87,5 +88,4 @@ void free_env(t_env *env)
     if (env->pwd)
         free(env->pwd);
     env->end = NULL;
-    env->start = NULL;
 }
