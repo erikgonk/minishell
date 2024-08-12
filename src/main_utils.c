@@ -6,7 +6,7 @@
 /*   By: vaunevik <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 10:59:20 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/07/15 10:59:32 by vaunevik         ###   ########.fr       */
+/*   Updated: 2024/08/12 13:30:34 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
@@ -41,7 +41,7 @@ char    *get_input(t_data *data)
     if (data->input == NULL)
     {
         ft_putstr_fd("exit\n", STDOUT_FILENO);
-        free_env(data->env);
+        //free_env(data->env);
         exit(EXIT_SUCCESS);
     }
     if (data->input)

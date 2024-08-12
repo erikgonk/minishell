@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 12:44:20 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/11 14:46:05 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/12 12:45:55 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ static char	**ft_save_lst(t_node *env, char **lst, int i)
 {
 	char		*tmp;
 
+	if (!env || env->var)
+		return (NULL);
 	while (env && env->var)
 	{
 		lst[++i] = ft_strdup(env->var);
@@ -59,7 +61,7 @@ static void	ft_printing(char **lst)
 	int		i;
 
 	i = -1;
-	while (lst[++i])
+	while (lst && lst[++i])
 	{
 		ft_printf(1, "declare -x ");
 		ft_printf(1, "%s\n", lst[i]);
