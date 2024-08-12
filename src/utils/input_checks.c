@@ -14,14 +14,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-int	change_flag(int flag)
-{
-	if (flag == 0)
-		return (1);
-	else
-		return (0);
-}
-
 static int	syntax_check(char *input)
 {
 	int	i;
@@ -30,27 +22,19 @@ static int	syntax_check(char *input)
 	while (input[i])
 	{
 		if (input[i] == ';')
-		{
 			printf("mish: we don't do the ';' around here\n");
-			return (1);
-		}
 		else if (input[i] == '\\')
-		{
-			printf("mish: we don't to the '\\' around here\n");
-			return (1);
-		}
+			printf("mish: we don't do the '\\' around here\n");
 		else if (input[i] == '|' && input[i + 1] == '|')
-		{
 			printf("mish: we don't do the '||' around here\n");
-			return (1);
-		}
 		else if (input[i] == '&' && input[i + 1] == '&')
-		{
 			printf("mish: we don't do the '&&' around here\n");
-			return (1);
-		}
 		else
+		{
 			i++;
+			continue ;
+		}
+		return (1);
 	}
 	return (0);
 }
@@ -116,11 +100,6 @@ int	arg_count(char *str, char c)
 	return (i);
 }
 
-/**
- * Just some checks to make sure the program does not crash
- * if the user decides to be annoying and input too many 
- * arguments or use open quotes.
-*/
 int	input_check(char *input, t_data *data)
 {
 	if (quote_checker(input))

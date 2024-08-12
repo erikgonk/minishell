@@ -61,3 +61,11 @@ void	skip_whitespace(t_data *data)
 	}
 	skip_whitespace_back(data);
 }
+
+int	change_flag(int flag)
+{
+	if (flag == 0)
+		return (1);
+	else
+		return (0);
+}
