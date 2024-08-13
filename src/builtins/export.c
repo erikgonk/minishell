@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 15:45:35 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/13 18:34:42 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/13 19:30:44 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ static void	ft_export_asign(t_exec *exec, char *var, char *cmd, int flag)
 	t_node	*node;
 	char	*str;
 
-	printf("entra con -> %s\n", cmd);
 	exec->flag_b = flag;
 	node = ft_get_env_lst(var, exec->env_t->start);
 	str = ft_export_get_str(exec, cmd, 0);
