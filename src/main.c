@@ -13,6 +13,8 @@
 #include "minishell.h"
 #include "../inc/exec.h"
 
+int g_signal = 0;
+
 char	*clean_input(char *input)
 {
 	if (input)
@@ -104,10 +106,11 @@ void	mini_loop(t_data *data)
     input = NULL;
     while (1)
     {
+        //data->g_exit = ft_get_stt(0, 0);
         refresh_command(data);
         input = clean_input(input);
         input = get_input(data);
-        signal(SIGQUIT, SIG_IGN);
+        signal(SIGINT, SIG_IGN);
         if (input == NULL ||input[0] == '\0')
             continue ;
         data->lexer = tokenizer(input, data, 0);
@@ -120,6 +123,7 @@ void	mini_loop(t_data *data)
             check_exp(data);
             ft_init_exec(&exec, data);
             data->g_exit = ft_executor(data, &exec);
+            //data->g_exit = ft_get_stt(0, 0);
         }
     }
 	rl_clear_history();

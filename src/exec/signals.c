@@ -13,9 +13,9 @@
 #include "../../inc/parser.h"
 #include <signal.h>
 
-void	ctrlc_hdoc(int signum)
+void	ctrlc_hdoc(int sig)
 {
-	(void)signum;
+	(void)sig;
 	write(2, "\n", 1);
 	if (signal(SIGINT, SIG_DFL) == SIG_ERR)
 		exit(1);
@@ -38,12 +38,10 @@ int	ft_get_stt(int flag, int val)
 // controls Control + C
 void	ft_sig_c(int sig)
 {
-	if (sig == SIGINT)
-	{
-		ft_printf(1, "\n");
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-		ft_get_stt(1, 130);
-	}
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+	ft_get_stt(1, 130);
+	g_signal = sig;
 }

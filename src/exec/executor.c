@@ -64,6 +64,10 @@ int	ft_executor(t_data *data, t_exec *exec)
 	}
 	data->g_exit = ft_cmds(data, exec);
     data->g_exit = ft_get_stt(1, data->g_exit);
-    exec->g_exit = exec->g_exit;
+    exec->g_exit = data->g_exit;
+	if (data->g_exit == 131)
+		printf("Quit (core dumped)");
+	if (data->g_exit == 130 || data->g_exit == 131)
+		printf("\n");
 	return (data->g_exit);
 }

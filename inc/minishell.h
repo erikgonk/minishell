@@ -45,6 +45,8 @@
 # define C_SQUOTE '\''
 # define C_DQUOTE '\"'
 
+extern int	g_signal;
+
 /*-----------------Enums------------------*/
 typedef enum e_token
 {

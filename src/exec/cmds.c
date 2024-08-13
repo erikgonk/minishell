@@ -48,8 +48,11 @@ static int	ft_childs(t_data *data, t_cmds *cmd, t_exec *exec)
 	pid = fork();
 	if (pid == 0)
 	{
-		signal(SIGINT, exit);
-		signal(SIGQUIT, exit);
+		//signal(SIGINT, exit);
+		//signal(SIGQUIT, exit);
+		if (signal(SIGINT, SIG_DFL) == SIG_ERR)
+			printf("\n");
+		signal(SIGQUIT, SIG_DFL);
 		if (!cmd->cmd[0])
 			exit (0);
 		if (cmd->redirections)
