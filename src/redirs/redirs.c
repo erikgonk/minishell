@@ -79,7 +79,6 @@ void	ft_innit_redirs(t_cmds *cmd, t_data *data)
 
 void	ft_redirections(t_cmds *cmd)
 {
-	printf("%d, %d\n", cmd->in, cmd->out);
 	if (cmd->in != 0 && cmd->in != -1)
 	{
 		dup2(cmd->in, 0);
