@@ -13,20 +13,13 @@
 #include "minishell.h"
 #include "../inc/exec.h"
 
-int g_signal = 0;
-
-char	*clean_input(char *input)
-{
-	if (input)
-		free(input);
-	return (NULL);
-}
+int			g_signal = 0;
 
 static void	check_exp(t_data *data)
 {
 	t_cmds	*tmp;
 
-    tmp = data->cmds;
+	tmp = data->cmds;
 	while (tmp)
 	{
 		expand(data, tmp);
@@ -34,12 +27,12 @@ static void	check_exp(t_data *data)
 	}
 }
 
-static void    refresh_command(t_data *data)
+static void	refresh_command(t_data *data)
 {
-    data->printed_error = 0;
-    lex_free(&data->lexer);
-    clean_cmds(&data->cmds);
-    signal(SIGINT, &ft_sig_c);
+	data->printed_error = 0;
+	lex_free(&data->lexer);
+	clean_cmds(&data->cmds);
+	signal(SIGINT, &ft_sig_c);
 }
 
 void	mini_loop(t_data *data)
@@ -47,27 +40,27 @@ void	mini_loop(t_data *data)
 	char	*input;
 	t_exec	exec;
 
-    input = NULL;
-    while (1)
-    {
-        refresh_command(data);
-        input = clean_input(input);
-        input = get_input(data);
-        signal(SIGINT, SIG_IGN);
-        if (input == NULL ||input[0] == '\0')
-            continue ;
-        data->lexer = tokenizer(input, data, 0);
-        if (!data->lexer)
-            continue ;
-        if (check_tokens(data, &data->lexer))
-            parser(data);
-        if (data->cmds && data->printed_error == 0)
-        {
-            check_exp(data);
-            ft_init_exec(&exec, data);
-            data->g_exit = ft_executor(data, &exec);
-        }
-    }
+	input = NULL;
+	while (1)
+	{
+		refresh_command(data);
+		input = clean_input(input);
+		input = get_input(data);
+		signal(SIGINT, SIG_IGN);
+		if (input == NULL || input[0] == '\0')
+			continue ;
+		data->lexer = tokenizer(input, data, 0);
+		if (!data->lexer)
+			continue ;
+		if (check_tokens(data, &data->lexer))
+			parser(data);
+		if (data->cmds && data->printed_error == 0)
+		{
+			check_exp(data);
+			ft_init_exec(&exec, data);
+			data->g_exit = ft_executor(data, &exec);
+		}
+	}
 	rl_clear_history();
 }
 

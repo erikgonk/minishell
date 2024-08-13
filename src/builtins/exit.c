@@ -40,7 +40,6 @@ long long int   ft_atoll(char *str, int i, long long int res, int sign)
 
 static void     ft_exit_status(int err)
 {
-	//ft_get_stt(1, err);
 	ft_printf(1, "exit\n");
 	exit (err);
 }

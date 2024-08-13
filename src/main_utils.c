@@ -89,3 +89,10 @@ void	free_env(t_env *env)
 		free(env->pwd);
 	env->end = NULL;
 }
+
+char	*clean_input(char *input)
+{
+	if (input)
+		free(input);
+	return (NULL);
+}
