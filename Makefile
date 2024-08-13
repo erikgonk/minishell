@@ -6,7 +6,7 @@ CFLAGS = -Wall -Wextra -Werror -fsanitize=leak -I./inc -I./src/libft/inc -I/opt/
 SRC_DIR = ./src
 OBJ_DIR = ./obj
 LIBFT_DIR = ./src/libft
-INC = ./inc/*.h
+INC = ./inc/builtins.h ./inc/exec.h ./inc/minishell.h ./inc/redirs.h ./inc/utils.h ./inc/env.h ./inc/expander.h ./inc/parser.h ./inc/tokenizer.h
 
 # Source files
 SRC_FILES = $(SRC_DIR)/main.c \
@@ -60,7 +60,7 @@ $(TARGET): $(OBJ_FILES) $(LIBFT) $(INC)
 	$(CC) $(CFLAGS) $(OBJ_FILES) $(LIBS) -o $(TARGET)
 	clear
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c Makefile
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c Makefile $(LIBFT) $(INC)
 	clear
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@

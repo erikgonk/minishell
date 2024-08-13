@@ -6,7 +6,7 @@
 #    By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/12 11:21:29 by erigonza          #+#    #+#              #
-#    Updated: 2024/08/09 12:15:06 by erigonza         ###   ########.fr        #
+#    Updated: 2024/08/13 19:40:02 by erigonza         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,4 +53,3 @@ fclean:		clean
 re:			fclean all
 
 .PHONY:		clean fclean re all
-.SILEN:
