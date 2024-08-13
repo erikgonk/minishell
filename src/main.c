@@ -93,7 +93,6 @@ static void    refresh_command(t_data *data)
     data->printed_error = 0;
     lex_free(&data->lexer);
     clean_cmds(&data->cmds);
-    signal(SIGINT, ft_sig_c);
 }
 
 
@@ -109,6 +108,7 @@ void	mini_loop(t_data *data)
         //data->g_exit = ft_get_stt(0, 0);
         refresh_command(data);
         input = clean_input(input);
+        signal(SIGINT, &ft_sig_c);
         input = get_input(data);
         signal(SIGINT, SIG_IGN);
         if (input == NULL ||input[0] == '\0')

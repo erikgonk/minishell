@@ -45,7 +45,7 @@
 # define C_SQUOTE '\''
 # define C_DQUOTE '\"'
 
-extern int	g_signal;
+extern int g_signal; 
 
 /*-----------------Enums------------------*/
 typedef enum e_token
@@ -176,5 +176,6 @@ void    ctrlc_hdoc(int signum);
 
 int     ft_get_stt(int flag, int val);
 void	ft_sig_c(int sig);
+void	ft_child_sig(int sig);
 
 #endif

@@ -70,5 +70,10 @@ int	check_tokens(t_data *data, t_lex **lst)
 			return (0);
 		lst = &(*lst)->next;
 	}
+	if (g_signal != 0)
+	{
+		data->g_exit = 128 + g_signal;
+		g_signal = 0;
+	}
 	return (1);
 }

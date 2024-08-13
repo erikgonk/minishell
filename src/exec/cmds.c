@@ -48,10 +48,7 @@ static int	ft_childs(t_data *data, t_cmds *cmd, t_exec *exec)
 	pid = fork();
 	if (pid == 0)
 	{
-		//signal(SIGINT, exit);
-		//signal(SIGQUIT, exit);
-		if (signal(SIGINT, SIG_DFL) == SIG_ERR)
-			printf("\n");
+		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		if (!cmd->cmd[0])
 			exit (0);
@@ -86,14 +83,20 @@ static void	ft_find_exit_status(t_data *data, pid_t *kids, int size)
 		if (process == kids[size])
 			res = status;
 	}
-	if (WEXITSTATUS(res))
+	if (WIFEXITED(res))
 		data->g_exit = WEXITSTATUS(res);
+	else if (WIFSIGNALED(res))
+	{
+		data->g_exit = 128 + WTERMSIG(res);
+		write(2, "\n", 1);
+		rl_on_new_line();
+	}
 }
 
 int	ft_cmds(t_data *data, t_exec *exec)
 {
 	int		i;
-	pid_t	*kids; // to look for the exit status
+	pid_t	*kids;
 
 	i = -1;
 	kids = ft_calloc(ft_lst_size(data->cmds), sizeof(pid_t));

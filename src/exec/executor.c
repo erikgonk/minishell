@@ -59,15 +59,9 @@ int	ft_executor(t_data *data, t_exec *exec)
 	if (ft_builtin_exists(exec) == 0 && !exec->lexer && !exec->cmd_t->next)
 	{
 		data->g_exit = ft_builtins(exec);
-        data->g_exit = ft_get_stt(1, data->g_exit);
 		return (data->g_exit);
 	}
 	data->g_exit = ft_cmds(data, exec);
-    data->g_exit = ft_get_stt(1, data->g_exit);
     exec->g_exit = data->g_exit;
-	if (data->g_exit == 131)
-		printf("Quit (core dumped)");
-	if (data->g_exit == 130 || data->g_exit == 131)
-		printf("\n");
 	return (data->g_exit);
 }
