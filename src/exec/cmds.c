@@ -31,10 +31,10 @@ static int	ft_forking(t_cmds *cmd, t_exec *exec)
 		if (cmd->next)
 			dup2(exec->fd, 0);
 		else
-			dup2(exec->p[0], 0);// writes in the pipe
+			dup2(exec->p[0], 0);
 	}
 	if (cmd->next && cmd->out == 1)
-		dup2(exec->p[1], 1);// writes in the terminal
+		dup2(exec->p[1], 1);
 	ft_close_pipes(exec->p);
 	if (exec->fd)
 		close (exec->fd);
@@ -46,21 +46,25 @@ static int	ft_childs(t_data *data, t_cmds *cmd, t_exec *exec)
 	pid_t		pid;
 
 	pid = fork();
+	if (exec->cmd_t->in == -1 || exec->cmd_t->out == -1)
+		data->g_exit = 1;
 	if (pid == 0)
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
-		if (!cmd->cmd[0])
-			exit (0);
-		if (cmd->redirections)
+		if (exec->cmd_t->redirections)
+		{
 			ft_redirections(cmd);
+			if (!cmd->cmd)
+				exit(0);
+		}
 		ft_forking(cmd, exec);
 		if (ft_builtin_exists(exec) == 0)
 		{
 			data->g_exit = ft_builtins(exec);
 			exit (data->g_exit);
 		}
-		exec->cmd = ft_get_cmd(data, cmd, exec); // error controled in the function
+		exec->cmd = ft_get_cmd(data, cmd, exec);
 		execve(exec->cmd, cmd->cmd, exec->env);
 		exit (1);
 	}

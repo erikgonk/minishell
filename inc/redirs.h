@@ -15,6 +15,6 @@
 
 // redirs
 void			ft_redirections(t_cmds *cmd);
-void			ft_innit_redirs(t_cmds *cmd);
+void			ft_innit_redirs(t_cmds *cmd, t_data *data);
 
 #endif

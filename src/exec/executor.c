@@ -49,7 +49,9 @@ int	ft_builtin_exists(t_exec *exec)
 
 int	ft_executor(t_data *data, t_exec *exec)
 {
-	ft_innit_redirs(exec->cmd_t);
+	if (execute_hdoc(data->cmds, data))
+		data->g_exit = 130;
+	ft_innit_redirs(exec->cmd_t, data);
 	if (!exec->cmd_t->cmd)
 		return (exec->g_exit);
 	else if (exec->cmd_t->cmd && !exec->cmd_t->cmd[0])
