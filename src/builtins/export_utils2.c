@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 12:44:23 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/13 17:35:46 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/13 18:23:09 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,21 +50,30 @@ int	ft_export_flag(char *str)
 
 char	*ft_export_get_var(char *str, int flag)
 {
+	char	*tmp;
 	int		i;
 
 	i = -1;
 	while (str[++i])
 	{
 		if (flag == ADD && str[i] == '+')
-			return (ft_substr(str, 0, --i));
+		{
+			tmp = ft_substr(str, 0, i);
+			return (tmp);
+		}
 		else if (flag == TRUNC && str[i] == '=')
-			return (ft_substr(str, 0, --i));
+		{
+			tmp = ft_substr(str, 0, i);
+			return (tmp);
+		}
 	}
-	return (ft_strdup(str));
+	tmp = ft_strdup(str);
+	return (tmp);
 }
 
 char	*ft_export_get_str(t_exec *exec, char *cmd, int flag)
 {
+	char	*tmp;
 	int		i;
 
 	i = -1;
@@ -80,7 +89,8 @@ char	*ft_export_get_str(t_exec *exec, char *cmd, int flag)
 					exec->flag_b = -1;
 				return (ft_strdup(""));
 			}
-			return (ft_substr(cmd, (i + 1), (ft_strlen(cmd) - i)));
+			tmp = ft_substr(cmd, (i + 1), (ft_strlen(cmd) - i - 1));
+			return (tmp);
 		}
 	}
 	return (NULL);

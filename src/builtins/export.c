@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 15:45:35 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/13 17:35:48 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/13 18:34:42 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	ft_add_one(t_exec *exec, t_node *lst, t_node *node)
 	node->next = NULL;
 }
 
-static void	ft_export_not_exist(t_exec *exec, char *var, char *cmd)
+static void	ft_export_not_exist(t_exec *exec, char *var, char *cmd) // NOT EXIST
 {
 	t_node	*node;
 	char	*str;
@@ -41,20 +41,17 @@ static void	ft_export_not_exist(t_exec *exec, char *var, char *cmd)
 		node->str = ft_strdup("");
 	else if (str)
 		node->str = ft_strdup(str);
+	free(str);
 }
 
-static void	ft_export_exist(t_exec *exec, t_node *node, char *var, char *cmd)
+static void	ft_export_exist(t_exec *exec, t_node *node, char *str) // EXIST
 {
-	(void)var;
-	char	*str;
+	char	*tmp;
 
-	str = ft_export_get_str(exec, cmd, 0);
 	if (exec->flag_b == TRUNC && !str) // var=
-	{
 		if (node && node->str)
 			free(node->str);
-	}
-	else if (exec->flag_b == TRUNC && str) // var=str
+	if (exec->flag_b == TRUNC && str) // var=str
 	{
 		if (node && node->str)
 			free(node->str);
@@ -65,7 +62,11 @@ static void	ft_export_exist(t_exec *exec, t_node *node, char *var, char *cmd)
 		if (node && !node->str)
 			node->str = ft_strdup(str);
 		else if (node && node->str)
-			ft_strlcat(node->str, str, ft_strlen(str));
+		{
+			tmp = node->str;
+			node->str = ft_strjoin(node->str, str);
+			free(tmp);
+		}
 	}
 	free(str);
 }
@@ -73,13 +74,17 @@ static void	ft_export_exist(t_exec *exec, t_node *node, char *var, char *cmd)
 static void	ft_export_asign(t_exec *exec, char *var, char *cmd, int flag)
 {
 	t_node	*node;
+	char	*str;
 
+	printf("entra con -> %s\n", cmd);
 	exec->flag_b = flag;
 	node = ft_get_env_lst(var, exec->env_t->start);
+	str = ft_export_get_str(exec, cmd, 0);
 	if (!node)
 		ft_export_not_exist(exec, var, cmd); // NOT EXIST
 	else
-		ft_export_exist(exec, node, var, cmd); // EXISTS
+		ft_export_exist(exec, node, str); // EXISTS
+	free(str);
 }
 
 int	ft_export(t_exec *exec)

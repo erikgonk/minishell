@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 15:20:58 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/12 16:05:05 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/13 18:45:47 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@ static int	ft_get_old_pwd(t_exec *exec, int flag)
 	char		*old_pwd;
 	t_node		*tmp;
 
-	if ((exec->cmd_t->cmd[1] && ft_strcmp(exec->cmd_t->cmd[1], "-")) &&
-			exec->env_t->oldpwd)
+	if ((exec->cmd_t->cmd[1] && ft_strcmp(exec->cmd_t->cmd[1], "-")) && exec->env_t->oldpwd)
 	{
 		chdir(exec->env_t->oldpwd);
 		flag = 1;
