@@ -67,7 +67,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c Makefile
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
 
-clean:
+c clean:
 	$(MAKE) -C $(LIBFT_DIR) clean
 	rm -rf $(OBJ_DIR)
 	clear
