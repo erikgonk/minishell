@@ -6,7 +6,7 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 16:47:55 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/08 14:27:11 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/13 13:37:58 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef MINISHELL_H
@@ -150,6 +150,7 @@ typedef struct s_exec
 	int			p[2];
 	int			fd;
 	int			g_exit;
+	int			flag_b;
 	t_lex       *lexer;
 	t_cmds		*cmd_t;
 	t_env		*env_t;
