@@ -6,12 +6,13 @@
 /*   By: vaunevik <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 10:59:03 by vaunevik          #+#    #+#             */
-/*   Updated: 2024/08/12 15:59:59 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/14 12:49:53 by vaunevik         ###   ########.fr       */
 /*   Updated: 2024/08/12 16:34:29 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "minishell.h"
 #include "../inc/exec.h"
+#include "../inc/expander.h"
 
 int			g_signal = 0;
 

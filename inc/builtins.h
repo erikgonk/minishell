@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:33:44 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/14 12:17:14 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/14 12:52:54 by vaunevik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,19 @@ void				ft_print_env(t_node *env);
 
 // EXPORT
 int					ft_export(t_exec *exec);
-// EXPORT_print (for export alone)
+// EXPORT_utils1 (for export alone)
 int					ft_print_export(t_node *node);
 int					ft_small_char(char **lst, int i, int j, int k);
 int					ft_find_char(char *str, char c);
 int					ft_count_lst_elems(t_node *lst);
 int					ft_parsing(char *str, int i);
 
-// EXPORT_utils (normi)
+// EXPORT_utils2 (normi)
 int					ft_parsing_normi(char *str);
 int					ft_export_flag(char *str);
-char				*ft_export_get_var(char *str, int	flag);
+char				*ft_export_get_var(char *str, int flag);
 char				*ft_export_get_str(t_exec *exec, char *cmd, int flag);
-void				ft_just_a_printf();
+void				ft_just_a_printf(void);
 
 // UNSET
 int					ft_unset(t_exec *exec);
@@ -53,7 +53,7 @@ int					ft_pwd(t_exec *exec);
 // EXIT
 int					ft_exit(t_exec *exec);
 long long int		ft_atoll(char *str, int i,
-		long long int res, int sign);
+						long long int res, int sign);
 
 // UITLS
 char				**ft_free_willy(char **cmd);
