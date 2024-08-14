@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 15:45:35 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/13 19:30:44 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/13 19:48:55 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ int	ft_export(t_exec *exec)
 		return (ft_print_export(exec->env_t->start));
 	while (exec->cmd_t->cmd[++i])
 	{
+	//printf("entra -> %s\n", exec->cmd_t->cmd[i]);
 		if (ft_parsing(exec->cmd_t->cmd[i], -1) == 1)
 			continue ;
 		if (exec->cmd_t->cmd[i][0] == '=')

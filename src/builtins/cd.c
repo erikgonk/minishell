@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 15:20:58 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/13 18:45:47 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/13 19:55:16 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,12 @@ static int	ft_cd_user(t_exec *exec)
 	if (!chdir(exec->env_t->homedir))
 		return (1);
 	tmp = ft_get_env_lst("PWD", exec->env_t->start);
-	if (tmp->str)
-		free(tmp->str);
-	tmp->str = ft_strdup(exec->env_t->homedir);
+	if (tmp)
+	{
+		if (tmp->str)
+			free(tmp->str);
+		tmp->str = ft_strdup(exec->env_t->homedir);
+	}
 	exec->env_t->pwd = ft_strdup(exec->env_t->homedir);
 	return (1);
 }
@@ -70,6 +73,8 @@ static int	ft_cd_normi(t_exec *exec)
 		free(exec->env_t->pwd);
 	exec->env_t->pwd = ft_strdup(pwd);
 	tmp = ft_get_env_lst("PWD", exec->env_t->start);
+	if (!tmp)
+		return (0);
 	if (tmp->str)
 		free(tmp->str);
 	tmp->str = ft_strdup(pwd);
