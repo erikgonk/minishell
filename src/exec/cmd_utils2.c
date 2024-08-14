@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 16:27:05 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/11 11:40:16 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/14 09:24:38 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,21 +32,28 @@ static void	ft_get_cmd_normi(t_exec *exec, t_cmds *cmd, int i)
 	free(tmp);
 }
 
-char	*ft_get_cmd(t_data *data, t_cmds *cmd, t_exec *exec)
+static t_node	*ft_get_cmd_normi_2(t_data *data, t_cmds *cmd, t_node *lst)
 {
-	int			i;
-	t_node		*lst;
-	char		*tmp;
-
-	i = -1;
-	if (access(cmd->cmd[0], X_OK) == 0)
-		return (cmd->cmd[0]);
 	lst = ft_get_env_lst("PATH", data->env->start);
 	if (!lst || !lst->str)
 	{
 		ft_printf(2, "minish: %s: No such file or directory\n", cmd->cmd[0]);
 		exit (127);
 	}
+	return (lst);
+}
+
+char	*ft_get_cmd(t_data *data, t_cmds *cmd, t_exec *exec, int i)
+{
+	t_node		*lst;
+	char		*tmp;
+
+	lst = NULL;
+	if (access(cmd->cmd[0], X_OK) == 0)
+		return (cmd->cmd[0]);
+	lst = ft_get_cmd_normi_2(data, cmd, lst);
+	if (!lst)
+		return (NULL);
 	exec->path = ft_split(lst->str, ':');
 	if (!exec->path)
 		exit (127);

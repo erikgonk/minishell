@@ -6,38 +6,38 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 12:44:20 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/12 20:00:01 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/13 17:35:44 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 #include "../../inc/builtins.h"
 
-int	ft_parsing(char *str)
+int	ft_parsing(char *str, int i)
 {
-	int		i;
 	char	**cmd;
 
-	i = -1;
 	cmd = ft_split(str, '=');
-	if (!cmd)
+	if (!cmd || !cmd[0])
 		return (1);
+	if (str && ft_parsing_normi(str))
+	{
+		ft_free_willy(cmd);
+		return (1);
+	}
 	while (cmd[0][++i])
 	{
-		if (!ft_isalpha(cmd[0][i]) && cmd[0][i] != '_' && cmd[0][i] != '=')
+		if (!ft_isalpha(cmd[0][i]) && cmd[0][i] != '_' && cmd[0][i] != '=' &&
+				cmd[0][i] != '+')
 		{
-			if (cmd[0][i] == '+' && cmd[0][i + 1] == '=')
-			{
-				i++;
-				continue ;
-			}
 			ft_printf(2, "bash: export: ");
 			ft_printf(2, "`%s': not a valid identifier\n", str);
 			ft_free_willy(cmd);
 			return (1);
 		}
 	}
-	ft_free_willy(cmd);
+	if (cmd)
+		ft_free_willy(cmd);
 	return (0);
 }
 
@@ -86,10 +86,11 @@ int	ft_print_export(t_node *node)
 	{
 		ft_printf(1, "declare -x ");
 		if (node->var)
-		{ ft_printf(1, "%s", node->var);
+		{
+			ft_printf(1, "%s", node->var);
 			if (node->str)
 				ft_printf(1, "=\"%s\"", node->str);
-			printf("\n");
+			ft_printf(1, "\n");
 		}
 		node = node->next;
 	}

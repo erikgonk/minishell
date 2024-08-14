@@ -6,7 +6,7 @@ CFLAGS = -Wall -Wextra -Werror -I./inc -I./src/libft/inc -I/opt/homebrew/opt/rea
 SRC_DIR = ./src
 OBJ_DIR = ./obj
 LIBFT_DIR = ./src/libft
-INC = ./inc/*.h
+INC = ./inc/builtins.h ./inc/exec.h ./inc/minishell.h ./inc/redirs.h ./inc/utils.h ./inc/env.h ./inc/expander.h ./inc/parser.h ./inc/tokenizer.h
 
 # Source files
 SRC_FILES = $(SRC_DIR)/main.c \
@@ -33,7 +33,8 @@ SRC_FILES = $(SRC_DIR)/main.c \
 			$(SRC_DIR)/builtins/env.c \
 			$(SRC_DIR)/builtins/exit.c \
 			$(SRC_DIR)/builtins/export.c \
-			$(SRC_DIR)/builtins/export_utils1.c \
+			$(SRC_DIR)/builtins/export_utils.c \
+			$(SRC_DIR)/builtins/export_print.c \
 			$(SRC_DIR)/builtins/pwd.c \
 			$(SRC_DIR)/builtins/unset.c \
 			$(SRC_DIR)/builtins/utils.c \
@@ -60,7 +61,7 @@ $(TARGET): $(OBJ_FILES) $(LIBFT) $(INC)
 	$(CC) $(CFLAGS) $(OBJ_FILES) $(LIBS) -o $(TARGET)
 	clear
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c Makefile
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c Makefile $(LIBFT) $(INC)
 	clear
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -68,7 +69,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c Makefile
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
 
-clean:
+c clean:
 	$(MAKE) -C $(LIBFT_DIR) clean
 	rm -rf $(OBJ_DIR)
 	clear

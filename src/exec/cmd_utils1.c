@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:06:33 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/10 17:41:54 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/13 18:46:40 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "../../inc/builtins.h"
 
 void	ft_init_exec(t_exec *exec, t_data *data)
-{	
+{
 	pipe(exec->p);
 	exec->g_exit = 0;
 	exec->fd = 0;
@@ -24,7 +24,7 @@ void	ft_init_exec(t_exec *exec, t_data *data)
 	else
 		exec->lexer = NULL;
 	exec->cmd_t = data->cmds;
-	exec->env_t = data->env; 
+	exec->env_t = data->env;
 }
 
 int	ft_lst_size(t_cmds *cmd)

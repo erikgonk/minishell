@@ -74,10 +74,18 @@ static int	ft_extra_unset(t_exec *exec, t_node *node, t_node *node_bef)
 static void	ft_freeing(t_node *node)
 {
 	if (node->str)
+	{
 		free(node->str);
+		node->str = NULL;
+
+	}
 	if (node->var)
+	{
 		free(node->var);
+		node->var = NULL;
+	}
 	free(node);
+	node = NULL;
 }
 
 int	ft_unset(t_exec *exec)

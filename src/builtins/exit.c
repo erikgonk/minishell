@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 11:18:45 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/12 17:50:48 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/13 18:42:31 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,46 +14,46 @@
 #include "../../inc/exec.h"
 #include "../../inc/builtins.h"
 
-long long int   ft_atoll(char *str, int i, long long int res, int sign)
+long long int	ft_atoll(char *str, int i, long long int res, int sign)
 {
 	while (str[i] == ' ' || str[i] == '\f' || str[i] == '\n'
-			|| str[i] == '\r' || str[i] == '\t' || str[i] == '\v')
+		|| str[i] == '\r' || str[i] == '\t' || str[i] == '\v')
 	{
-			i++;
+		i++;
 	}
 	if (str[i] == '-')
-			sign = -sign;
+		sign = -sign;
 	if (str[i] == '-' || str[i] == '+')
-			i++;
+		i++;
 	while (str[i] >= '0' && str[i] <= '9')
 	{
-			if (res < 0)
-					return (1);
-			res = (res * 10) + (str[i] - 48);
-			i++;
+		if (res < 0)
+			return (1);
+		res = (res * 10) + (str[i] - 48);
+		i++;
 	}
 	if (res < 0)
-			return (-1);
+		return (-1);
 	res *= sign;
 	return (res);
 }
 
-static void     ft_exit_status(int err)
+static void	ft_exit_status(int err)
 {
 	ft_printf(1, "exit\n");
 	exit (err);
 }
 
-static void     ft_print_err(char *str)
+static void	ft_print_err(char *str)
 {
 	ft_printf(2, "minish: exit: ");
 	ft_printf(2, "%s: numeric argument required\n", str);
 	ft_exit_status(2);
 }
 
-static void     ft_check_is_num(char *str)
+static void	ft_check_is_num(char *str)
 {
-	int             i;
+	int		i;
 
 	i = -1;
 	if (str[0] == '-' || str[0] == '+')
@@ -68,10 +68,10 @@ static void     ft_check_is_num(char *str)
 	}
 }
 
-int     ft_exit(t_exec *exec)
+int	ft_exit(t_exec *exec)
 {
-    long long int   res;
-	
+	long long int	res;
+
 	if (!exec->cmd_t->cmd[1])
 		ft_exit_status(exec->g_exit);
 	ft_check_is_num(exec->cmd_t->cmd[1]);

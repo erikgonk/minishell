@@ -9,7 +9,6 @@
 /*   Updated: 2024/08/12 17:35:51 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "../../inc/minishell.h"
 #include "../../inc/exec.h"
 #include "../../inc/builtins.h"

@@ -6,16 +6,15 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:33:44 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/12 16:27:48 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/13 17:29:33 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BUILTINS_H
 # define BUILTINS_H
 
-# define F_NONE 0
-# define F_ADD 1
-# define F_CREATE 2
+# define TRUNC 0
+# define ADD 1
 
 // CD
 int					ft_cd(t_exec *exec);
@@ -34,7 +33,13 @@ int					ft_print_export(t_node *node);
 int					ft_small_char(char **lst, int i, int j, int k);
 int					ft_find_char(char *str, char c);
 int					ft_count_lst_elems(t_node *lst);
-int					ft_parsing(char *str);
+int					ft_parsing(char *str, int i);
+
+// EXPORT_utils2 (normi)
+int					ft_parsing_normi(char *str);
+int					ft_export_flag(char *str);
+char				*ft_export_get_var(char *str, int	flag);
+char				*ft_export_get_str(t_exec *exec, char *cmd, int flag);
 
 // UNSET
 int					ft_unset(t_exec *exec);

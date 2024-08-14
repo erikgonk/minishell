@@ -41,7 +41,7 @@ void	expand(t_data *data, t_cmds *cmds)
 	t_lex	*tmp;
 
 	if (cmds->cmd)
-		expand_cmd(cmds->cmd, data);
+		cmds->cmd = expand_cmd(cmds->cmd, data);
 	tmp = cmds->redirections;
 	while (tmp)
 	{

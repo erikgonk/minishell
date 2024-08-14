@@ -6,7 +6,7 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 16:06:47 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/12 16:09:52 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/14 09:22:15 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../../inc/minishell.h"
@@ -63,7 +63,7 @@ static int	ft_childs(t_data *data, t_cmds *cmd, t_exec *exec)
 			data->g_exit = ft_builtins(exec);
 			exit (data->g_exit);
 		}
-		exec->cmd = ft_get_cmd(data, cmd, exec);
+		exec->cmd = ft_get_cmd(data, cmd, exec, -1); // error controled in the function
 		execve(exec->cmd, cmd->cmd, exec->env);
 		exit (1);
 	}
