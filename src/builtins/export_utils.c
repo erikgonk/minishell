@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export_utils2.c                                    :+:      :+:    :+:   */
+/*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 12:44:23 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/13 18:23:09 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/14 12:26:28 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,4 +94,10 @@ char	*ft_export_get_str(t_exec *exec, char *cmd, int flag)
 		}
 	}
 	return (NULL);
+}
+
+void	ft_just_a_printf(void)
+{
+	ft_printf(2, "cd: error retrieving current directory: getcwd: cannot ");
+	ft_printf(2, "access parent directories: No such file or directory\n");
 }

@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 15:45:35 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/13 19:48:55 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/14 12:11:32 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	ft_add_one(t_exec *exec, t_node *lst, t_node *node)
 	node->next = NULL;
 }
 
-static void	ft_export_not_exist(t_exec *exec, char *var, char *cmd) // NOT EXIST
+static void	ft_export_not_exist(t_exec *exec, char *var, char *cmd)
 {
 	t_node	*node;
 	char	*str;
@@ -35,31 +35,31 @@ static void	ft_export_not_exist(t_exec *exec, char *var, char *cmd) // NOT EXIST
 	ft_add_one(exec, exec->env_t->start, node);
 	str = ft_export_get_str(exec, cmd, 1);
 	node->var = ft_strdup(var);
-	if (!str) // var
+	if (!str)
 		node->str = NULL;
-	else if (exec->flag_b == -1) // var= var+=
+	else if (exec->flag_b == -1)
 		node->str = ft_strdup("");
 	else if (str)
 		node->str = ft_strdup(str);
 	free(str);
 }
 
-static void	ft_export_exist(t_exec *exec, t_node *node, char *str) // EXIST
+static void	ft_export_exist(t_exec *exec, t_node *node, char *str)
 {
 	char	*tmp;
 
 	if (exec->flag_b == TRUNC && !str)
-	{ // var=
+	{
 		if (node && node->str)
 			free(node->str);
 	}
-	if (exec->flag_b == TRUNC && str) // var=str
+	if (exec->flag_b == TRUNC && str)
 	{
 		if (node && node->str)
 			free(node->str);
 		node->str = ft_strdup(str);
 	}
-	else if (exec->flag_b == ADD && str) // var+=str
+	else if (exec->flag_b == ADD && str)
 	{
 		if (node && !node->str)
 			node->str = ft_strdup(str);
@@ -81,9 +81,9 @@ static void	ft_export_asign(t_exec *exec, char *var, char *cmd, int flag)
 	node = ft_get_env_lst(var, exec->env_t->start);
 	str = ft_export_get_str(exec, cmd, 0);
 	if (!node)
-		ft_export_not_exist(exec, var, cmd); // NOT EXIST
+		ft_export_not_exist(exec, var, cmd);
 	else
-		ft_export_exist(exec, node, str); // EXISTS
+		ft_export_exist(exec, node, str);
 	free(str);
 }
 
@@ -106,8 +106,8 @@ int	ft_export(t_exec *exec)
 		}
 		if (ft_parsing(exec->cmd_t->cmd[i], -1) == 1)
 			continue ;
-		flag = ft_export_flag(exec->cmd_t->cmd[i]); // FLAG
-		var = ft_export_get_var(exec->cmd_t->cmd[i], flag); // VAR
+		flag = ft_export_flag(exec->cmd_t->cmd[i]);
+		var = ft_export_get_var(exec->cmd_t->cmd[i], flag);
 		ft_export_asign(exec, var, exec->cmd_t->cmd[i], flag);
 		free(var);
 	}

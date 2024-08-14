@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 12:13:37 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/12 17:35:51 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/14 12:23:37 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../../inc/minishell.h"
@@ -63,6 +63,6 @@ int	ft_executor(t_data *data, t_exec *exec)
 		return (data->g_exit);
 	}
 	data->g_exit = ft_cmds(data, exec);
-    exec->g_exit = data->g_exit;
+	exec->g_exit = data->g_exit;
 	return (data->g_exit);
 }

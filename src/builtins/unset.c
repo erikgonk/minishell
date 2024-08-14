@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 17:46:30 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/12 14:13:42 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/14 12:10:06 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,11 @@ static t_node	*ft_get_env_before_lst(char *to_find, t_node *lst, t_exec *exec)
 		return (NULL);
 	if (lst && ft_strcmp(to_find, lst->var) != 0)
 		return (exec->env_t->start);
-	else if (exec->env_t->end && lst && ft_strcmp(to_find, exec->env_t->end->var) != 0)
-		return (exec->env_t->end);
+	else if (exec->env_t->end && lst)
+	{
+		if (ft_strcmp(to_find, exec->env_t->end->var) != 0)
+			return (exec->env_t->end);
+	}
 	while (lst && lst->next)
 	{
 		if (ft_strcmp(to_find, lst->next->var) != 0)
@@ -39,19 +42,25 @@ static void	ft_extra_extra_unset(t_exec *exec, t_node *node, t_node *node_bef)
 		exec->env_t->start = NULL;
 		exec->env_t->end = NULL;
 	}
-	if (exec->env_t->start && exec->env_t->start->next && !exec->env_t->start->next->next && !node_bef)
+	if (exec->env_t->start && exec->env_t->start->next)
 	{
-		exec->env_t->start = node;
-		exec->env_t->end = node;
-		node->next = NULL;
+		if (!exec->env_t->start->next->next && !node_bef)
+		{
+			exec->env_t->start = node;
+			exec->env_t->end = node;
+			node->next = NULL;
+		}
 	}
 }
 
 static int	ft_extra_unset(t_exec *exec, t_node *node, t_node *node_bef)
 {
-	if (exec->env_t->start && ft_strcmp(exec->env_t->start->var, node->var) == 0)
-		return (1);
-	if (ft_get_env_before_lst(node->var, node_bef, exec)) // edge case being the first variable START
+	if (exec->env_t->start)
+	{
+		if (ft_strcmp(exec->env_t->start->var, node->var) == 0)
+			return (1);
+	}
+	if (ft_get_env_before_lst(node->var, node_bef, exec))
 	{
 		if (node->next)
 			exec->env_t->start = node->next;
@@ -60,7 +69,7 @@ static int	ft_extra_unset(t_exec *exec, t_node *node, t_node *node_bef)
 			free(node->str);
 		return (free(node->var), free(node), 0);
 	}
-	if (!node->next) // edge case being the last variable END
+	if (!node->next)
 	{
 		exec->env_t->end = node_bef;
 		node_bef->next = NULL;
@@ -77,7 +86,6 @@ static void	ft_freeing(t_node *node)
 	{
 		free(node->str);
 		node->str = NULL;
-
 	}
 	if (node->var)
 	{
@@ -100,7 +108,7 @@ int	ft_unset(t_exec *exec)
 	while (exec->cmd_t->cmd[++i])
 	{
 		node_bef = ft_get_env_before_lst(exec->cmd_t->cmd[i],
-					exec->env_t->start, exec);
+				exec->env_t->start, exec);
 		node = ft_get_env_lst(exec->cmd_t->cmd[i], exec->env_t->start);
 		if (!node_bef || !node)
 			continue ;

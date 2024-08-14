@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 15:20:58 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/13 19:55:16 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/14 12:16:29 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ static int	ft_get_old_pwd(t_exec *exec, int flag)
 	char		*old_pwd;
 	t_node		*tmp;
 
-	if ((exec->cmd_t->cmd[1] && ft_strcmp(exec->cmd_t->cmd[1], "-")) && exec->env_t->oldpwd)
+	if ((exec->cmd_t->cmd[1] && ft_strcmp(exec->cmd_t->cmd[1], "-"))
+		&& exec->env_t->oldpwd)
 	{
 		chdir(exec->env_t->oldpwd);
 		flag = 1;
@@ -100,21 +101,22 @@ int	ft_cd(t_exec *exec)
 		printf("minish: cd: too many arguments\n");
 		return (1);
 	}
-	if (ft_get_old_pwd(exec, 0)) // cd - & oldpwd
+	if (ft_get_old_pwd(exec, 0))
 		return (0);
-	if (!exec->cmd_t->cmd[1] || (exec->cmd_t->cmd && exec->cmd_t->cmd[1] && ft_strcmp(exec->cmd_t->cmd[1], "~")))// cd && cd ~
+	if (!exec->cmd_t->cmd[1] || (exec->cmd_t->cmd && exec->cmd_t->cmd[1]
+			&& ft_strcmp(exec->cmd_t->cmd[1], "~")))
 	{
 		ft_cd_user(exec);
 		return (0);
 	}
 	pwd = getcwd(NULL, 0);
-	if (!pwd)// unset PWD && they are in a 
+	if (!pwd)
 	{
-		ft_printf(2, "cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n");
-		return (1);// ver el error de esto
+		ft_just_a_printf();
+		return (1);
 	}
 	free(pwd);
-	if (ft_cd_normi(exec))// normal cd
+	if (ft_cd_normi(exec))
 		return (0);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: erigonza <erigonza@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 16:06:47 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/14 09:22:15 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/14 12:20:12 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../../inc/minishell.h"
@@ -16,9 +16,9 @@
 
 static void	ft_middle_cmd(t_exec *exec)
 {
-	exec->fd = dup(exec->p[0]);// reads info from file before
+	exec->fd = dup(exec->p[0]);
 	ft_close_pipes(exec->p);
-	pipe(exec->p);// creates again p[0] & p[1]
+	pipe(exec->p);
 }
 
 static int	ft_forking(t_cmds *cmd, t_exec *exec)
@@ -63,9 +63,8 @@ static int	ft_childs(t_data *data, t_cmds *cmd, t_exec *exec)
 			data->g_exit = ft_builtins(exec);
 			exit (data->g_exit);
 		}
-		exec->cmd = ft_get_cmd(data, cmd, exec, -1); // error controled in the function
-		execve(exec->cmd, cmd->cmd, exec->env);
-		exit (1);
+		exec->cmd = ft_get_cmd(data, cmd, exec, -1);
+		ft_finishing_up(exec->cmd, cmd->cmd, exec->env);
 	}
 	return (pid);
 }

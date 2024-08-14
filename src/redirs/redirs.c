@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/01 14:37:05 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/12 17:39:56 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/14 12:25:41 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,15 @@
 
 static int	ft_redirs_err(t_cmds *cmd, int i)
 {
-	if (cmd->redirections->type != T_HEREDOC &&
-			!access(cmd->redirections->literal, F_OK))
+	if (cmd->redirections->type != T_HEREDOC
+		&& !access(cmd->redirections->literal, F_OK))
+	{
 		i = access(cmd->redirections->literal, R_OK);
+	}
 	if (i != 0)
 	{
-		ft_printf(2, "minish: %s: Permission denied\n", cmd->redirections->literal);
+		ft_printf(2, "minish: %s: Permission denied\n",
+			cmd->redirections->literal);
 		if (cmd->in != 0)
 			close (cmd->in);
 		if (cmd->out != 1)
