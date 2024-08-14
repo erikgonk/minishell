@@ -6,7 +6,7 @@
 /*   By: erigonza <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 10:47:58 by erigonza          #+#    #+#             */
-/*   Updated: 2024/08/14 12:23:06 by erigonza         ###   ########.fr       */
+/*   Updated: 2024/08/14 12:35:41 by erigonza         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void			ft_init_exec(t_exec *exec, t_data *data);
 // cmd_utils2
 char			*ft_get_cmd(t_data *data, t_cmds *cmd, t_exec *exec, int i);
 void			ft_close_pipes(int fd[2]);
-void			ft_finishing_up(char *cmd, char *cmd, char **env);
+void			ft_finishing_up(char *path, char **argv, char **env);
 
 // Signals
 void			ft_sig_c_hdoc(int sig, t_data *data);
